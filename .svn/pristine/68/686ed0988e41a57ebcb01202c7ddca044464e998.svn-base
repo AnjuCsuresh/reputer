@@ -1,0 +1,435 @@
+<ul class="breadcrumb">
+	<li>You are here</li>
+	<li><a href="index.html?lang=en&amp;layout_type=fluid&amp;menu_position=menu-left&amp;style=style-default-menus-dark&amp;sidebar_type=collapsible" class="glyphicons dashboard"><i></i> Reputer</a></li>
+	<li class="divider"><i class="icon-caret-right"></i></li>
+	<li>Components</li>
+	<li class="divider"><i class="icon-caret-right"></i></li>
+	<li>Form Wizards</li>
+</ul>
+
+<h1>&nbsp;&nbsp;Form Wizards</h1>
+<div class="innerLR">
+
+	<!-- Form Wizard / Widget Tabs / Vertical -->
+	<div class="wizard">
+		<div class="widget widget-tabs widget-tabs-double widget-tabs-vertical row-fluid row-merge widget-tabs-gray">
+
+			<!-- Widget heading -->
+			<div class="widget-head span3">
+				<ul>
+					<li class="active"><a href="#tab1-4" class="glyphicons user" data-toggle="tab"><i></i><span class="strong">Step 1</span><span>Entity Name</span></a></li>
+					<li><a href="#tab2-4" class="glyphicons calculator" data-toggle="tab"><i></i><span class="strong">Step 2</span><span>Locations</span></a></li>
+					<li><a href="#tab3-4" class="glyphicons credit_card" data-toggle="tab"><i></i><span class="strong">Step 3</span><span>Names</span></a></li>
+					<li><a href="#tab4-4" class="glyphicons circle_ok" data-toggle="tab"><i></i><span class="strong">Step 4</span><span>Urls</span></a></li>
+				</ul>
+			</div>
+			<!-- // Widget heading END -->
+
+			<div class="widget-body span9">
+				<div class="tab-content">
+
+					<!-- Step 1 -->
+					<div class="tab-pane active" id="tab1-4">
+						<div class="row-fluid">
+
+							<div class="span9">
+								<label for="inputTitle">Entity Name</label>
+								<input type="text" id="Title1" class="span6" ng-model="entity.entity_name" />
+
+								<div class="separator"></div>
+							</div>
+						</div>
+						<div class="pagination margin-bottom-none pull-right">
+							<ul>
+								
+								<li><a href="#tab2-4" class="glyphicons calculator" data-toggle="tab" id=
+								"next1" >Next</a></li>
+								
+							</ul>
+						</div>
+					</div>
+			
+					<!-- // Step 1 END -->
+
+					<!-- Step 2 -->
+					<div class="tab-pane" id="tab2-4">
+						<div class="modal" style="position: relative; top: auto; left: auto; right: auto; margin: 0 auto; z-index: 1; max-width: 100%; width: auto;">
+
+							<!-- Modal heading -->
+							<div class="modal-header">
+
+								<h3>Locations</h3>
+							</div>
+							<!-- // Modal heading END -->
+
+							<!-- Modal body -->
+							<div class="modal-body">
+								<div class="panel" style="
+								width: 270px;
+								background-color: white;float:left; border: 1px solid #eee; padding-left:10px;
+								" ng-repeat="loctn in loctns">
+								<b>Address</b>:{{loctn.address1}} <br>
+								<b>City</b>:{{loctn.city}} <br>
+								<b>State</b>:{{loctn.state}} <br>
+								<a href=""  ng-click="delete_loc(loctn)">Delete</a><br>
+
+
+							</div>
+
+						</div>
+						<!-- // Modal body END -->
+
+						<!-- Modal footer -->
+						<div class="modal-footer">
+
+							<a href="#modal-simple-info" data-toggle="modal" class="btn btn-primary">Add Locations</a>
+						</div>
+						<!-- // Modal footer END -->
+
+					</div>
+					<div class="separator bottom"></div>
+					<div class="modal hide fade" id="modal-simple-info">
+
+						<!-- Modal heading -->
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h3>Locations</h3>
+						</div>
+						<!-- // Modal heading END -->
+
+						<!-- Modal body -->
+						<div class="modal-body">
+							<div>
+								<div class="span12">
+									<div class="span5">
+										<label for="inputTitle"></label>
+									</div>
+									<div class="span7">
+										
+									</div>
+								</div>
+								<div class="span12">
+									<div class="span5">
+										<label for="inputTitle">Address</label>
+									</div>
+									<div class="span7">
+										<input type="text"  id="inputTitle" ng-model="loctn.address1">
+									</div>
+								</div>
+								<div class="span12">
+									<div class="span5">
+										<label for="inputTitle">Address2</label>
+									</div>
+									<div class="span7">
+										<input type="text"  id="inputTitle" ng-model="loctn.address2">
+									</div>
+								</div>
+								<div class="span12">
+									<div class="span5">
+										<label for="inputTitle">City</label>
+									</div>
+									<div class="span7">
+										<input type="text" id="inputTitle"    ng-model="loctn.city"/>
+									</div>
+								</div>
+								<div class="span12">
+									<div class="span5">
+										<label for="inputTitle">State</label>
+									</div>
+									<div class="span7">
+										<input type="text" id="inputTitle"  value=""  ng-model="loctn.state"/>
+									</div>
+								</div>
+								<div class="span12">
+									<div class="span5">
+										<label for="inputTitle">Zip code</label>
+									</div>
+									<div class="span7">
+										<input type="text" id="inputTitle"  value=""  ng-model="loctn.zip_code"/>
+										
+									</div>
+								</div>
+								<div ng-repeat="phoneno in phonenos" ng-init="phoneno.editEnabled=true">
+									<div ng-hide="phoneno.editEnabled">
+
+										Phone No:{{phoneno.number}} <a href=""  ng-click="delete_phone(phoneno)">Delete</a><br>
+
+
+									</div>
+									<div ng-show="phoneno.editEnabled">
+										<label for="inputTitle">Phone No</label>
+										<input type="text" id="inputTitle" class="span6" ng-model="phoneno.number"/>
+									</br>
+									<span class="btn btn-primary" ng-click="phoneno.editEnabled=false">ADD</span>
+								</div>
+							</div>
+							<br>
+							<span class="btn btn-info" ng-click="add_phone()">+ Add Phone No</span><br>
+
+							<div ng-repeat="faxno in faxnos" ng-init="faxno.editEnabled=true">
+								<div ng-hide="faxno.editEnabled">
+
+									<b>Fax No</b>:{{faxno.number}} <a href=""  ng-click="delete_fax(faxno)">Delete</a> <br>
+
+
+								</div>
+								<div ng-show="faxno.editEnabled">
+									<label for="inputTitle"><b>Fax No</b></label>
+									<input type="text" id="inputTitle" class="span6" ng-model="faxno.number"/>
+								</br>
+								<span class="btn btn-primary" ng-click="faxno.editEnabled=false">ADD</span>
+							</div>
+						</div>
+						<br>
+
+						<span class="btn btn-info" ng-click="add_fax()">+ Add Fax No</span>
+					</div>
+				</div>
+				<!-- // Modal body END -->
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> 
+					<a href="#" data-dismiss="modal" class="btn btn-inverse" ng-click="add_location(loctn,phonenos,faxnos)">ADD</a>
+				</div>
+				<!-- // Modal footer END -->
+
+			</div>
+
+
+
+			<div class="pagination margin-bottom-none pull-right">
+				<ul>
+					<li ><a href="#tab1-4"  data-toggle="tab">Previous</a></li>
+					<li ><a href="#tab3-4"  data-toggle="tab">Next</a></li>
+
+				</ul>
+			</div>
+		</div>
+		<!-- // Step 2 END -->
+
+		<!-- Step 3 -->
+		<div class="tab-pane" id="tab3-4">
+			<div class="modal" style="position: relative; top: auto; left: auto; right: auto; margin: 0 auto; z-index: 1; max-width: 100%; width: auto;">
+
+				<!-- Modal heading -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3>Names</h3>
+				</div>
+				<!-- // Modal heading END -->
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div ng-repeat="name in names ">
+						<b>Alternate name</b>:{{name.alternate_name}} <br>
+						<b>Common mispellings of the name</b>:{{name.common_misspellings_of_the_name}} <br>
+						<b>School attended</b>:{{name.school_attended1}} <br>
+						<b>Previous places lived</b>:{{name.previous_places_lived1}} <br>
+						<b>Previous places worked</b>:{{name.previous_places_worked1}} <br>
+						<a href=""  ng-click="delete_name(name)">Delete</a><br>
+
+					</div>
+				</div>
+				<!-- // Modal body END -->
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+
+					<a href="#modal-simple" data-toggle="modal" class="btn btn-primary">Add new name</a>
+				</div>
+				<!-- // Modal footer END -->
+
+			</div>
+			<div class="modal hide fade" id="modal-simple">
+
+				<!-- Modal heading -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3>Names</h3>
+				</div>
+				<!-- // Modal heading END -->
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle"></label>
+							</div>
+							<div class="span7">
+
+							</div>
+						</div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle">Alternate name</label>
+							</div>
+							<div class="span7">
+								<input type="text" id="inputTitle" ng-model="name.alternate_name"/>
+							</div>
+						</div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle">Common mispellings of the name</label>
+							</div>
+							<div class="span7">
+								<input type="text" id="inputTitle" ng-model="name.common_misspellings_of_the_name"/>
+							</div>
+						</div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle">School attended1</label>
+							</div>
+							<div class="span7">
+								<input type="text" id="inputTitle" ng-model="name.school_attended1"/>
+							</div>
+						</div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle">School attended2</label>
+							</div>
+							<div class="span7">
+								<input type="text" id="inputTitle"  value="" ng-model="name.school_attended2"/>
+							</div>
+						</div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle">Previous places lived1:</label>
+							</div>
+							<div class="span7">
+								<input type="text" id="inputTitle"  value="" ng-model="name.previous_places_lived1"/>
+							</div>
+						</div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle">Previous places worked1</label>
+							</div>
+							<div class="span7">
+								<input type="text" id="inputTitle"  value="" ng-model="name.previous_places_worked1"/>
+							</div>
+						</div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle">Previous places lived2</label>
+							</div>
+							<div class="span7">
+								<input type="text" id="inputTitle"  value="" ng-model="name.previous_places_lived2"/>
+							</div>
+						</div>
+						<div class="span12">
+							<div class="span5">
+								<label for="inputTitle">Previous places worked2</label>
+							</div>
+							<div class="span7">
+								<input type="text" id="inputTitle"  value="" ng-model="name.previous_places_worked2"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- // Modal body END -->
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> 
+					<a href="#" data-dismiss="modal" class="btn btn-inverse" ng-click="add_name(name)">ADD</a>
+				</div>
+				<!-- // Modal footer END -->
+
+			</div>
+			<div class="separator bottom"></div>
+			<div class="pagination margin-bottom-none pull-right">
+				<ul>
+					<li><a href="#tab2-4" class="glyphicons calculator" data-toggle="tab">Previous</a></li>
+					<li><a href="#tab4-4" class="glyphicons circle_ok" data-toggle="tab">Next</a></li>
+
+				</ul>
+			</div>
+		</div>
+		<!-- // Step 3 END -->
+
+		<!-- Step 4 -->
+		<div class="tab-pane" id="tab4-4">
+			<div class="modal" style="position: relative; top: auto; left: auto; right: auto; margin: 0 auto; z-index: 1; max-width: 100%; width: auto;">
+
+				<!-- Modal heading -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3>URLS</h3>
+				</div>
+				<!-- // Modal heading END -->
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div ng-repeat="url in urls">
+						<b>URL</b>:{{url.url}} <br>
+						<a href=""  ng-click="delete_url(url)">Delete</a><br>
+
+
+					</div>
+				</div>
+				<!-- // Modal body END -->
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<a href="#modal-simple-warning" data-toggle="modal" class="btn btn-primary">Add url</a>
+				</div>
+				<!-- // Modal footer END -->
+
+			</div>
+			<div class="separator bottom"></div>
+
+			<div class="modal hide fade" id="modal-simple-warning">
+
+				<!-- Modal heading -->
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h3>URLS</h3>
+				</div>
+				<!-- // Modal heading END -->
+
+				<!-- Modal body -->
+				<div class="modal-body">
+					<div class="span9">
+						<label for="inputTitle">URL</label>
+						<input type="text" id="inputTitle" class="span6"  ng-model="newurl.url"/>
+
+						<div class="separator"></div>
+					</div>
+				</div>
+				<!-- // Modal body END -->
+
+				<!-- Modal footer -->
+				<div class="modal-footer">
+					<a href="#" class="btn btn-default" data-dismiss="modal">Close</a> 
+					<a href="#" data-dismiss="modal" class="btn btn-inverse" ng-click="add_url(newurl)">ADD</a>
+				</div>
+				<!-- // Modal footer END -->
+
+			</div>
+			<div class="pagination margin-bottom-none pull-right">
+				<ul>
+					<li ><a href="#tab3-4" class="glyphicons credit_card" data-toggle="tab">Previous</a></li>
+					<li ><a href="" ng-click="add_entity(entity)">Finish</a></li>
+				</ul>
+			</div>
+		</div>
+		<!-- // Step 4 END -->
+
+		<!-- Wizard pagination controls -->
+
+
+		<div class="clearfix"></div>
+		<!-- // Wizard pagination controls END -->
+
+	</div>
+
+</div>
+</div>
+</div>
+<!-- // Form Wizard / Widget Tabs / Vertical END -->
+
+
+<!-- // Form Wizard / Arrow navigation & Progress bar END -->
+
+</div>

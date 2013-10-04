@@ -1,0 +1,58 @@
+
+<div id="login">
+
+	<div class="wrapper signup">
+		
+		<h1 class="glyphicons user_add">Sign up <i></i></h1>
+		
+		<!-- Box -->
+		<div class="widget widget-heading-simple">
+			<div class="widget-body">
+
+				<!-- Form -->
+				<form name="myForm" novalidate ng-submit="register(user);">
+					
+					<!-- Row -->
+					<div class="row-fluid row-merge">
+
+						<!-- Column -->
+						<div class="span6">
+							<div class="innerR">
+								<label class="strong">Username</label>
+								<input type="text" class="input-block-level" ng-model="user.username" placeholder="Your Username"/>
+								<label class="strong">Password</label>
+								<input type="password" class="input-block-level" ng-model="user.password1" placeholder="Your Password"/>
+								
+							</div>
+						</div>
+						<!-- // Column END -->
+						
+						<!-- Column -->
+						<div class="span6">
+							<div class="innerL">
+								<label class="strong">Email</label>
+								<input type="email" class="input-block-level" name="user.email" ng-model="user.email1" placeholder="Your Email Address" required/>
+								 
+								
+								<button ng-disabled="!(user.password1!=null&&user.email1!=null&&user.username!=null)" type="submit" class="btn btn-icon-stacked btn-block btn-primary glyphicons user_add"><i></i><span>Create account and</span><span class="strong">Join Reputer now</span></button>
+								<p>Having troubles? <a href="faq.html?lang=en&amp;style=style-default-menus-dark">Get Help</a></p>
+							</div>
+						</div>
+						<!-- // Column END -->
+						
+					</div>
+					<!-- // Row END -->
+					
+				</form>
+				<!-- // Form END -->
+
+
+			</div>
+			<!-- // Box END -->
+
+		</div>
+
+	</div>
+	
+</div>
+<!-- // Wrapper END -->	

@@ -1,0 +1,39 @@
+<div id="login">
+
+	<div class="container">
+
+		<div class="wrapper">
+
+			<h1 class="glyphicons unlock">Forgot password <i></i></h1>
+
+			<!-- Box -->
+			<div class="widget widget-heading-simple widget-body-gray">
+
+				<div class="widget-body">
+
+					<!-- Form -->
+					<form>
+						<label>Enter your email</label>
+						<input type="text" ng-model="user.email" class="input-block-level" placeholder="Your Email address"/>
+						
+						
+						<div class="separator bottom"></div>
+						<div class="row-fluid">
+							
+							<div class="span4 center">
+								<button ng-click="send(user)" class="btn btn-block btn-inverse" type="submit">Submit</button>
+							</div>
+						</div>
+					</form>
+					<!-- // Form END -->
+
+				</div>
+				<div class="widget-footer">
+					<p class="glyphicons restart"><i></i><span ng-hide="error">Please enter your Email ...</span><span ng-show="error"><b style="color:red">{{error}}</b></span></p>
+				</div>
+			</div>
+			<!-- // Box END -->
+
+		</div>
+
+	</div>
