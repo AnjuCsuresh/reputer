@@ -52,33 +52,47 @@
 		</div>
 	</div>
 </div>
-
+<div class="innerLR innerT">
 <div class="widget widget-heading-simple widget-body-gray">
 			<div class="widget-body center">
-				<p class="lead margin-none">Changes in your Reputation</p>
+				<p class="lead margin-none">Unlimited Columns &amp; Expandable Rows. Tables for Desktop, Tablet &amp; Mobile. Resize your browser to try them.</p>
 			</div>
 		</div>
-		
-		<h5 class="text-uppercase strong separator bottom margin-none">Example Using jQuery</h5>
-		<!-- Table -->
-		<table class="footable table table-striped table-bordered table-white table-primary" id="example">
+		<div class="widget-search form-inline">
+			<button type="button" class="btn btn-primary pull-right">Search <i class="icon-search"></i></button>
+			<div class="overflow-hidden">
+				<input ng-model="crawlSearch" type="text" value="" placeholder="Type your keywords ..">
+			</div>
+		</div>
+		<br>
+		<table class="crawltable footable table table-striped table-bordered table-white table-primary">
 			
 			<!-- Table heading -->
 			<thead>
-				<tr>
-					<th>Rank</th>
-					<th>Website</th>
-					<th>Title</th>
-					<th>Summary</th>
-					<th>Rating</th>
-				</tr>
-			</thead>
+					<tr>
+						<th ng-click="predicate = 'Rank'; reverse=!reverse">Rank&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="predicate = 'URL'; reverse=!reverse">Website&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="predicate = 'Title'; reverse=!reverse">Title&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="predicate = 'Summary'; reverse=!reverse">Summary&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="predicate = 'rating'; reverse=!reverse">Rating&nbsp;<i class="icon-sort"></i></th>
+						<th>Actions</th>
+					</tr>
+				</thead>	
 			<!-- // Table heading END -->
 			
 			<!-- Table body -->
 			<tbody>
 				
-				
+				<!-- Table row -->
+				<tr ng-repeat="result in crawl_table | orderBy:predicate:reverse | filter:crawlSearch">
+					<td>{{result.Rank}}</td>
+					<td>{{result.URL}}</td>
+					<td>{{result.Title}}</td>
+					<td>{{result.Summary}}</td>
+					<td>{{result.rating}}</td>
+					<td><button>Ignore</button></td>
+				</tr>
+				<!-- // Table row END -->
 				
 			</tbody>
 			<!-- // Table body END -->
@@ -86,3 +100,4 @@
 		</table>
 		<!-- // Table END -->
 
+</div>

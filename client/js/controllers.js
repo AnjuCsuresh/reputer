@@ -89,18 +89,11 @@ angular.module('myApp.controllers', ['ngGrid']).
 
 angular.module('dashApp.controllers', []).
     controller('DashHomeCtrl', function ($http, $scope, User) {
-        var oTable = $('#example').dataTable( {
-            "bProcessing": true,
-            "sAjaxSource": DATA_API_URL+'getcrawltable/10',
-            "aoColumns": [
-                { "mData": "Rank","sWidth":"6%" },
-                { "mData": "URL","sWidth":"15%"},
-                { "mData": "Title","sWidth":"25%" },
-                { "mData": "Summary","sWidth":"35%" },
-                { "mData": "rating","sWidth":"15%" }
-            ]
-        } );
-
+        $http.get(DATA_API_URL+'getcrawltable/10').success(function(data, status, headers, config){
+            $scope.items = data.aaData;
+            
+        })
+        
     })
     .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
      
