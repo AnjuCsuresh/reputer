@@ -38,7 +38,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     });
 
 
-angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.directives', 'dashApp.controllers', 'ngCookies']).
+angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.directives', 'dashApp.controllers', 'ngCookies','ngGrid']).
     config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
         $routeProvider.when('/form_wiz', {templateUrl: '/partials/admin/form_wiz.html'});

@@ -1,5 +1,18 @@
 /* app css stylesheet */
-
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 400px; 
+    height: 300px;
+    float: left;
+}
+.gridStyle {
+    border: 1px solid rgb(212,212,212);
+    width: 400px; 
+    height: 300px;
+}
+.selectedItems{
+    float: left; 
+}
 .menu {
   list-style: none;
   border-bottom: 0.1em solid black;

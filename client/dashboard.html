@@ -2,14 +2,16 @@
 <html ng-app="dashApp" class="animations fluid top-full menuh-top sticky-top sidebar sidebar-full sidebar-collapsible sidebar-width-mini sticky-sidebar sidebar-hat">
 <head>
 	<title>Reputer</title>
+	<script src="partials/jquery-1.10.2.min.js"></script>
+	<script src="partials/jquery-migrate-1.2.1.min.js"></script>
 	<script src="lib/angular/angular.js"></script>
 	<script src="lib/angular/angular-cookies.js"></script>
+	<script src="lib/angular/nggrid.2.0.7.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/services.js"></script>
 	<script src="js/controllers.js"></script>
 	<script src="js/filters.js"></script>
-	<script src="js/directives.js"></script>
-	
+	<script src="js/directives.js"	></script>
 	
 
 	<!-- Meta -->
@@ -18,7 +20,7 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<meta http-equiv="X-UA-Compatible" content="IE=9; IE=8; IE=7; IE=EDGE" />
-
+	
 	<!-- Bootstrap -->
 	<link href="common/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" />
 	<link href="common/bootstrap/css/responsive.css" rel="stylesheet" type="text/css" />
@@ -39,8 +41,7 @@
 	<link href="common/theme/scripts/plugins/gallery/prettyphoto/css/prettyPhoto.css" rel="stylesheet" />
 
 	<!-- JQuery -->
-	<script src="partials/jquery-1.10.2.min.js"></script>
-	<script src="partials/jquery-migrate-1.2.1.min.js"></script>
+	
 
 	<script src="common/theme/scripts/plugins/other/excanvas/excanvas.js"></script>
 	<script language="javascript" type="text/javascript" src="common/theme/scripts/plugins/other/excanvas/excanvas.min.js"></script>
@@ -109,106 +110,6 @@
 		<!-- Sidebar menu & content wrapper -->
 		<div id="wrapper">
 
-			<!-- Sidebar Menu -->
-			<div id="menu" class="hidden-print">
-
-				<!-- Brand -->
-				<a href="#" class="appbrand"><span class="text-primary">Reputer</span></a>
-
-				<!-- Scrollable menu wrapper with Maximum height -->
-				<div class="slim-scroll" data-scroll-height="800px">
-
-					<!-- Menu Toggle Button -->
-					<button type="button" class="btn btn-navbar">
-						<span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
-					</button>
-					<!-- // Menu Toggle Button END -->
-
-					<!-- Sidebar Profile -->
-					<span class="profile center">
-						<a href="#/my_account_advance"><img src="/img/ffffff&text=photo.png" alt="Avatar" /></a>
-					</span>
-					<!-- // Sidebar Profile END -->
-
-					<!-- Menu -->
-					<ul>
-
-
-						<li class="active"><a href="#/" class="glyphicons dashboard"><i></i><span>Dashboard</span></a></li>
-						<li class="hasSubmenu">
-							<a href="#menu_components" data-toggle="collapse" class="glyphicons settings"><i></i><span>Components</span><span class="icon-chevron-down"></span></a>
-							<ul class="collapse" id="menu_components">
-
-								<!-- Components Submenu Level 2 -->
-								<li class="hasSubmenu">
-									<a href="#menu_components_forms" data-toggle="collapse">Forms<span class="badge badge-primary fix">1</span></a>
-									<ul class="collapse" id="menu_components_forms">
-										<li class=""><a href="#/form_wiz">Form Wizards</a></li>
-									</ul>
-								</li>
-								<!-- // Components Submenu Level 2 END -->
-
-								<li class="hasSubmenu">
-									<a href="#menu_components_tables" data-toggle="collapse">Tables<span class="badge badge-primary fix">3</span></a>
-									<ul class="collapse" id="menu_components_tables">
-										<li class=""><a href="#/table">Tables</a></li>
-										<li class=""><a href="#/table_res">Responsive Tables</a></li>
-										<li class=""><a href="#/pricing">Pricing tables</a></li>
-									</ul>
-								</li>
-
-								<!-- Components Submenu Regular Items -->
-
-
-								<li class=""><a href="#/widgets">Widgets</a></li>
-
-
-								<li class=""><a href="#/chart">Charts</a></li>
-
-								<li class=""><a href="#/notification">Notifications</span></a></li>
-								<li class=""><a href="#/modals">Modals</a></li>
-								<!-- // Components Submenu Regular Items END -->
-							</ul>
-						</li>
-						<li class="hasSubmenu">
-							<a href="#menu_pages" data-toggle="collapse" class="glyphicons notes"><i></i><span>Pages</span><span class="icon-chevron-down"></span></a>
-							<ul class="collapse" id="menu_pages">
-
-								<li><a href="#/timeline" class="glyphicons history"><i></i>Timeline</a></li>
-								<li><a href="#/invoice" class="glyphicons credit_card"><i></i>Invoice</a></li>
-								<li><a href="#/faq" class="glyphicons circle_question_mark"><i></i>FAQ</a></li>
-
-								<li><a href="#/rating" class="glyphicons star"><i></i>Ratings</a></li>
-
-								<li class="hasSubmenu">
-									<a href="#menu_pages_account" data-toggle="collapse" class="glyphicons user"><i></i>Account<span class="badge badge-primary fix">2</span></a>
-									<ul class="collapse" id="menu_pages_account">
-										<li class=""><a href="#/my_account_advance">Advanced profile</a></li>
-										<li class=""><a href="#/my_account">My Account</a></li>
-									</ul>
-								</li>
-								<li><a href="#/finance" class="glyphicons coins"><i></i>Finances</a></li>
-							</ul>
-						</li>
-					
-
-						
-					</ul>
-
-
-					<div class="clearfix"></div>
-					<!-- // Menu END -->
-
-					<div class="menu-hidden-element alert alert-primary">
-						<a class="close" data-dismiss="alert">&times;</a>
-						<p>Integer quis tempor mi. Donec venenatis dui in neque fringilla at iaculis libero ullamcorper. In velit sem, sodales id hendrerit ac, fringilla et est.</p>
-					</div>
-
-				</div>
-				<!-- // Scrollable Menu wrapper with Maximum Height END -->
-
-			</div>
-			<!-- // Sidebar Menu END -->
 
 			<!-- Content -->
 			<div id="content">
@@ -504,12 +405,9 @@
 		<script src="common/theme/scripts/demo/charts.js?1374506515"></script> -->
 		<!-- DataTables Tables Plugin -->
 		<script src="common/theme/scripts/plugins/tables/DataTables/media/js/jquery.dataTables.min.js"></script>
-		<script src="common/theme/scripts/plugins/tables/DataTables/extras/TableTools/media/js/TableTools.min.js"></script>
-		<script src="common/theme/scripts/plugins/tables/DataTables/extras/ColVis/media/js/ColVis.min.js"></script>
 		<script src="common/theme/scripts/plugins/tables/DataTables/media/js/DT_bootstrap.js"></script>
 
 		<!-- Tables Demo Script -->
-		<script src="common/theme/scripts/demo/tables.js"></script>
 
 
 		<!-- Common Demo Script -->
