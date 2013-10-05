@@ -189,17 +189,16 @@ angular.module('dashApp.controllers', []).
         };
 
         $scope.ignore = function(item){
-            $scope.n = notyfy({
+            
+            $http.get(DATA_API_URL+item.ignore).success(function(data, status, headers, config){
+                item.hide = true;
+                $scope.n = notyfy({
                     text: 'Ignored results from '+item.URL,
                     type: 'success',
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
         
-            $http.get(DATA_API_URL+item.ignore).success(function(data, status, headers, config){
-                alert()
-
-                item.hide = true;
             })
         }
         })
