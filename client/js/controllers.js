@@ -88,7 +88,7 @@ angular.module('myApp.controllers', ['ngGrid']).
     }]);
 
 angular.module('dashApp.controllers', []).
-    controller('DashHomeCtrl', function ($http, $scope, User,$filter) {
+    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout) {
         $http.get(DATA_API_URL+'getcrawltable/10').success(function(data, status, headers, config){
             $scope.items = data.aaData;
             $scope.predicate = 'Rank';
@@ -187,6 +187,21 @@ angular.module('dashApp.controllers', []).
             else
                 $('th.'+new_sorting_order+' i').removeClass().addClass('icon-chevron-down');
         };
+
+        $scope.ignore = function(item){
+            $scope.n = notyfy({
+                    text: 'Ignored results from '+item.URL,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+        
+            $http.get(DATA_API_URL+item.ignore).success(function(data, status, headers, config){
+                alert()
+
+                item.hide = true;
+            })
+        }
         })
         
     })

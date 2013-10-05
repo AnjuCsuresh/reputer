@@ -1,12 +1,6 @@
-<div class="innerLR innerT">
-	<div class="widget-search form-inline">
-		<button type="button" class="btn btn-primary pull-right">Search <i class="icon-search"></i></button>
-		<div class="overflow-hidden">
-			<input type="text" value="" placeholder="Type your keywords ..">
-		</div>
-	</div>
-</div>
+<br>
 <h1>&nbsp;&nbsp;Dashboard</h1>
+<br>
 <!-- Stats Widgets -->
 <div class="row-fluid row-merge border-top">
 
@@ -103,13 +97,13 @@
 			<tbody>
 				
 				<!-- Table row -->
-				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse">
+				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
 					<td>{{result.Rank}}</td>
 					<td>{{result.URL}}</td>
 					<td>{{result.Title}}</td>
 					<td>{{result.Summary}}</td>
 					<td>{{result.rating}}</td>
-					<td><button>Ignore</button></td>
+					<td><button class="btn btn-inverse" ng-click="ignore(result)"> Ignore</button></td>
 				</tr>
 				<!-- // Table row END -->
 				
