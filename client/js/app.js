@@ -47,7 +47,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/table', {templateUrl: '/partials/admin/table.html'});
         $routeProvider.when('/table_res', {templateUrl: '/partials/admin/table_res.html'});
         $routeProvider.when('/pricing', {templateUrl: '/partials/admin/pricing_tab.html'});
-        $routeProvider.when('/chart', {templateUrl: '/partials/admin/chart.html'});
+        $routeProvider.when('/chart', {templateUrl: '/partials/admin/chart.html',controller:'ChartCtrl'});
         $routeProvider.when('/notification', {templateUrl: '/partials/admin/notification.html'});
         $routeProvider.when('/my_account_advance', {templateUrl: '/partials/admin/my_account_advance.html'});
         $routeProvider.when('/my_account', {templateUrl: '/partials/admin/my_account.html'});
@@ -72,7 +72,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
     ])
     .config(function($httpProvider) {
         var numLoadings = 0;
-        var loadingScreen = $('<div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;background-color:white;background-color:rgba(255,255,255,0.6);"><div style="position:absolute;top:45%;left:45%;font-size:4em;text-align:center"><i class="icon-spinner icon-spin icon-large"></i></div></div>')
+        var loadingScreen = $('<div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;background-color:white;background-color:rgba(255,255,255,0.6);"><div style="position:absolute;top:45%;left:45.5%;font-size:4em;text-align:center"><i class="icon-spinner icon-spin icon-large"></i></div></div>')
             .appendTo($('body')).hide();
         console.log('loadingScreen')
         $httpProvider.responseInterceptors.push(function() {

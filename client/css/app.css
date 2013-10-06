@@ -54,3 +54,8 @@ background-color: black;
 .crawltable th:hover{
   cursor: pointer;
 }
+
+.add_entity h1{
+  margin: 1.5em 0px;
+  text-align: center; 
+}

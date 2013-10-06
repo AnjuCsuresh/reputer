@@ -65,7 +65,7 @@
 			<thead>
 					<tr>
 						<th ng-click="sort_by('Rank')">Rank&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('URL')">Website&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('domain')">Website&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('Title')">Title&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('Summary')">Summary&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
@@ -99,7 +99,7 @@
 				<!-- Table row -->
 				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
 					<td>{{result.Rank}}</td>
-					<td>{{result.URL}}</td>
+					<td>{{result.domain}}</td>
 					<td>{{result.Title}}</td>
 					<td>{{result.Summary}}</td>
 					<td>{{result.rating}}</td>

@@ -217,3 +217,6 @@ angular.module('dashApp.controllers', []).
         })
     })
 
+.controller('ChartCtrl',function($scope,$http,$location){
+    
+})
