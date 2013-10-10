@@ -59,3 +59,63 @@ background-color: black;
   margin: 1.5em 0px;
   text-align: center; 
 }
+.add_entity .choices a i:before{
+  font-size: 4em;
+}
+.add_entity .choices a i{
+  display: block;
+}
+.add_entity input{
+  font-size: 20px;
+  height: 45px !important;
+}
+
+.add_entity .form-horizontal .control-label {
+width: 125px;
+position: relative;
+top: 7px;
+font-size: 18px;
+font-weight: lighter;
+}
+
+.add_entity .form-horizontal .form-actions {
+margin-top: 0;
+padding: 0;
+position: relative;
+left: 19%;
+}
+
+.add_entity .widget.widget-tabs-double-2 > .widget-head ul li a.glyphicons i:before{
+  color: #e5412d;
+  left: auto;
+  top: 21px;
+  font-size: 50px;
+  position: relative;
+}
+
+.add_entity ul li h3{
+  display: inline;
+  position: relative;
+  display: block;
+  top:30px;
+}
+.add_entity ul li a{
+
+}
+
+.add_entity .widget.widget-tabs-double-2 > .widget-head {
+height: 85px !important;
+}
+
+.add_entity .widget.widget-tabs-double-2 > .widget-head ul {
+  height: 85px !important;
+}
+
+.add_entity .widget.widget-tabs-double-2 > .widget-head ul li.active {
+height: 85px !important;
+background: none;
+}
+
+.add_entity .widget.widget-tabs-double-2 > .widget-head ul li{
+height: 85px !important;
+}
