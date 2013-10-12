@@ -1,6 +1,5 @@
 <div class="add_entity">
 	<h1 class="entity_add_h1">&nbsp;&nbsp;Whose reputation would you like to monitor ?</h1>
-
 	<div class="innerLR">
 
 		<!-- Widget -->
@@ -61,6 +60,16 @@
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
 														</div>
 													</div>
+													<div class="control-group">
+														<label class="control-label">Profession</label>
+														<div class="controls">
+															<select ng-model="entity.profession" class="span5" name="" id="" width="1000" height="500">
+																<option value="DOC">Doctor</option>
+																<option value="LAW">Lawyer</option>
+															</select>
+														</div>
+													</div>
+													<br>
 													<!-- // Group END -->
 													
 													<!-- Group -->
@@ -77,33 +86,13 @@
 											</div>
 											<!-- // Row END -->
 											
-											<div class="separator line bottom"></div>
-											<div class="control-group">
-												<label class="control-label">State</label>
-												<div class="controls">
-
-													
-														<ul class="inline dropdown dd-1">
-															<input type="text" data-toggle="dropdown"  class="span5">
-															<ul class="dropdown-menu">
-
-																<!-- Components Submenu Level 2 -->
-
-																<li class=""><a href="">1</a></li>
-																<li class=""><a href="">2</a></li>
-
-															</ul>
-														
-													</ul>
-												</div>
-											</div>
+											
 											
 
 
 														<!-- Form actions -->
 														<div class="form-actions" style="margin: 0;">
 															<button type="submit" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
-															<button type="button" class="btn btn-icon btn-default glyphicons circle_remove"><i></i>Cancel</button>
 														</div>
 														<!-- // Form actions END -->
 
@@ -140,7 +129,7 @@
 																		<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="First name is mandatory"><i></i></span>
 																	</div>
 																</div>
-
+																
 
 															</div>
 															<!-- // Column END -->
@@ -152,32 +141,11 @@
 														</div>
 														<!-- // Row END -->
 
-														<div class="separator line bottom"></div>
-
-														<div class="control-group">
-												<label class="control-label">State</label>
-												<div class="controls">
-
-													
-														<ul class="inline dropdown dd-1">
-															<input type="text" data-toggle="dropdown" >
-															<ul class="dropdown-menu">
-
-																<!-- Components Submenu Level 2 -->
-
-																<li class=""><a href="">1</a></li>
-																<li class=""><a href="">2</a></li>
-
-															</ul>
-														
-													</ul>
-												</div>
-											</div>
 											
 
 														<!-- Form actions -->
 														<div class="form-actions" style="margin: 0;left:38%">
-															<button type="submit" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+															<button ng-click="" type="submit" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
 															<button type="button" class="btn btn-icon btn-default glyphicons circle_remove"><i></i>Cancel</button>
 														</div>
 														<!-- // Form actions END -->

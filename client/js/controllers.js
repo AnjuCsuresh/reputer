@@ -205,8 +205,17 @@ angular.module('dashApp.controllers', []).
         
     })
     .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
-     
-    })
+        function format(state) {
+            if (!state.id) return state.text; // optgroup
+            return "<img class='flag' src='http://ivaynberg.github.com/select2/images/flags/" + state.id.toLowerCase() + ".png'/>" + state.text;
+        }
+        $("#select2_7").select2({
+            formatResult: format,
+            formatSelection: format,
+            containerCss: " ",
+            escapeMarkup: function(m) { return m; }
+        });
+        })
 
 
     .controller('TopNavCtrl', function (User, $scope, $location, $http) {

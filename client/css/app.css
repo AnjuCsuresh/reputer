@@ -119,3 +119,9 @@ background: none;
 .add_entity .widget.widget-tabs-double-2 > .widget-head ul li{
 height: 85px !important;
 }
+
+.add_entity select{
+height: 45px;
+font-size: 20px;
+}
+
