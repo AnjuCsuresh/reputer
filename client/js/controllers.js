@@ -203,6 +203,41 @@ angular.module('dashApp.controllers', []).
             })
         }
         });
+
+        $http.get(DATA_API_URL+'getscoretrend/10').success(function(data, status, headers, config){
+            $scope.chartConfig = {
+                options: {
+                    chart: {
+                        type: 'line'
+                    }
+                },
+
+                series: [{
+                    name: 'Popularity Count',
+                    data: data['pop_count']
+                },
+                {
+                    name: 'Search Sentiment',
+                    data: data['sentiment']
+                }
+                ],
+                xAxis: {
+                    categories: data['time'],
+                    labels:
+                    {
+                      enabled: false
+                    }
+                },
+                yAxis: {
+                    lineWidth: 0,
+                },
+                title: {
+                    text: 'Sentiment Score Trend'
+                },
+
+                loading: false
+            }
+        })
         
     })
     .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
