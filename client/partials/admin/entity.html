@@ -8,8 +8,8 @@
 			<!-- Widget heading -->
 			<div class="widget-head">
 				<ul style="margin-left:39%">
-					<li><h3 style="float:left">Person</h3><a style="float:right" class="glyphicons user_add" href="#edit-account" data-toggle="tab"><i></i></a></li>
-					<li style="border-right:none"><a style="float:left" class="glyphicons luggage" href="#projects" data-toggle="tab"><i></i></a><h3 style="float:right">Business</h3></li>
+					<li href="#edit-account" data-toggle="tab"><h3 style="float:left">Person</h3><a style="float:right" class="glyphicons user_add" data-toggle="tab"><i></i></a></li>
+					<li href="#projects" data-toggle="tab" style="border-right:none"><a style="float:left" class="glyphicons luggage"><i></i></a><h3 style="float:right">Business</h3></li>
 				</ul>
 			</div>
 			<!-- // Widget heading END -->
@@ -40,7 +40,7 @@
 													<div class="control-group">
 														<label class="control-label">First name</label>
 														<div class="controls">
-															<input type="text" value="John" class="span5" />
+															<input type="text" ng-model="entity.first_name" class="span5" />
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="First name is mandatory"><i></i></span>
 														</div>
 													</div>
@@ -48,7 +48,7 @@
 													<div class="control-group">
 														<label class="control-label">Middle name</label>
 														<div class="controls">
-															<input type="text" value="Doe" class="span5" />
+															<input type="text" ng-model="entity.middle_name" class="span5" />
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
 														</div>
 													</div>
@@ -56,17 +56,23 @@
 													<div class="control-group">
 														<label class="control-label">Last name</label>
 														<div class="controls">
-															<input type="text" value="Doe" class="span5" />
+															<input type="text" ng-model="entity.last_name" class="span5" />
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
 														</div>
 													</div>
 													<div class="control-group">
 														<label class="control-label">Profession</label>
 														<div class="controls">
-															<select ng-model="entity.profession" class="span5" name="" id="" width="1000" height="500">
-																<option value="DOC">Doctor</option>
-																<option value="LAW">Lawyer</option>
+															<select ng-model="entity.profession" ng-options="p.resource_uri as p.name for p in professions" class="span5" name="" id="" width="1000" height="500">
 															</select>
+															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
+														</div>
+													</div>
+													<div class="control-group" ng-show="entity.profession=='/api/v1/Profession/3/'">
+														<label class="control-label">Other Profession</label>
+														<div class="controls">
+															<input type="text" ng-model="entity.other_profession"  class="span5" />
+															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
 														</div>
 													</div>
 													<br>
@@ -92,7 +98,7 @@
 
 														<!-- Form actions -->
 														<div class="form-actions" style="margin: 0;">
-															<button type="submit" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+															<button type="submit" ng-click="save_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
 														</div>
 														<!-- // Form actions END -->
 
@@ -125,7 +131,7 @@
 																<div class="control-group">
 																	<label class="control-label">Name of Business</label>
 																	<div class="controls">
-																		<input type="text" value="John" class="span11" />
+																		<input type="text"ng-model="entity.business_name"  class="span11" />
 																		<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="First name is mandatory"><i></i></span>
 																	</div>
 																</div>
@@ -145,8 +151,7 @@
 
 														<!-- Form actions -->
 														<div class="form-actions" style="margin: 0;left:38%">
-															<button ng-click="" type="submit" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
-															<button type="button" class="btn btn-icon btn-default glyphicons circle_remove"><i></i>Cancel</button>
+															<button ng-click="save_business(entity)" type="submit" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
 														</div>
 														<!-- // Form actions END -->
 

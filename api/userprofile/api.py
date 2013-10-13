@@ -68,6 +68,13 @@ class PhoneResource(MyResource):
 
         return bundle
 
+class ProfessionResource(MyResource):
+    class Meta:
+        queryset = Profession.objects.all()
+        resource_name = 'Profession'
+        authentication = Authentication()
+        authorization = Authorization()
+
 class FaxResource(MyResource):
     location = fields.ForeignKey(LocationResource,'location',null=True,full=True)
     class Meta:
@@ -82,6 +89,7 @@ class FaxResource(MyResource):
 
 class EntityResource(ModelResource):
     location =fields.ToManyField(LocationResource,'location',null=True,full=True)
+    profession = fields.ForeignKey(ProfessionResource,'profession',null=True,full=True)
     class Meta:
         queryset = Entity.objects.all()
         resource_name = 'Entity'

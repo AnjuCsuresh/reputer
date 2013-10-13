@@ -4,10 +4,11 @@
 
 //API URLS 
 // Add Trailing Slash
-var API_URL = 'https://app.reputer.co/api/v1/';
+//var API_URL = 'https://app.reputer.co/api/v1/';
+var API_URL = 'http://localhost:8000/api/v1/';
 var DATA_API_URL = 'http://localhost:5000/'
 
-angular.module('myApp.controllers', ['ngGrid']).
+angular.module('myApp.controllers', []).
 
     controller('RegisterCtrl',function ($http, $scope, $location ,$window, $cookies) {
         console.log('This is register');
@@ -183,9 +184,9 @@ angular.module('dashApp.controllers', []).
                 $(this).removeClass().addClass('icon-sort');
             });
             if ($scope.reverse)
-                $('th.'+new_sorting_order+' i').removeClass().addClass('icon-chevron-up');
+                $('th.'+newSortingOrder+' i').removeClass().addClass('icon-chevron-up');
             else
-                $('th.'+new_sorting_order+' i').removeClass().addClass('icon-chevron-down');
+                $('th.'+newSortingOrder+' i').removeClass().addClass('icon-chevron-down');
         };
 
         $scope.ignore = function(item){
@@ -193,7 +194,7 @@ angular.module('dashApp.controllers', []).
             $http.get(DATA_API_URL+item.ignore).success(function(data, status, headers, config){
                 item.hide = true;
                 $scope.n = notyfy({
-                    text: 'Ignored results from '+item.URL,
+                    text: 'Ignored results from '+item.domain,
                     type: 'success',
                     dismissQueue:true,
                     closeWith:['hover'] 
@@ -201,23 +202,38 @@ angular.module('dashApp.controllers', []).
         
             })
         }
-        })
+        });
         
     })
     .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
-        function format(state) {
-            if (!state.id) return state.text; // optgroup
-            return "<img class='flag' src='http://ivaynberg.github.com/select2/images/flags/" + state.id.toLowerCase() + ".png'/>" + state.text;
-        }
-        $("#select2_7").select2({
-            formatResult: format,
-            formatSelection: format,
-            containerCss: " ",
-            escapeMarkup: function(m) { return m; }
-        });
+        $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
+            $scope.professions = data.objects;
         })
-
-
+        $scope.save_person = function(entity){
+            delete entity['business_name']
+            $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Added new person '+ data.first_name ,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+            })
+        }
+        $scope.save_business = function(entity){
+            var business = {
+                business_name: entity['business_name']
+            }
+            $http.post(API_URL+'Entity/',business).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Added new business '+ data.business_name ,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+            })
+        }
+    })
     .controller('TopNavCtrl', function (User, $scope, $location, $http) {
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
             User = response.data;

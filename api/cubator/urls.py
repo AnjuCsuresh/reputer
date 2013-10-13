@@ -19,6 +19,7 @@ v1_api.register(FaxResource())
 v1_api.register(NameResource())
 v1_api.register(URLResource())
 v1_api.register(UserResource())
+v1_api.register(ProfessionResource())
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'cubator.views.home', name='home'),

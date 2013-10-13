@@ -157,10 +157,45 @@ class URL(SoftDeletionModel):
 
 
 class Entity(SoftDeletionModel):
-    entity_name = models.CharField(max_length=200)
-    location = models.ManyToManyField(Location)
+    entity_name = models.CharField(max_length=200,null=True,blank=True)
+    first_name = models.CharField(max_length=50,null=True,blank=True)
+    middle_name = models.CharField(max_length=50,null=True,blank=True)
+    last_name = models.CharField(max_length=50,null=True,blank=True)
+    business_name = models.CharField(max_length=200,null=True,blank=True)
+    location = models.ManyToManyField(Location,null=True,blank=True)
+    profession = models.ForeignKey('Profession',null=True,blank=True)
+    other_profession = models.CharField(max_length=200,null=True,blank=True)
+    
     objects = SoftDeletionManager()
     all_objects = SoftDeletionManager(live_only=False)
 
     def __unicode__(self):
-        return self.entity_name
+        if not self.entity_name:
+            if self.first_name:
+                return self.first_name
+            elif self.business_name:
+                return self.business_name
+
+        return "Unamed Entity"
+
+class Profession(SoftDeletionModel):
+    name = models.CharField(max_length=200)
+    websites = models.ManyToManyField('ReviewWebsite',blank=True,null=True)
+
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
+
+    def __unicode__(self):
+        return self.name
+        
+class ReviewWebsite(SoftDeletionModel):
+    name =  models.CharField(max_length=200)
+    url = models.URLField()
+    spider_name = models.CharField(max_length=15)
+    last_run = models.DateTimeField(blank=True,null=True)
+
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
+    
+    def __unicode__(self):
+        return self.name
