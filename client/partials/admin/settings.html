@@ -201,9 +201,10 @@
 								<!-- Widget heading -->
 								<div class="widget-head span3">
 									<ul>
-										<li class="active"><a class="glyphicons pencil" href="#account-details" data-toggle="tab"><i></i>Account details</a></li>
-										<li><a class="glyphicons settings" href="#account-settings" data-toggle="tab"><i></i>Account settings</a></li>
-										<li><a class="glyphicons eye_open" href="#privacy-settings" data-toggle="tab"><i></i>Privacy settings</a></li>
+										<li class="active"><a class="glyphicons settings" href="#account-settings" data-toggle="tab"><i></i>Account settings</a></li>
+										<li ><a class="glyphicons pencil" href="#account-details" data-toggle="tab"><i></i>Account details</a></li>
+										
+										
 									</ul>
 								</div>
 								<!-- // Widget heading END -->
@@ -211,7 +212,7 @@
 								<div class="widget-body span9">
 									
 									<div class="tab-content">
-										<div class="tab-pane active" id="account-details">
+										<div class="tab-pane " id="account-details">
 											
 											<!-- Row -->
 											<div class="row-fluid">
@@ -303,7 +304,7 @@
 											<!-- // Form actions END -->
 											
 										</div>
-										<div class="tab-pane" id="account-settings">
+										<div class="tab-pane active" id="account-settings">
 											
 											<!-- Row -->
 											<div class="row-fluid">
@@ -317,7 +318,7 @@
 												
 												<!-- Column -->
 												<div class="span9">
-													<label for="inputUsername">Username</label>
+													<label for="inputUsername">Email</label>
 													<input type="text" id="inputUsername" class="span10" value="john.doe2012" disabled="disabled" ng-model="user.email"/>
 													<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Username can't be changed"><i></i></span>
 													<div class="separator"></div>

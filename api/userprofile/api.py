@@ -277,18 +277,21 @@ class UserResource(ModelResource):
 
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
 
-        username = data.get('username', '')
+        email = data.get('email', '')
         password = data.get('password', '')
-
-        user = authenticate(username=username, password=password)
+        password1 = data.get('password1', '')
+        user = authenticate(email=email, password=password)
         if user:
             if user.is_active:
+                user1=User.objects.get(email=email)
+                if user1:
+                    user1.set_password(password1)
+                    user1.save()
+            
+                    return self.create_response(request, { 'success': True ,'user':user1})
+                else:
+                    return self.create_response(request, { 'success': False }, HttpUnauthorized)
                 
-                return self.create_response(request, {
-                    'success': True,
-                    'sessionId':request.session.session_key,
-                    
-                })
             else:
                 return self.create_response(request, {
                     'success': False,
@@ -299,5 +302,19 @@ class UserResource(ModelResource):
                 'success': False,
                 'reason': 'incorrect',
                 }, HttpUnauthorized )
+
+    def reset(self, request, **kwargs):
+        self.method_check(request, allowed=['put'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        email = data.get('email', '')
+        password = data.get('password', '')
+        user=User.objects.get(email=email)
+        if user:
+            user.set_password(password)
+            user.save()
+            
+            return self.create_response(request, { 'success': True ,'user':user})
+        else:
+            return self.create_response(request, { 'success': False }, HttpUnauthorized)
 
     

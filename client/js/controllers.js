@@ -52,7 +52,7 @@ angular.module('myApp.controllers', []).
                 }
             })
                 .error(function (data, status, headers, config) {
-                    $scope.error = "Please Enter correct email"
+                    $scope.error = "Please check your email or password"
                 });
         }
 
@@ -268,7 +268,9 @@ angular.module('dashApp.controllers', []).
             })
         }
     })
-    .controller('TopNavCtrl', function (User, $scope, $location, $http) {
+
+//Account settings cntrlr
+    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout) {
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
             User = response.data;
             $scope.user = User;
@@ -278,19 +280,27 @@ angular.module('dashApp.controllers', []).
             console.log(user)
             console.log(user1)
             var u = {
-                username: user.username,
-                password: user1.password
+                email: user.email,
+                password: user1.password,
+                password1:user1.password1
                 
             };
             $http.post(API_URL + 'user/test/',u, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
-                 user['password']=user1.password1 
-                 console.log(user)
-                 $http.put(API_URL + 'user/' + user.id + '/', user).success(function (data) {
-                console.log('success')
-                });
-                 
-                   
+                  $scope.n = notyfy({
+                    text: 'password has been changed ',
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });  
+                }
+                else{
+                    $scope.n = notyfy({
+                    text: 'Your old password is incorrect',
+                    type: 'error',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });  
                 }
             })
                 
