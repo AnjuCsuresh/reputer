@@ -13,7 +13,7 @@
 
 					<!-- Form -->
 					<form>
-						<label>Username or Email</label>
+						<label>Email</label>
 						<input type="text" ng-model="user.username" class="input-block-level" placeholder="Your Username or Email address"/>
 						<label>Password <a class="password" href="http://localhost:8000/userprofile/forgot-password" >forgot it?</a></label>
 						<input ng-model="user.password" type="password" class="input-block-level margin-none" placeholder="Your Password" />
@@ -33,7 +33,7 @@
 
 				</div>
 				<div class="widget-footer">
-					<p class="glyphicons restart"><i></i><span ng-hide="error">Please enter your username and password ...</span><span ng-show="error"><b style="color:red">{{error}}</b></span></p>
+					<p class="glyphicons restart"><i></i><span ng-hide="error">Please enter your email and password ...</span><span ng-show="error"><b style="color:red">{{error}}</b></span></p>
 				</div>
 			</div>
 			<!-- // Box END -->

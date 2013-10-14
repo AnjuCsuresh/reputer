@@ -23,7 +23,7 @@ angular.module('myApp.controllers', []).
             $http.post(API_URL + 'newuser/', data).then(function (data) {
                 console.log(data.data.username)
                 var u = {
-                username: user.username,
+                username: data.data.email,
                 password: user.password1
                 
             };
@@ -47,8 +47,6 @@ angular.module('myApp.controllers', []).
             $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
-
-                    console.log(data.id)
                     
                     $window.location.href = 'dashboard.html'
                 }
