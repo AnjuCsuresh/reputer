@@ -21,7 +21,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'reputer4',                      # Or path to database file if using sqlite3.
+        'NAME': 'reputer',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': 'passme',
@@ -29,6 +29,11 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
+AUTHENTICATION_BACKENDS = (
+    'cubator.backends.EmailAuthBackEnd',
+    'django.contrib.auth.backends.ModelBackend'
+)
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts

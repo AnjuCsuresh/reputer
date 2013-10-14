@@ -223,7 +223,7 @@ class UserResource(ModelResource):
         username = data.get('username', '')
         password = data.get('password', '')
 
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=username, password=password)
         if user:
             if user.is_active:
                 login(request, user)
