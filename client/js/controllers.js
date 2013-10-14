@@ -48,7 +48,8 @@ angular.module('myApp.controllers', []).
                 if (status == '200') {
                     $scope.error = '';
 
-                    //console.log(data)
+                    console.log(data.id)
+                    
                     $window.location.href = 'dashboard.html'
                 }
             })
