@@ -27,7 +27,7 @@ angular.module('myApp.controllers', []).
                 password: user.password1
                 
             };
-            console.log
+            
                 $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     
@@ -276,6 +276,28 @@ angular.module('dashApp.controllers', []).
             $scope.user = User;
             console.log(User);
         })
+        $scope.save_password = function(user,user1){
+            console.log(user)
+            console.log(user1)
+            var u = {
+                username: user.username,
+                password: user1.password
+                
+            };
+            $http.post(API_URL + 'user/test/',u, {withCredentials: true}).success(function (data, status, headers, config) {
+                if (status == '200') {
+                 user['password']=user1.password1 
+                 console.log(user)
+                 $http.put(API_URL + 'user/' + user.id + '/', user).success(function (data) {
+                console.log('success')
+                });
+                 
+                   
+                }
+            })
+                
+        }
+
     })
 
 .controller('ChartCtrl',function($scope,$http,$location){

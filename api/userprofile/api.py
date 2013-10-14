@@ -184,13 +184,19 @@ class UserResource(ModelResource):
              'username': ALL,
         }
     def hydrate(self, bundle):
-        if bundle.data.password:
-            u = User(username=bundle.data['username'])
-            u.set_password(bundle.data['password'])
-            bundle.data['password'] = u.password
+        
+        u = User(username="dummy")
+        u.set_password(bundle.data['password'])
+        bundle.data['password'] = u.password
         return bundle
     def prepend_urls(self):
         return [
+            url(r"^(?P<resource_name>%s)/reset%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('reset'), name="api_reset"),
+            url(r"^(?P<resource_name>%s)/test%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('test'), name="api_test"),
             url(r"^(?P<resource_name>%s)/login%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('login'), name="api_login"),
@@ -265,3 +271,33 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': True })
         else:
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
+
+    def test(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+
+        username = data.get('username', '')
+        password = data.get('password', '')
+
+        user = authenticate(username=username, password=password)
+        if user:
+            if user.is_active:
+                
+                return self.create_response(request, {
+                    'success': True,
+                    'sessionId':request.session.session_key,
+                    
+                })
+            else:
+                return self.create_response(request, {
+                    'success': False,
+                    'reason': 'disabled',
+                    }, HttpForbidden )
+        else:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'incorrect',
+                }, HttpUnauthorized )
+
+    
