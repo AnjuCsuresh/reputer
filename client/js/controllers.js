@@ -56,31 +56,29 @@ angular.module('myApp.controllers', []).
                 });
         }
 
-        $scope.reset=function(user){
-            
-           
-           
-        }
-        $scope.forgot=function(){
-            
-           $location.path('/forgot/'); 
-           
-        }
+         /* ************************************************
+                            password reset
+         ***************************************************
+                */
         $scope.send = function (user) {
             //adding some simple verifications
+            
             $http.put(API_URL + 'user/password_reset/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
-                    //console.log(data)
-                    var d = window.confirm('check your mail');
+                    console.log(data)
+                    
+                    
+                    var d = window.confirm("We've emailed you your new password to the email address you submitted. You should be receiving it shortly.");
                     if(d){
-                    $window.location.href = 'index.html'
+                        $window.location.href = 'index.html'
                     }
                 }
             })
                 .error(function (data, status, headers, config) {
-                    $scope.error = "Please check your username or password"
+                    $scope.error = "Please Enter correct email"
                 });
+            
         }
     })
     .controller('MyCtrl2', [function () {

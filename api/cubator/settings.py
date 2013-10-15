@@ -4,11 +4,11 @@
 
 DEBUG = True
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = 'root'
-EMAIL_HOST_PASSWORD = ''
-DEFAULT_FROM_EMAIL = ''
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'manjusha@quadloops.com'
+EMAIL_HOST_PASSWORD = 'passme123@#$'
+DEFAULT_FROM_EMAIL = 'manjusha.b70@gmail.com'
 
 TEMPLATE_DEBUG = DEBUG
 
@@ -21,7 +21,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'reputer4',                      # Or path to database file if using sqlite3.
+        'NAME': 'reputer',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': 'passme',

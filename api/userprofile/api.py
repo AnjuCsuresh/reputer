@@ -191,9 +191,7 @@ class UserResource(ModelResource):
         return bundle
     def prepend_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/reset%s$" %
-                (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('reset'), name="api_reset"),
+            
             url(r"^(?P<resource_name>%s)/test%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('test'), name="api_test"),
@@ -257,20 +255,25 @@ class UserResource(ModelResource):
         self.method_check(request, allowed=['put'])
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
         email = data.get('email', '')
-        user=User.objects.filter(email=email)
+        user=User.objects.get(email=email)
         if user:
-            print type(user)
-            #random password generation
+            print user
+            
             a=''.join([random.choice(string.digits + string.letters) for i in range(0, 10)]) 
+            print a
+            user.set_password(a)
+            user.save()
+
             #save it into the database
             # send mail
-            send_mail('Subject here', 'Go to the link for reset your password http://localhost:5000/#/reset/',
-               'from@example.com', ['manjusha.b70@gmail.com'],
+            send_mail('Password reset', ' Your new password is ' +a+ '',
+               'from@example.com', [email],
                fail_silently=False)
-            print a
-            return self.create_response(request, { 'success': True })
+            
+            return self.create_response(request, { 'success': True ,'user':user})
         else:
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
+
 
     def test(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
@@ -302,19 +305,5 @@ class UserResource(ModelResource):
                 'success': False,
                 'reason': 'incorrect',
                 }, HttpUnauthorized )
-
-    def reset(self, request, **kwargs):
-        self.method_check(request, allowed=['put'])
-        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
-        email = data.get('email', '')
-        password = data.get('password', '')
-        user=User.objects.get(email=email)
-        if user:
-            user.set_password(password)
-            user.save()
-            
-            return self.create_response(request, { 'success': True ,'user':user})
-        else:
-            return self.create_response(request, { 'success': False }, HttpUnauthorized)
 
     

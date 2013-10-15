@@ -16,7 +16,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
         $routeProvider.when('/login', {templateUrl: '/partials/front/login.html', controller: 'LoginCtrl'});
         $routeProvider.when('/forgot', {templateUrl: '/partials/front/forgot.html', controller: 'LoginCtrl'});
         $routeProvider.when('/signup', {templateUrl: '/partials/front/signup.html', controller: 'RegisterCtrl'});
-        $routeProvider.when('/reset', {templateUrl: '/partials/front/reset.html', controller: 'LoginCtrl'});
+        
         $routeProvider.otherwise({redirectTo: '/oops'});
     }])
     .config(['$httpProvider', function ($httpProvider) {
