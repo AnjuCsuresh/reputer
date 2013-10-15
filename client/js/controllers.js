@@ -265,6 +265,17 @@ angular.module('dashApp.controllers', []).
                 });
             })
         }
+        $scope.save_location = function(entity,phone,fax){
+                console.log(entity)
+                console.log(phone)
+                console.log(fax)
+                
+            }
+        $scope.save_name = function(name,url){
+            console.log(name)
+            console.log(url)
+            
+        }
     })
 
 //Account settings cntrlr
