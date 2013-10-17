@@ -54,6 +54,9 @@ class LocationResource(ModelResource):
         authentication = Authentication()
         authorization = Authorization()
         always_return_data = True
+        filtering = {
+            'id': ALL,
+        }
 
 class PhoneResource(MyResource):
     location =fields.ForeignKey(LocationResource,'location',null=True,full=True)
@@ -62,6 +65,11 @@ class PhoneResource(MyResource):
         resource_name = 'Phone'
         authentication = Authentication()
         authorization = Authorization()
+        always_return_data = True
+        filtering = {
+            'id': ALL,
+            'location':ALL_WITH_RELATIONS,
+        }
         
 
     def hydrate(self, bundle):
@@ -74,6 +82,7 @@ class ProfessionResource(MyResource):
         resource_name = 'Profession'
         authentication = Authentication()
         authorization = Authorization()
+        always_return_data = True
 
 class FaxResource(MyResource):
     location = fields.ForeignKey(LocationResource,'location',null=True,full=True)
@@ -82,6 +91,11 @@ class FaxResource(MyResource):
         resource_name = 'Fax'
         authentication = Authentication()
         authorization = Authorization()
+        always_return_data = True
+        filtering = {
+            'id': ALL,
+            'location':ALL_WITH_RELATIONS,
+        }
 
 
 

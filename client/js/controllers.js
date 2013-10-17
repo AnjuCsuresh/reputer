@@ -242,19 +242,28 @@ angular.module('dashApp.controllers', []).
             $scope.professions = data.objects;
             console.log(data.objects)
         })
+        //fetching all data from database for edit entity(id=4)
         $http.get(API_URL+'Entity/?id=4&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
-                  console.log($scope.entity)
+                  $scope.loctn=data.objects[0].location[0]
+                  console.log(data.objects[0].location[0].id)
+                  $http.get(API_URL+'Url/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
+                    $scope.url=data.objects[0]
+                    console.log($scope.url)
+                })
+                $http.get(API_URL+'Name/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
+                    $scope.name=data.objects[0]
+                    console.log($scope.name)
+                })
+                $http.get(API_URL+'Phone/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
+                    $scope.phone=data.objects[0]
+                    console.log(data.objects[0])
+                })
+                $http.get(API_URL+'Fax/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
+                    $scope.fax=data.objects[0]
+                    console.log(data)
+                })
         })
-        $http.get(API_URL+'Url/?entity__id=4&format=json').success(function (data) {
-                  $scope.url=data.objects[0]
-                  console.log($scope.url)
-        })
-        $http.get(API_URL+'Name/?entity__id=4&format=json').success(function (data) {
-                  $scope.name=data.objects[0]
-                  console.log($scope.name)
-        })
-        
         $scope.save_person = function(entity){
             console.log(entity)
             delete entity['business_name']
@@ -298,20 +307,29 @@ angular.module('dashApp.controllers', []).
         }
         //save location details
         $scope.save_location = function(entity,phone,fax,loctn){
-                entity.location=loctn
-                console.log(entity)
-                console.log(loctn)
-                console.log(fax)
-
-                $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
-                $scope.n = notyfy({
-                    text: 'Edited person '+ data.first_name ,
-                    type: 'success',
-                    dismissQueue:true,
-                    closeWith:['hover'] 
-                });
-                $scope.entity=data
+                
+                $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
+                    console.log(data)
+                    entity.location[0]=data
+                    phone.location=data
+                    fax.location=data
+                    $http.post(API_URL+'Phone/',phone).success(function(data, status, headers, config){
+                        $scope.phone=data
+                    })
+                    $http.post(API_URL+'Fax/',fax).success(function(data, status, headers, config){
+                        $scope.fax=data
+                    })
+                    $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
+                        $scope.n = notyfy({
+                        text: 'Edited person '+ data.first_name ,
+                        type: 'success',
+                        dismissQueue:true,
+                        closeWith:['hover'] 
+                    });
+                    $scope.entity=data
                 })
+
+            })
                 
         }
         //save name and url

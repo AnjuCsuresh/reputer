@@ -25,7 +25,7 @@
 			
 			<div class="widget-body">
 				
-				<form class="form-horizontal">
+				
 					
 						
 						<!-- Tab content -->
@@ -36,7 +36,7 @@
 								<!-- Widget heading -->
 								<div class="widget-head span3">
 									<ul>
-										<li class="active"><a class="glyphicons eye_open" href="#privacy-settings" data-toggle="tab"><i></i>Basic Entity</a></li>
+										<li class="active"><a class="glyphicons user_add" href="#privacy-settings" data-toggle="tab"><i></i>Basic Entity</a></li>
 										<li><a class="glyphicons settings" href="#account-settings" data-toggle="tab"><i></i>Location/Address</a></li>
 										<li ><a class="glyphicons pencil" href="#account-details" data-toggle="tab"><i></i>Entity Details</a></li>
 										
@@ -69,7 +69,7 @@
 													<div class="control-group">
 														<label class="control-label">Misspellings of the name:</label>
 														<div class="controls">
-															<input type="text" class="span10" placeholder="Name" ng-model="name.common_misspellings_of_the_name"/>
+															<input type="text" class="span10" placeholder="Name" ng-model="name.common_misspellings_of_the_name" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory field"><i></i></span>
 														</div>
 													</div>
@@ -79,7 +79,7 @@
 													<div class="control-group">
 														<label class="control-label">School attended1</label>
 														<div class="controls">
-															<input type="text" class="span10" placeholder="School" ng-model="name.school_attended1"/>
+															<input type="text" class="span10" placeholder="School" ng-model="name.school_attended1" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
 														</div>
 													</div>
@@ -87,7 +87,7 @@
 													<div class="control-group">
 														<label class="control-label">School attended2</label>
 														<div class="controls">
-															<input type="text" class="span10" placeholder="School" ng-model="name.school_attended2"/>
+															<input type="text" class="span10" placeholder="School" ng-model="name.school_attended2" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
 														</div>
 													</div>
@@ -99,9 +99,9 @@
 													
 													<!-- Group -->
 													<div class="control-group">
-														<label class="control-label">Previous places lived1:</label>
+														<label class="control-label">Previous places lived1</label>
 														<div class="controls">
-															<input type="text"  class="span10" placeholder="Place" ng-model="name.previous_places_lived1"/>
+															<input type="text"  class="span10" placeholder="Place" ng-model="name.previous_places_lived1" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
 														</div>
 													</div>
@@ -109,24 +109,24 @@
 													
 													<!-- Group -->
 													<div class="control-group">
-														<label class="control-label">Previous places worked1:</label>
+														<label class="control-label">Previous places worked1</label>
 														<div class="controls">
-															<input type="text"class="span10" placeholder="Place" ng-model="name.previous_places_worked1"/>
+															<input type="text"class="span10" placeholder="Place" ng-model="name.previous_places_worked1" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
 														</div>
 													</div>
 													<!-- // Group END -->
 													<div class="control-group">
-														<label class="control-label">Previous places lived2:</label>
+														<label class="control-label">Previous places lived2</label>
 														<div class="controls">
-															<input type="text" class="span10" placeholder="Place" ng-model="name.previous_places_lived2"/>
+															<input type="text" class="span10" placeholder="Place" ng-model="name.previous_places_lived2" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
 														</div>
 													</div>
 													<div class="control-group">
-														<label class="control-label">Previous places worked2:</label>
+														<label class="control-label">Previous places worked2</label>
 														<div class="controls">
-															<input type="text" class="span10" placeholder="Place" ng-model="name.previous_places_worked2"/>
+															<input type="text" class="span10" placeholder="Place" ng-model="name.previous_places_worked2" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
 														</div>
 													</div>
@@ -146,15 +146,15 @@
 												<label class="control-label span2">URL</label>
 											</div>
 											<div class="span10">
-												<input type="text" id="inputPasswordNew" class="span11" placeholder="url" ng-model="url.url"/>
+												<input type="text" id="inputPasswordNew" class="span11" placeholder="url" ng-model="url.url" required/>
 											</div>
 											</div>
 											</div>
 											<!-- // Group END -->
 											
 											<!-- Form actions -->
-											<div class="form-actions" style="margin: 0;">
-												<button  ng-click="save_name(name,url)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+											<div class="" style="margin: 0;">
+												<button  ng-click="save_name(name,url)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(name.alternate_name!=null&&name.common_misspellings_of_the_name!=null&&name.school_attended1!=null&&name.school_attended2!=null&&name.previous_places_lived1!=null&&name.previous_places_worked1!=null&&name.previous_places_lived2!=null&&name.previous_places_worked2!=null&&url.url!=null)"><i></i>Save changes</button>
 												
 											</div>
 											<!-- // Form actions END -->
@@ -267,7 +267,7 @@
 															<label for="inputPhone">Phone</label>
 															<div class="input-prepend">
 																<span class="add-on glyphicons phone"><i></i></span>
-																<input type="number" id="inputPhone" class="input-large" placeholder="01234567897" ng-model="phone.number" required/>
+																<input type="text" id="inputPhone" class="input-large" placeholder="01234567897" ng-model="phone.number" required/>
 															</div>
 															<div class="separator"></div>
 															
@@ -291,8 +291,8 @@
 											<!-- // Row END -->
 											
 											<!-- Form actions -->
-											<div class="form-actions" style="margin: 0;">
-												<button type="submit" ng-click="save_location(entity,phone,fax,loctn)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(entity.location[0].address1!=null&&entity.location[0].address2!=null&&entity.location[0].city!=null&&entity.location[0].state!=null&&entity.location[0].zip_code!=null&&phone.number!=null&&fax.number!=null)"><i></i>Save changes</button>
+											<div class="" style="margin: 0;">
+												<button  ng-click="save_location(entity,phone,fax,loctn)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(loctn.address1!=null&&loctn.address2!=null&&loctn.city!=null&&loctn.state!=null&&loctn.zip_code!=null&&phone.number!=null&&fax.number!=null)"><i></i>Save changes</button>
 											</div>
 											<!-- // Form actions END -->
 											
@@ -367,8 +367,8 @@
 
 
 														<!-- Form actions -->
-														<div class="form-actions" style="margin: 0;">
-														<button type="submit" ng-disabled="!(entity.first_name!=null&&entity.middle_name!=null&&entity.last_name!=null&&entity.profession!=null)" ng-click="edit_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+														<div class="" style="margin: 0;">
+														<button ng-disabled="!(entity.first_name!=null&&entity.middle_name!=null&&entity.last_name!=null&&entity.profession!=null)" ng-click="edit_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
 														</div>
 														<!-- // Form actions END -->
 
@@ -383,7 +383,7 @@
 						
 						<!-- // Tab content END -->
 					</div>
-				</form>
+				
 			</div>
 		</div>
 		<!-- // Widget END -->
