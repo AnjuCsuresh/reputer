@@ -240,8 +240,23 @@ angular.module('dashApp.controllers', []).
     .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
         $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
             $scope.professions = data.objects;
+            console.log(data.objects)
         })
+        $http.get(API_URL+'Entity/?id=4&format=json').success(function (data) {
+                  $scope.entity=data.objects[0]
+                  console.log($scope.entity)
+        })
+        $http.get(API_URL+'Url/?entity__id=4&format=json').success(function (data) {
+                  $scope.url=data.objects[0]
+                  console.log($scope.url)
+        })
+        $http.get(API_URL+'Name/?entity__id=4&format=json').success(function (data) {
+                  $scope.name=data.objects[0]
+                  console.log($scope.name)
+        })
+        
         $scope.save_person = function(entity){
+            console.log(entity)
             delete entity['business_name']
             $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
                 $scope.n = notyfy({
@@ -250,6 +265,7 @@ angular.module('dashApp.controllers', []).
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
+                $scope.entity={};
             })
         }
         $scope.save_business = function(entity){
@@ -263,15 +279,64 @@ angular.module('dashApp.controllers', []).
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
+                $scope.entity={};
             })
         }
-        $scope.save_location = function(entity,phone,fax){
+        //edit basic entity details
+        $scope.edit_person = function(entity){
+            console.log(entity)
+            delete entity['business_name']
+            $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Edited person '+ data.first_name ,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.entity=data
+            })
+        }
+        //save location details
+        $scope.save_location = function(entity,phone,fax,loctn){
+                entity.location=loctn
                 console.log(entity)
-                console.log(phone)
+                console.log(loctn)
                 console.log(fax)
+
+                $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Edited person '+ data.first_name ,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.entity=data
+                })
                 
-            }
+        }
+        //save name and url
         $scope.save_name = function(name,url){
+            url.entity=$scope.entity;
+            name.entity=$scope.entity;
+            $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Edited',
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.url=data
+                })
+            $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Edited',
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.name=data
+                })
+                
             console.log(name)
             console.log(url)
             

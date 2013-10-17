@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource,ALL,ALL_WITH_RELATIONS
 from tastypie.authorization import Authorization,DjangoAuthorization
 from tastypie.authentication import Authentication,SessionAuthentication,ApiKeyAuthentication
 from django.db import IntegrityError
@@ -96,6 +96,9 @@ class EntityResource(ModelResource):
         authentication = Authentication()
         authorization = Authorization()
         always_return_data = True
+        filtering = {
+            'id': ALL,
+        }
     
     def save_m2m(self, bundle):
         for field_name, field_object in self.fields.items():
@@ -147,6 +150,10 @@ class URLResource(MyResource):
         authentication = Authentication()
         authorization = Authorization()
         always_return_data = True
+        filtering = {
+            'id': ALL,
+            'entity':ALL_WITH_RELATIONS,
+        }
     
 
 
@@ -158,6 +165,10 @@ class NameResource(MyResource):
         authentication = Authentication()
         authorization = Authorization()
         always_return_data = True
+        filtering = {
+            'id': ALL,
+            'entity':ALL_WITH_RELATIONS,
+        }
 
 
 

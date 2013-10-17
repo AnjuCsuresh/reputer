@@ -58,9 +58,21 @@ angular.module('dashApp.services', [])
         return [];
     })
     
-    .factory('Entity', function ($http) {
-        return {
+    .factory('Entity', function ($http,$q) {
+        var findStudent = function () {
+            var deferred = $q.defer();
+            $http.get(API_URL+'Entity/?id=3&format=json').then(function (result) {
+                deferred.resolve(result.data.objects[0]);
+            });
+            return deferred.promise;
+        }
 
+        return {
+            get: function () {
+                 $http.get(API_URL+'Entity/?id=3&format=json').success(function (data) {
+                   return data.data
+                })
+            },
 
             finds: function () {
                 return $http.get(API_URL+'Entity/?format=json').success(function (data) {
