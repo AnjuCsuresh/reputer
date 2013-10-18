@@ -237,13 +237,46 @@ angular.module('dashApp.controllers', []).
         })
         
     })
-    .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
+     .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
+        $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
+            $scope.professions = data.objects;
+        })
+        $scope.save_person = function(entity){
+            delete entity['business_name']
+            $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Added new person '+ data.first_name ,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+            })
+        }
+        $scope.save_business = function(entity){
+            var business = {
+                business_name: entity['business_name']
+            }
+            $http.post(API_URL+'Entity/',business).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Added new business '+ data.business_name ,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+            })
+        }
+    })
+
+//Edit entity cntrlr
+    .controller('EntityEditCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams) {
+        var id=$routeParams.id;
+        console.log(id)
         $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
             $scope.professions = data.objects;
             console.log(data.objects)
         })
         //fetching all data from database for edit entity(id=4)
-        $http.get(API_URL+'Entity/?id=4&format=json').success(function (data) {
+        $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
                   $scope.loctn=data.objects[0].location[0]
                   console.log(data.objects[0].location[0].id)
@@ -264,33 +297,6 @@ angular.module('dashApp.controllers', []).
                     console.log(data)
                 })
         })
-        $scope.save_person = function(entity){
-            console.log(entity)
-            delete entity['business_name']
-            $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
-                $scope.n = notyfy({
-                    text: 'Added new person '+ data.first_name ,
-                    type: 'success',
-                    dismissQueue:true,
-                    closeWith:['hover'] 
-                });
-                $scope.entity={};
-            })
-        }
-        $scope.save_business = function(entity){
-            var business = {
-                business_name: entity['business_name']
-            }
-            $http.post(API_URL+'Entity/',business).success(function(data, status, headers, config){
-                $scope.n = notyfy({
-                    text: 'Added new business '+ data.business_name ,
-                    type: 'success',
-                    dismissQueue:true,
-                    closeWith:['hover'] 
-                });
-                $scope.entity={};
-            })
-        }
         //edit basic entity details
         $scope.edit_person = function(entity){
             console.log(entity)
@@ -360,6 +366,8 @@ angular.module('dashApp.controllers', []).
             
         }
     })
+
+
 
 //Account settings cntrlr
     .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout) {
