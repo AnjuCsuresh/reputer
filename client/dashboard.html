@@ -142,9 +142,8 @@
            					<a href="" data-toggle="dropdown" class="glyphicons search"><i></i>Select Entity<span class="caret"></span></a>       <ul class="dropdown-menu pull-left">
               				<!-- Components Submenu Level 2 -->
                
-                   				<li class="center">Entity 1</li>
-                   				<li class="center">Entity 2</li>
-                   
+                   				<li class="center" ng-repeat="entity in entities"><a href="">{{entity.first_name}}</a></li>
+                   				
                				</ul>
             		 </li>
 					</ul>

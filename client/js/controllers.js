@@ -366,6 +366,11 @@ angular.module('dashApp.controllers', []).
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
             User = response.data;
             $scope.user = User;
+            console.log(User.id)
+            $http.get(API_URL+'Entity/?user__id='+User.id+'&format=json').success(function (data) {
+                    console.log(data.objects)
+                    $scope.entities=data.objects
+                })
             console.log(User);
         })
         $scope.save_password = function(user,user1){

@@ -101,90 +101,6 @@ class FaxResource(MyResource):
 
 
 
-class EntityResource(ModelResource):
-    location =fields.ToManyField(LocationResource,'location',null=True,full=True)
-    profession = fields.ForeignKey(ProfessionResource,'profession',null=True,full=True)
-    class Meta:
-        queryset = Entity.objects.all()
-        resource_name = 'Entity'
-        authentication = Authentication()
-        authorization = Authorization()
-        always_return_data = True
-        filtering = {
-            'id': ALL,
-        }
-    
-    def save_m2m(self, bundle):
-        for field_name, field_object in self.fields.items():
-            if not getattr(field_object, 'is_m2m', False):
-                continue
-
-            if not field_object.attribute:
-                continue
-
-            if field_object.readonly:
-                continue
-
-            # Get the manager.
-            related_mngr = getattr(bundle.obj, field_object.attribute)
-                # This is code commented out from the original function
-                # that would clear out the existing related "Person" objects
-                #if hasattr(related_mngr, 'clear'):
-                # Clear it out, just to be safe.
-                #related_mngr.clear()
-
-            related_objs = []
-
-            for related_bundle in bundle.data[field_name]:
-                # See if this person already exists in the database
-                try:
-                    location = Location.objects.get(pk=related_bundle.obj.pk)
-                # If it doesn't exist, then save and use the object TastyPie
-                # has already prepared for creation
-                except Location.DoesNotExist:
-                    location = related_bundle.obj
-                    location.save()
-
-                related_objs.append(location)
-
-            related_mngr.add(*related_objs)
-    
-
-
-    
-
-
-
-
-class URLResource(MyResource):
-    entity= fields.ForeignKey(EntityResource, 'entity',null=True,full=True)
-    class Meta:
-        queryset = URL.objects.all()
-        resource_name = 'Url'
-        authentication = Authentication()
-        authorization = Authorization()
-        always_return_data = True
-        filtering = {
-            'id': ALL,
-            'entity':ALL_WITH_RELATIONS,
-        }
-    
-
-
-class NameResource(MyResource):
-    entity= fields.ForeignKey(EntityResource, 'entity',full=True)
-    class Meta:
-        queryset = Name.objects.all()
-        resource_name = 'Name'
-        authentication = Authentication()
-        authorization = Authorization()
-        always_return_data = True
-        filtering = {
-            'id': ALL,
-            'entity':ALL_WITH_RELATIONS,
-        }
-
-
 
 
 from django.contrib.auth.models import User
@@ -206,7 +122,8 @@ class UserResource(ModelResource):
         resource_name = 'user'
         authorization = Authorization()
         filtering = {
-             'username': ALL,
+            'id':ALL,
+            'username': ALL,
         }
     def hydrate(self, bundle):
         
@@ -330,5 +247,93 @@ class UserResource(ModelResource):
                 'success': False,
                 'reason': 'incorrect',
                 }, HttpUnauthorized )
+
+
+class EntityResource(ModelResource):
+    user=fields.ForeignKey(UserResource,'user',null=True,full=True)
+    location =fields.ToManyField(LocationResource,'location',null=True,full=True)
+    profession = fields.ForeignKey(ProfessionResource,'profession',null=True,full=True)
+    class Meta:
+        queryset = Entity.objects.all()
+        resource_name = 'Entity'
+        authentication = Authentication()
+        authorization = Authorization()
+        always_return_data = True
+        filtering = {
+            'id': ALL,
+            'user':ALL_WITH_RELATIONS,
+        }
+    
+    def save_m2m(self, bundle):
+        for field_name, field_object in self.fields.items():
+            if not getattr(field_object, 'is_m2m', False):
+                continue
+
+            if not field_object.attribute:
+                continue
+
+            if field_object.readonly:
+                continue
+
+            # Get the manager.
+            related_mngr = getattr(bundle.obj, field_object.attribute)
+                # This is code commented out from the original function
+                # that would clear out the existing related "Person" objects
+                #if hasattr(related_mngr, 'clear'):
+                # Clear it out, just to be safe.
+                #related_mngr.clear()
+
+            related_objs = []
+
+            for related_bundle in bundle.data[field_name]:
+                # See if this person already exists in the database
+                try:
+                    location = Location.objects.get(pk=related_bundle.obj.pk)
+                # If it doesn't exist, then save and use the object TastyPie
+                # has already prepared for creation
+                except Location.DoesNotExist:
+                    location = related_bundle.obj
+                    location.save()
+
+                related_objs.append(location)
+
+            related_mngr.add(*related_objs)
+    
+
+
+    
+
+
+
+
+class URLResource(MyResource):
+    entity= fields.ForeignKey(EntityResource, 'entity',null=True,full=True)
+    class Meta:
+        queryset = URL.objects.all()
+        resource_name = 'Url'
+        authentication = Authentication()
+        authorization = Authorization()
+        always_return_data = True
+        filtering = {
+            'id': ALL,
+            'entity':ALL_WITH_RELATIONS,
+        }
+    
+
+
+class NameResource(MyResource):
+    entity= fields.ForeignKey(EntityResource, 'entity',full=True)
+    class Meta:
+        queryset = Name.objects.all()
+        resource_name = 'Name'
+        authentication = Authentication()
+        authorization = Authorization()
+        always_return_data = True
+        filtering = {
+            'id': ALL,
+            'entity':ALL_WITH_RELATIONS,
+        }
+
+
 
     
