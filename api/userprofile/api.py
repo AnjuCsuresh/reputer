@@ -121,16 +121,12 @@ class UserResource(ModelResource):
         allowed_methods = ['get', 'post','put']
         resource_name = 'user'
         authorization = Authorization()
+        excludes = ['password']
         filtering = {
             'id':ALL,
             'username': ALL,
         }
-    def hydrate(self, bundle):
-        
-        u = User(username="dummy")
-        u.set_password(bundle.data['password'])
-        bundle.data['password'] = u.password
-        return bundle
+    
     def prepend_urls(self):
         return [
             

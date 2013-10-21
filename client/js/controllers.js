@@ -237,25 +237,27 @@ angular.module('dashApp.controllers', []).
         })
         
     })
-     .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
+     .controller('EntityCtrl', function ($http, $scope, User,$window, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams) {
+        var d=$routeParams.id;
+        $http.get(API_URL+'user/?id='+d+'&format=json').success(function (data) {
+                    $scope.user=data.objects[0]
+                    console.log($scope.user)
+                })
         $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
             $scope.professions = data.objects;
         })
         $scope.save_person = function(entity){
             delete entity['business_name']
+            entity.user=$scope.user;
             $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
-                $scope.n = notyfy({
-                    text: 'Added new person '+ data.first_name ,
-                    type: 'success',
-                    dismissQueue:true,
-                    closeWith:['hover'] 
-                });
+                $window.location.href = 'dashboard.html' 
             })
         }
         $scope.save_business = function(entity){
             var business = {
-                business_name: entity['business_name']
-            }
+                business_name: entity['business_name'],
+                user:$scope.user
+            };
             $http.post(API_URL+'Entity/',business).success(function(data, status, headers, config){
                 $scope.n = notyfy({
                     text: 'Added new business '+ data.business_name ,
@@ -275,27 +277,28 @@ angular.module('dashApp.controllers', []).
             $scope.professions = data.objects;
             console.log(data.objects)
         })
-        //fetching all data from database for edit entity(id=4)
+        //fetching all data from database for edit selected entity
         $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
                   $scope.loctn=data.objects[0].location[0]
-                  console.log(data.objects[0].location[0].id)
-                  $http.get(API_URL+'Url/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
+                $http.get(API_URL+'Url/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
                     $scope.url=data.objects[0]
-                    console.log($scope.url)
+                    
                 })
                 $http.get(API_URL+'Name/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
                     $scope.name=data.objects[0]
-                    console.log($scope.name)
+                    
                 })
+                if(data.objects[0].location.length>0){
                 $http.get(API_URL+'Phone/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
                     $scope.phone=data.objects[0]
-                    console.log(data.objects[0])
+                    
                 })
                 $http.get(API_URL+'Fax/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
                     $scope.fax=data.objects[0]
-                    console.log(data)
+                    
                 })
+            }
         })
         //edit basic entity details
         $scope.edit_person = function(entity){
