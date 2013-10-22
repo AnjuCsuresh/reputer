@@ -249,6 +249,9 @@ angular.module('dashApp.controllers', []).
         $scope.save_person = function(entity){
             delete entity['business_name']
             entity.user=$scope.user;
+            if(entity.profession!='/api/v1/Profession/1/'){
+                entity.other_profession="";
+            }
             $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
                 $window.location.href = 'dashboard.html' 
             })
