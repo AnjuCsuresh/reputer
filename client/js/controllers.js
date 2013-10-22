@@ -284,6 +284,13 @@ angular.module('dashApp.controllers', []).
         $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
                   $scope.loctn=data.objects[0].location[0]
+                  if(data.objects[0].business_name==null)
+                  {
+                    $scope.business=false;
+                  }
+                  else{
+                    $scope.business=true;
+                  }
                 $http.get(API_URL+'Url/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
                     $scope.url=data.objects[0]
                     
@@ -306,10 +313,9 @@ angular.module('dashApp.controllers', []).
         //edit basic entity details
         $scope.edit_person = function(entity){
             console.log(entity)
-            delete entity['business_name']
             $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
                 $scope.n = notyfy({
-                    text: 'Edited person '+ data.first_name ,
+                    text: 'Edited',
                     type: 'success',
                     dismissQueue:true,
                     closeWith:['hover'] 
@@ -333,7 +339,7 @@ angular.module('dashApp.controllers', []).
                     })
                     $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
                         $scope.n = notyfy({
-                        text: 'Edited person '+ data.first_name ,
+                        text: 'Edited' ,
                         type: 'success',
                         dismissQueue:true,
                         closeWith:['hover'] 
