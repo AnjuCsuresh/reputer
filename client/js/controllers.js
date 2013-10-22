@@ -349,12 +349,6 @@ angular.module('dashApp.controllers', []).
             url.entity=$scope.entity;
             name.entity=$scope.entity;
             $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
-                $scope.n = notyfy({
-                    text: 'Edited',
-                    type: 'success',
-                    dismissQueue:true,
-                    closeWith:['hover'] 
-                });
                 $scope.url=data
                 })
             $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){

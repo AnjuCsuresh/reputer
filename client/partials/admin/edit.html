@@ -1,13 +1,5 @@
-	<ul class="breadcrumb">
-		<li>You are here</li>
-		<li><a href="index.html?lang=en&amp;layout_type=fluid&amp;menu_position=menu-left&amp;style=style-default-menus-dark&amp;sidebar_type=collapsible" class="glyphicons dashboard"><i></i> Reputer</a></li>
-		<li class="divider"><i class="icon-caret-right"></i></li>
-		<li>Pages</li>
-		<li class="divider"><i class="icon-caret-right"></i></li>
-		<li>Advanced profile</li>
-	</ul>
-
-	<h1>&nbsp;&nbsp;Profile <span>Advanced Layout</span></h1>
+	
+	<h1>&nbsp;&nbsp;Profile <span></span></h1>
 	<div class="innerLR">
 
 		<!-- Widget -->
@@ -36,9 +28,9 @@
 								<!-- Widget heading -->
 								<div class="widget-head span3">
 									<ul>
-										<li class="active"><a class="glyphicons user_add" href="#privacy-settings" data-toggle="tab"><i></i>Basic Entity</a></li>
+										<li class="active"><a class="glyphicons user" href="#privacy-settings" data-toggle="tab"><i></i>Entity Name </a></li>
 										<li><a class="glyphicons settings" href="#account-settings" data-toggle="tab"><i></i>Location/Address</a></li>
-										<li ><a class="glyphicons pencil" href="#account-details" data-toggle="tab"><i></i>Entity Details</a></li>
+										<li ><a class="glyphicons pencil" href="#account-details" data-toggle="tab"><i></i>Additional Details</a></li>
 										
 									</ul>
 								</div>
@@ -84,6 +76,12 @@
 														</div>
 													</div>
 													<!-- // Group END -->
+													
+												</div>
+												<!-- // Column END -->
+												
+												<!-- Column -->
+												<div class="span6">
 													<div class="control-group">
 														<label class="control-label">School attended2</label>
 														<div class="controls">
@@ -91,15 +89,10 @@
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
 														</div>
 													</div>
-												</div>
-												<!-- // Column END -->
-												
-												<!-- Column -->
-												<div class="span6">
 													
 													<!-- Group -->
 													<div class="control-group">
-														<label class="control-label">Previous places lived1</label>
+														<label class="control-label">Previous places lived</label>
 														<div class="controls">
 															<input type="text"  class="span10"  ng-model="name.previous_places_lived1" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
@@ -109,27 +102,14 @@
 													
 													<!-- Group -->
 													<div class="control-group">
-														<label class="control-label">Previous places worked1</label>
+														<label class="control-label">Previous places worked</label>
 														<div class="controls">
 															<input type="text"class="span10" ng-model="name.previous_places_worked1" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
 														</div>
 													</div>
 													<!-- // Group END -->
-													<div class="control-group">
-														<label class="control-label">Previous places lived2</label>
-														<div class="controls">
-															<input type="text" class="span10"  ng-model="name.previous_places_lived2" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
-														</div>
-													</div>
-													<div class="control-group">
-														<label class="control-label">Previous places worked2</label>
-														<div class="controls">
-															<input type="text" class="span10" ng-model="name.previous_places_worked2" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
-														</div>
-													</div>
+													
 													
 												</div>
 												<!-- // Column END -->
@@ -143,7 +123,7 @@
 											<div class="control-group ">
 												<div class="span12"> 
 													<div class="span2">
-												<label class="control-label span2">URL</label>
+												<label class="control-label span2"> Website</label>
 											</div>
 											<div class="span10">
 												<input type="text" id="inputPasswordNew" class="span11"  ng-model="url.url" required/>
@@ -154,7 +134,7 @@
 											
 											<!-- Form actions -->
 											<div class="" style="margin: 0;">
-												<button  ng-click="save_name(name,url)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(name.alternate_name!=null&&name.common_misspellings_of_the_name!=null&&name.school_attended1!=null&&name.school_attended2!=null&&name.previous_places_lived1!=null&&name.previous_places_worked1!=null&&name.previous_places_lived2!=null&&name.previous_places_worked2!=null&&url.url!=null)"><i></i>Save changes</button>
+												<button  ng-click="save_name(name,url)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(name.alternate_name!=null&&name.common_misspellings_of_the_name!=null&&name.school_attended1!=null&&name.school_attended2!=null&&name.previous_places_lived1!=null&&name.previous_places_worked1!=null&&url.url!=null)"><i></i>Save changes</button>
 												
 											</div>
 											<!-- // Form actions END -->
@@ -318,8 +298,8 @@
 													<div class="control-group">
 														<label class="control-label">Middle name</label>
 														<div class="controls">
-															<input type="text" ng-model="entity.middle_name" class="span5" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Middle name is mandatory"><i></i></span>
+															<input type="text" ng-model="entity.middle_name" class="span5" />
+															
 														</div>
 													</div>
 													<!-- Group -->
@@ -368,7 +348,7 @@
 
 														<!-- Form actions -->
 														<div class="" style="margin: 0;">
-														<button ng-disabled="!(entity.first_name!=null&&entity.middle_name!=null&&entity.last_name!=null&&entity.profession!=null)" ng-click="edit_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+														<button ng-disabled="!(entity.first_name!=null&&entity.last_name!=null&&entity.profession!=null)" ng-click="edit_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
 														</div>
 														<!-- // Form actions END -->
 
