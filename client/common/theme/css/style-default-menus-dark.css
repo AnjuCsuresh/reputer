@@ -475,7 +475,7 @@ p.separator i {
 }
 #wrapper {
   overflow: hidden;
-  overflow-y: scroll;
+  
   -webkit-overflow-scrolling: touch;
   float: left;
   width: 100%;

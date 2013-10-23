@@ -86,7 +86,13 @@ angular.module('myApp.controllers', []).
     }]);
 
 angular.module('dashApp.controllers', []).
-    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout) {
+    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams) {
+        var id=$routeParams.id;
+        if(id>0){
+            $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
+                  $scope.entity=data.objects[0]
+            });
+        }
         $http.get(DATA_API_URL+'getcrawltable/11').success(function(data, status, headers, config){
             $scope.items = data.aaData;
             $scope.predicate = 'Rank';
