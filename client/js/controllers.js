@@ -40,14 +40,13 @@ angular.module('myApp.controllers', []).
         }
     }).
 
-    controller('LoginCtrl', function ($http, $scope, $window, $cookies,$location,Login) {
+    controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login) {
         console.log('This is LoginCtrl');
         $scope.login = function (user) {
             //adding some simple verifications
             $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
-                    
                     $window.location.href = 'dashboard.html'
                 }
             })
@@ -86,7 +85,7 @@ angular.module('myApp.controllers', []).
     }]);
 
 angular.module('dashApp.controllers', []).
-    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams) {
+    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams,$cookieStore) {
         var id=$routeParams.id;
         if(id>0){
             $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
@@ -259,7 +258,16 @@ angular.module('dashApp.controllers', []).
                 entity.other_profession="";
             }
             $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
-                $window.location.href = 'dashboard.html' 
+                $scope.n = notyfy({
+                    text: 'Added new entity '+ data.first_name ,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $timeout(function(){
+                    $window.location.href = 'dashboard.html' 
+                }, 750);  
+                
             })
         }
         $scope.save_business = function(entity){
@@ -274,6 +282,9 @@ angular.module('dashApp.controllers', []).
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
+                $timeout(function(){
+                    $window.location.href = 'dashboard.html' 
+                }, 750);  
             })
         }
     })
