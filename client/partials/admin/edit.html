@@ -17,7 +17,7 @@
 			
 			<div class="widget-body">
 				
-
+				
 
 						<!-- Tab content -->
 						<div class="tab-pane widget-body-regular active" id="edit-account" ng-show="business">
@@ -39,7 +39,7 @@
 									
 									<div class="tab-content">
 										<div class="tab-pane " id="account-details">
-											
+											<form ng-submit="save_name(name,url);">
 											<!-- Row -->
 											<div class="row-fluid">
 												
@@ -50,8 +50,8 @@
 													<div class="control-group">
 														<label class="control-label">Alternate name</label>
 														<div class="controls">
-															<input type="text"  class="span10"  ng-model="name.alternate_name" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory field"><i></i></span>
+															<input type="text"  class="span10"  ng-model="name.alternate_name" />
+															
 														</div>
 													</div>
 													<!-- // Group END -->
@@ -60,22 +60,13 @@
 													<div class="control-group">
 														<label class="control-label">Common Misspellings of the name:</label>
 														<div class="controls">
-															<input type="text" class="span10"  ng-model="name.common_misspellings_of_the_name" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory field"><i></i></span>
+															<input type="text" class="span10"  ng-model="name.common_misspellings_of_the_name" />
+															
 														</div>
 													</div>
-													<!-- // Group END -->
-													
-													<!-- Group -->
-													
-													<!-- // Group END -->
 													
 												</div>
-												<!-- // Column END -->
 												
-												<!-- Column -->
-												
-												<!-- // Column END -->
 												
 											</div>
 											<!-- // Row END -->
@@ -89,8 +80,8 @@
 												<label class="control-label span2"> Website</label>
 											
 											
-												<input type="text" id="inputPasswordNew" class="span11"  ng-model="url.url" required/>
-												<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory field"><i></i></span>
+												<input type="url" id="inputPasswordNew" class="span11"  ng-model="url.url"/>
+												<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Enter a valid url or Leave empty"><i></i></span>
 											
 											</div>
 											</div>
@@ -98,16 +89,16 @@
 											
 											<!-- Form actions -->
 											<div class="" style="margin: 0;">
-												<button  ng-click="save_name(name,url)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(name.alternate_name!=null&&name.common_misspellings_of_the_name!=null&&url.url!=null)"><i></i>Save changes</button>
+												<button type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ><i></i>Save changes</button>
 												
 											</div>
 											<!-- // Form actions END -->
-											
+											</form>
 										</div>
 
 
 										<div class="tab-pane " id="account-settings">
-											
+											<form  name="myForm" ng-submit="save_location(entity,phone,fax,loctn);">
 											<!-- Row -->
 											<div class="row-fluid">
 												
@@ -127,8 +118,8 @@
 														<label for="inputUsername">Address1</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address1" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Address is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address1" />
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -140,8 +131,8 @@
 														<label for="inputUsername">Address2</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address2" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Address is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address2" />
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -153,8 +144,8 @@
 														<label for="inputUsername">City</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.city" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="City is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.city" />
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -166,8 +157,8 @@
 														<label for="inputUsername">State</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.state" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="State is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.state" />
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -179,8 +170,8 @@
 														<label for="inputUsername">Zip code</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.zip_code" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Zip code is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.zip_code" />
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -213,7 +204,8 @@
 															<label for="inputPhone">Phone</label>
 															<div class="input-prepend">
 																<span class="add-on glyphicons phone"><i></i></span>
-																<input type="text" id="inputPhone" class="input-large" ng-model="phone.number" required/>
+																<input name="phone" type="text" id="inputPhone" class="input-large" ng-model="phone.number" ng-pattern="/^[0-9]+$/" ng-minlength=10 ng-maxlength=12/>
+																<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Enter valid phone number or Leave empty "><i></i></span>
 															</div>
 															<div class="separator"></div>
 															
@@ -224,7 +216,7 @@
 															<label for="inputEmail">Fax</label>
 															<div class="input-prepend">
 																<span class="add-on glyphicons envelope"><i></i></span>
-																<input type="text" id="inputEmail" class="input-large"  ng-model="fax.number" required/>
+																<input type="text" id="inputEmail" class="input-large"  ng-model="fax.number" />
 															</div>
 															<div class="separator"></div>
 															
@@ -238,10 +230,10 @@
 											
 											<!-- Form actions -->
 											<div class="" style="margin: 0;">
-												<button  ng-click="save_location(entity,phone,fax,loctn)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(loctn.address1!=null&&loctn.address2!=null&&loctn.city!=null&&loctn.state!=null&&loctn.zip_code!=null&&phone.number!=null&&fax.number!=null)"><i></i>Save changes</button>
+												<button  type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled=" myForm.phone.$dirty && myForm.phone.$invalid"><i></i>Save changes</button>
 											</div>
 											<!-- // Form actions END -->
-											
+											</form>
 										</div>
 										
 										<div class="tab-pane active" id="privacy-settings">
@@ -257,7 +249,7 @@
 														<label class="control-label">Name of Business</label>
 														<div class="controls">
 															<input type="text" ng-model="entity.business_name" class="span5" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="First name is mandatory"><i></i></span>
+															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Name is mandatory"><i></i></span>
 														</div>
 													</div>
 													
@@ -285,6 +277,7 @@
 								</div>
 							</div>	
 						</div>
+					
 						<!-- // Tab content END -->
 				
 					
@@ -309,7 +302,7 @@
 									
 									<div class="tab-content">
 										<div class="tab-pane " id="account-details1">
-											
+											<form ng-submit="save_name(name,url);">
 											<!-- Row -->
 											<div class="row-fluid">
 												
@@ -320,8 +313,8 @@
 													<div class="control-group">
 														<label class="control-label">Alternate name</label>
 														<div class="controls">
-															<input type="text"  class="span10"  ng-model="name.alternate_name" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Name is mandatory"><i></i></span>
+															<input type="text"  class="span10"  ng-model="name.alternate_name" />
+															
 														</div>
 													</div>
 													<!-- // Group END -->
@@ -330,8 +323,8 @@
 													<div class="control-group">
 														<label class="control-label">Common Misspellings of the name:</label>
 														<div class="controls">
-															<input type="text" class="span10"  ng-model="name.common_misspellings_of_the_name" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory field"><i></i></span>
+															<input type="text" class="span10"  ng-model="name.common_misspellings_of_the_name" />
+															
 														</div>
 													</div>
 													<!-- // Group END -->
@@ -340,8 +333,8 @@
 													<div class="control-group">
 														<label class="control-label">School attended1</label>
 														<div class="controls">
-															<input type="text" class="span10"  ng-model="name.school_attended1" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
+															<input type="text" class="span10"  ng-model="name.school_attended1" />
+															
 														</div>
 													</div>
 													<!-- // Group END -->
@@ -354,8 +347,8 @@
 													<div class="control-group">
 														<label class="control-label">School attended2</label>
 														<div class="controls">
-															<input type="text" class="span10" ng-model="name.school_attended2" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
+															<input type="text" class="span10" ng-model="name.school_attended2"/>
+															
 														</div>
 													</div>
 													
@@ -363,8 +356,8 @@
 													<div class="control-group">
 														<label class="control-label">Previous places lived</label>
 														<div class="controls">
-															<input type="text"  class="span10"  ng-model="name.previous_places_lived1" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
+															<input type="text"  class="span10"  ng-model="name.previous_places_lived1" />
+															
 														</div>
 													</div>
 													<!-- // Group END -->
@@ -373,8 +366,8 @@
 													<div class="control-group">
 														<label class="control-label">Previous places worked</label>
 														<div class="controls">
-															<input type="text"class="span10" ng-model="name.previous_places_worked1" required/>
-															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory"><i></i></span>
+															<input type="text"class="span10" ng-model="name.previous_places_worked1"/>
+															
 														</div>
 													</div>
 													<!-- // Group END -->
@@ -395,8 +388,9 @@
 												<label class="control-label span2"> Website</label>
 											
 											
-												<input type="text" id="inputPasswordNew" class="span11"  ng-model="url.url" required/>
-												<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Mandatory field"><i></i></span>
+												<input type="url" id="inputPasswordNew" class="span11"  ng-model="url.url"/>
+												<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Enter a valid url or Leave empty"><i></i></span>
+												
 											
 											</div>
 											</div>
@@ -404,16 +398,17 @@
 											
 											<!-- Form actions -->
 											<div class="" style="margin: 0;">
-												<button  ng-click="save_name(name,url)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(name.alternate_name!=null&&name.common_misspellings_of_the_name!=null&&name.school_attended1!=null&&name.school_attended2!=null&&name.previous_places_lived1!=null&&name.previous_places_worked1!=null&&url.url!=null)"><i></i>Save changes</button>
+												<button type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ><i></i>Save changes</button>
 												
 											</div>
+										</form>
 											<!-- // Form actions END -->
 											
 										</div>
 
 
 										<div class="tab-pane " id="account-settings1">
-											
+											<form  name="myForm" ng-submit="save_location(entity,phone,fax,loctn);">
 											<!-- Row -->
 											<div class="row-fluid">
 												
@@ -433,8 +428,8 @@
 														<label for="inputUsername">Address1</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address1" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Address is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address1" />
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -446,8 +441,8 @@
 														<label for="inputUsername">Address2</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address2" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Address is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address2" />
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -459,8 +454,8 @@
 														<label for="inputUsername">City</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.city" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="City is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.city" />
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -472,8 +467,8 @@
 														<label for="inputUsername">State</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.state" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="State is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.state"/>
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -485,8 +480,8 @@
 														<label for="inputUsername">Zip code</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.zip_code" required/>
-														<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Zip code is mandatory"><i></i></span>
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.zip_code"/>
+														
 														</div>
 													</div>
 													<div class="span12">
@@ -519,7 +514,8 @@
 															<label for="inputPhone">Phone</label>
 															<div class="input-prepend">
 																<span class="add-on glyphicons phone"><i></i></span>
-																<input type="text" id="inputPhone" class="input-large" ng-model="phone.number" required/>
+																<input name="phone" type="text" id="inputPhone" class="input-large" ng-model="phone.number" ng-pattern="/^[0-9]+$/" ng-minlength=10 ng-maxlength=12/>
+																<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Enter valid phone number or Leave empty"><i></i></span>
 															</div>
 															<div class="separator"></div>
 															
@@ -530,7 +526,7 @@
 															<label for="inputEmail">Fax</label>
 															<div class="input-prepend">
 																<span class="add-on glyphicons envelope"><i></i></span>
-																<input type="text" id="inputEmail" class="input-large"  ng-model="fax.number" required/>
+																<input type="text" id="inputEmail" class="input-large"  ng-model="fax.number" />
 															</div>
 															<div class="separator"></div>
 															
@@ -544,9 +540,10 @@
 											
 											<!-- Form actions -->
 											<div class="" style="margin: 0;">
-												<button  ng-click="save_location(entity,phone,fax,loctn)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled="!(loctn.address1!=null&&loctn.address2!=null&&loctn.city!=null&&loctn.state!=null&&loctn.zip_code!=null&&phone.number!=null&&fax.number!=null)"><i></i>Save changes</button>
+												<button  type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled=" myForm.phone.$dirty && myForm.phone.$invalid"><i></i>Save changes</button>
 											</div>
 											<!-- // Form actions END -->
+										</form>
 											
 										</div>
 										

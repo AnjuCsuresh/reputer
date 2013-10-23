@@ -355,15 +355,15 @@ angular.module('dashApp.controllers', []).
             url.entity=$scope.entity;
             name.entity=$scope.entity;
             $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
-                $scope.url=data
-                })
-            $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){
                 $scope.n = notyfy({
                     text: 'Edited',
                     type: 'success',
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
+                $scope.url=data
+                })
+            $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){
                 $scope.name=data
                 })
                 
@@ -376,7 +376,7 @@ angular.module('dashApp.controllers', []).
 
 
 //Account settings cntrlr
-    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout) {
+    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies) {
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
             User = response.data;
             $scope.user = User;

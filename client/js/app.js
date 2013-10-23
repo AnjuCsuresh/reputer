@@ -47,6 +47,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/view', {templateUrl: '/partials/admin/view.html', controller: 'EntityCtrl'});
         $routeProvider.when('/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
 
+        $routeProvider.when('/oops', {templateUrl: '/partials/front/404.html'});
         $routeProvider.when('/table', {templateUrl: '/partials/admin/table.html'});
         $routeProvider.when('/table_res', {templateUrl: '/partials/admin/table_res.html'});
         $routeProvider.when('/pricing', {templateUrl: '/partials/admin/pricing_tab.html'});
