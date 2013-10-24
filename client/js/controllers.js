@@ -297,10 +297,17 @@ angular.module('dashApp.controllers', []).
             $scope.professions = data.objects;
             console.log(data.objects)
         })
-        //fetching all data from database for edit selected entity
+        $scope.name={};
+        $scope.url={};
+        $scope.phone={};
+        $scope.fax={};
+        $scope.loctn={};
+         //fetching all data from database for edit selected entity
         $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
-                  $scope.loctn=data.objects[0].location[0]
+                  if(data.objects[0].location.length>0){
+                    $scope.loctn=data.objects[0].location[0]
+                  }
                   if(data.objects[0].business_name==null)
                   {
                     $scope.business=false;
@@ -309,21 +316,25 @@ angular.module('dashApp.controllers', []).
                     $scope.business=true;
                   }
                 $http.get(API_URL+'Url/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
-                    $scope.url=data.objects[0]
-                    
+                    if(data.objects.length>0){
+                        $scope.url=data.objects[0]
+                    }
                 })
                 $http.get(API_URL+'Name/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
-                    $scope.name=data.objects[0]
-                    
+                    if(data.objects.length>0){
+                        $scope.name=data.objects[0]
+                    }
                 })
                 if(data.objects[0].location.length>0){
                 $http.get(API_URL+'Phone/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
-                    $scope.phone=data.objects[0]
-                    
+                    if(data.objects.length>0){
+                        $scope.phone=data.objects[0]
+                    }
                 })
                 $http.get(API_URL+'Fax/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
-                    $scope.fax=data.objects[0]
-                    
+                    if(data.objects.length>0){
+                        $scope.fax=data.objects[0]
+                    }
                 })
             }
         })
@@ -342,18 +353,20 @@ angular.module('dashApp.controllers', []).
         }
         //save location details
         $scope.save_location = function(entity,phone,fax,loctn){
-                
+                console.log(loctn)
                 $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
-                    console.log(data)
-                    entity.location[0]=data
-                    phone.location=data
-                    fax.location=data
-                    $http.post(API_URL+'Phone/',phone).success(function(data, status, headers, config){
-                        $scope.phone=data
-                    })
-                    $http.post(API_URL+'Fax/',fax).success(function(data, status, headers, config){
-                        $scope.fax=data
-                    })
+                    if(status == '200'){
+                        console.log(data)
+                        entity.location[0]=data
+                        phone.location=data
+                        fax.location=data
+                        $http.post(API_URL+'Phone/',phone).success(function(data, status, headers, config){
+                            $scope.phone=data
+                        })
+                        $http.post(API_URL+'Fax/',fax).success(function(data, status, headers, config){
+                            $scope.fax=data
+                        })
+                    
                     $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
                         $scope.n = notyfy({
                         text: 'Edited' ,
@@ -363,12 +376,13 @@ angular.module('dashApp.controllers', []).
                     });
                     $scope.entity=data
                 })
-
+                }
             })
-                
+            
         }
         //save name and url
         $scope.save_name = function(name,url){
+            console.log(name)
             url.entity=$scope.entity;
             name.entity=$scope.entity;
             $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
@@ -393,11 +407,14 @@ angular.module('dashApp.controllers', []).
 
 
 //Account settings cntrlr
-    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies) {
+    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies,$window) {
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
+            if(response.status != '200'){
+                $window.location.href = 'index.html'
+            }
             User = response.data;
             $scope.user = User;
-            console.log(User.id)
+            console.log(response)
             $http.get(API_URL+'Entity/?user__id='+User.id+'&format=json').success(function (data) {
                     console.log(data.objects)
                     $scope.entities=data.objects
