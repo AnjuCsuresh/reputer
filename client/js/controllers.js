@@ -343,7 +343,7 @@ angular.module('dashApp.controllers', []).
             console.log(entity)
             $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
                 $scope.n = notyfy({
-                    text: 'Edited',
+                    text: 'Changes Saved for '+data.first_name,
                     type: 'success',
                     dismissQueue:true,
                     closeWith:['hover'] 
@@ -351,11 +351,11 @@ angular.module('dashApp.controllers', []).
                 $scope.entity=data
             })
         }
+
         //save location details
         $scope.save_location = function(entity,phone,fax,loctn){
                 console.log(loctn)
                 $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
-                    if(status == '200'){
                         console.log(data)
                         entity.location[0]=data
                         phone.location=data
@@ -369,14 +369,14 @@ angular.module('dashApp.controllers', []).
                     
                     $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
                         $scope.n = notyfy({
-                        text: 'Edited' ,
+                        text: 'Changes Saved for '+data.first_name ,
                         type: 'success',
                         dismissQueue:true,
                         closeWith:['hover'] 
                     });
                     $scope.entity=data
                 })
-                }
+           
             })
             
         }
@@ -387,7 +387,7 @@ angular.module('dashApp.controllers', []).
             name.entity=$scope.entity;
             $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
                 $scope.n = notyfy({
-                    text: 'Edited',
+                    text: 'Changes Saved for '+data.entity.first_name,
                     type: 'success',
                     dismissQueue:true,
                     closeWith:['hover'] 
@@ -402,6 +402,70 @@ angular.module('dashApp.controllers', []).
             console.log(url)
             
         }
+        //edit basic business details
+        $scope.edit_business = function(entity){
+            console.log(entity)
+            $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Changes Saved for '+data.business_name,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.entity=data
+            })
+        }
+
+        //save business location details
+        $scope.save_businesslocation = function(entity,phone,fax,loctn){
+                console.log(loctn)
+                $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
+                        console.log(data)
+                        entity.location[0]=data
+                        phone.location=data
+                        fax.location=data
+                        $http.post(API_URL+'Phone/',phone).success(function(data, status, headers, config){
+                            $scope.phone=data
+                        })
+                        $http.post(API_URL+'Fax/',fax).success(function(data, status, headers, config){
+                            $scope.fax=data
+                        })
+                    
+                    $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
+                        $scope.n = notyfy({
+                        text: 'Changes Saved for '+data.business_name ,
+                        type: 'success',
+                        dismissQueue:true,
+                        closeWith:['hover'] 
+                    });
+                    $scope.entity=data
+                })
+               })
+            
+        }
+        //save business name and url
+        $scope.save_businessname = function(name,url){
+            console.log(name)
+            url.entity=$scope.entity;
+            name.entity=$scope.entity;
+            $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Changes Saved for '+data.entity.business_name,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.url=data
+                })
+            $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){
+                $scope.name=data
+                })
+                
+            console.log(name)
+            console.log(url)
+            
+        }
+
     })
 
 

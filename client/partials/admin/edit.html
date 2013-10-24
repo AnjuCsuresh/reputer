@@ -39,7 +39,7 @@
 									
 									<div class="tab-content">
 										<div class="tab-pane " id="account-details">
-											<form ng-submit="save_name(name,url);">
+											<form ng-submit="save_businessname(name,url);">
 											<!-- Row -->
 											<div class="row-fluid">
 												
@@ -98,7 +98,7 @@
 
 
 										<div class="tab-pane " id="account-settings">
-											<form  name="myForm" ng-submit="save_location(entity,phone,fax,loctn);">
+											<form  name="myForm1" ng-submit="save_businesslocation(entity,phone,fax,loctn);">
 											<!-- Row -->
 											<div class="row-fluid">
 												
@@ -118,7 +118,7 @@
 														<label for="inputUsername">Address</label>
 													</div>
 													<div class="span10">
-														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address1" />
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address1" required/>
 														
 														</div>
 													</div>
@@ -218,7 +218,7 @@
 											
 											<!-- Form actions -->
 											<div class="" style="margin: 0;">
-												<button  type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled=" myForm.phone.$dirty && myForm.phone.$invalid"><i></i>Save changes</button>
+												<button  type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled=" myForm1.phone.$dirty && myForm1.phone.$invalid"><i></i>Save changes</button>
 											</div>
 											<!-- // Form actions END -->
 											</form>
@@ -254,7 +254,7 @@
 
 														<!-- Form actions -->
 														<div class="" style="margin: 0;">
-														<button ng-disabled="!(entity.business_name!=null)" ng-click="edit_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+														<button ng-disabled="!(entity.business_name!=null)" ng-click="edit_business(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
 														</div>
 														<!-- // Form actions END -->
 
