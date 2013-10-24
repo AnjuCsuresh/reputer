@@ -7,6 +7,7 @@
 //var API_URL = 'https://app.reputer.co/api/v1/';
 var API_URL = 'http://localhost:8000/api/v1/';
 var DATA_API_URL = 'http://localhost:5000/'
+var WEBSITE_URL = 'http://localhost:8888'
 
 angular.module('myApp.controllers', []).
 
@@ -35,7 +36,7 @@ angular.module('myApp.controllers', []).
                     $window.location.href = 'dashboard.html'
                 }
             })
-                
+                    
             })
         }
     }).
@@ -471,7 +472,7 @@ angular.module('dashApp.controllers', []).
 
 
 //Account settings cntrlr
-    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies,$window) {
+    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies,$window,$cookieStore) {
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
             if(response.status != '200'){
                 $window.location.href = 'index.html'
@@ -484,10 +485,14 @@ angular.module('dashApp.controllers', []).
                     $scope.entities=data.objects
                 })
             console.log(User);
+
+            $scope.logout = function(){
+               $http.get(API_URL + 'user/logout/',{withCredentials: true}).success(function (data, status, headers, config) {
+                    $window.location.href=WEBSITE_URL;
+                });
+            }
         })
         $scope.save_password = function(user,user1){
-            console.log(user)
-            console.log(user1)
             var u = {
                 email: user.email,
                 password: user1.password,
