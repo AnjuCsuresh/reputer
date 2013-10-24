@@ -165,6 +165,7 @@ class Entity(SoftDeletionModel):
     location = models.ManyToManyField(Location,null=True,blank=True)
     profession = models.ForeignKey('Profession',null=True,blank=True)
     other_profession = models.CharField(max_length=200,null=True,blank=True)
+    user = models.ForeignKey('auth.User',null=True,blank=True)
     
     objects = SoftDeletionManager()
     all_objects = SoftDeletionManager(live_only=False)

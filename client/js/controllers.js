@@ -40,47 +40,44 @@ angular.module('myApp.controllers', []).
         }
     }).
 
-    controller('LoginCtrl', function ($http, $scope, $window, $cookies,$location,Login) {
+    controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login) {
         console.log('This is LoginCtrl');
         $scope.login = function (user) {
             //adding some simple verifications
             $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
-                    
                     $window.location.href = 'dashboard.html'
                 }
             })
                 .error(function (data, status, headers, config) {
-                    $scope.error = "Please check your email or password"
+                    $scope.error = "The email or password that you entered was incorrect"
                 });
         }
 
-        $scope.reset=function(user){
-            
-           
-           
-        }
-        $scope.forgot=function(){
-            
-           $location.path('/forgot/'); 
-           
-        }
+         /* ************************************************
+                            password reset
+         ***************************************************
+                */
         $scope.send = function (user) {
             //adding some simple verifications
+            
             $http.put(API_URL + 'user/password_reset/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
-                    //console.log(data)
-                    var d = window.confirm('check your mail');
+                    console.log(data)
+                    
+                    
+                    var d = window.confirm("We've emailed you your new password to the email address you submitted. You should be receiving it shortly.");
                     if(d){
-                    $window.location.href = 'index.html'
+                        $window.location.href = 'index.html'
                     }
                 }
             })
                 .error(function (data, status, headers, config) {
-                    $scope.error = "Please check your username or password"
+                    $scope.error = "Please Enter correct email"
                 });
+            
         }
     })
     .controller('MyCtrl2', [function () {
@@ -88,7 +85,13 @@ angular.module('myApp.controllers', []).
     }]);
 
 angular.module('dashApp.controllers', []).
-    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout) {
+    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams,$cookieStore) {
+        var id=$routeParams.id;
+        if(id>0){
+            $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
+                  $scope.entity=data.objects[0]
+            });
+        }
         $http.get(DATA_API_URL+'getcrawltable/11').success(function(data, status, headers, config){
             $scope.items = data.aaData;
             $scope.predicate = 'Rank';
@@ -239,25 +242,39 @@ angular.module('dashApp.controllers', []).
         })
         
     })
-    .controller('EntityCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout) {
+     .controller('EntityCtrl', function ($http, $scope, User,$window, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams) {
+        var d=$routeParams.id;
+        $http.get(API_URL+'user/?id='+d+'&format=json').success(function (data) {
+                    $scope.user=data.objects[0]
+                    console.log($scope.user)
+                })
         $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
             $scope.professions = data.objects;
         })
         $scope.save_person = function(entity){
             delete entity['business_name']
+            entity.user=$scope.user;
+            if(entity.profession!='/api/v1/Profession/1/'){
+                entity.other_profession="";
+            }
             $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
                 $scope.n = notyfy({
-                    text: 'Added new person '+ data.first_name ,
+                    text: 'Added new entity '+ data.first_name ,
                     type: 'success',
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
+                $timeout(function(){
+                    $window.location.href = 'dashboard.html' 
+                }, 750);  
+                
             })
         }
         $scope.save_business = function(entity){
             var business = {
-                business_name: entity['business_name']
-            }
+                business_name: entity['business_name'],
+                user:$scope.user
+            };
             $http.post(API_URL+'Entity/',business).success(function(data, status, headers, config){
                 $scope.n = notyfy({
                     text: 'Added new business '+ data.business_name ,
@@ -265,15 +282,207 @@ angular.module('dashApp.controllers', []).
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
+                $timeout(function(){
+                    $window.location.href = 'dashboard.html' 
+                }, 750);  
             })
         }
     })
 
+//Edit entity cntrlr
+    .controller('EntityEditCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams) {
+        var id=$routeParams.id;
+        console.log(id)
+        $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
+            $scope.professions = data.objects;
+            console.log(data.objects)
+        })
+        $scope.name={};
+        $scope.url={};
+        $scope.phone={};
+        $scope.fax={};
+        $scope.loctn={};
+         //fetching all data from database for edit selected entity
+        $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
+                  $scope.entity=data.objects[0]
+                  if(data.objects[0].location.length>0){
+                    $scope.loctn=data.objects[0].location[0]
+                  }
+                  if(data.objects[0].business_name==null)
+                  {
+                    $scope.business=false;
+                  }
+                  else{
+                    $scope.business=true;
+                  }
+                $http.get(API_URL+'Url/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
+                    if(data.objects.length>0){
+                        $scope.url=data.objects[0]
+                    }
+                })
+                $http.get(API_URL+'Name/?entity__id='+data.objects[0].id+'&format=json').success(function (data) {
+                    if(data.objects.length>0){
+                        $scope.name=data.objects[0]
+                    }
+                })
+                if(data.objects[0].location.length>0){
+                $http.get(API_URL+'Phone/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
+                    if(data.objects.length>0){
+                        $scope.phone=data.objects[0]
+                    }
+                })
+                $http.get(API_URL+'Fax/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
+                    if(data.objects.length>0){
+                        $scope.fax=data.objects[0]
+                    }
+                })
+            }
+        })
+        //edit basic entity details
+        $scope.edit_person = function(entity){
+            console.log(entity)
+            $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Changes Saved for '+data.first_name,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.entity=data
+            })
+        }
+
+        //save location details
+        $scope.save_location = function(entity,phone,fax,loctn){
+                console.log(loctn)
+                $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
+                        console.log(data)
+                        entity.location[0]=data
+                        phone.location=data
+                        fax.location=data
+                        $http.post(API_URL+'Phone/',phone).success(function(data, status, headers, config){
+                            $scope.phone=data
+                        })
+                        $http.post(API_URL+'Fax/',fax).success(function(data, status, headers, config){
+                            $scope.fax=data
+                        })
+                    
+                    $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
+                        $scope.n = notyfy({
+                        text: 'Changes Saved for '+data.first_name ,
+                        type: 'success',
+                        dismissQueue:true,
+                        closeWith:['hover'] 
+                    });
+                    $scope.entity=data
+                })
+           
+            })
+            
+        }
+        //save name and url
+        $scope.save_name = function(name,url){
+            console.log(name)
+            url.entity=$scope.entity;
+            name.entity=$scope.entity;
+            $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Changes Saved for '+data.entity.first_name,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.url=data
+                })
+            $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){
+                $scope.name=data
+                })
+                
+            console.log(name)
+            console.log(url)
+            
+        }
+        //edit basic business details
+        $scope.edit_business = function(entity){
+            console.log(entity)
+            $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Changes Saved for '+data.business_name,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.entity=data
+            })
+        }
+
+        //save business location details
+        $scope.save_businesslocation = function(entity,phone,fax,loctn){
+                console.log(loctn)
+                $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
+                        console.log(data)
+                        entity.location[0]=data
+                        phone.location=data
+                        fax.location=data
+                        $http.post(API_URL+'Phone/',phone).success(function(data, status, headers, config){
+                            $scope.phone=data
+                        })
+                        $http.post(API_URL+'Fax/',fax).success(function(data, status, headers, config){
+                            $scope.fax=data
+                        })
+                    
+                    $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
+                        $scope.n = notyfy({
+                        text: 'Changes Saved for '+data.business_name ,
+                        type: 'success',
+                        dismissQueue:true,
+                        closeWith:['hover'] 
+                    });
+                    $scope.entity=data
+                })
+               })
+            
+        }
+        //save business name and url
+        $scope.save_businessname = function(name,url){
+            console.log(name)
+            url.entity=$scope.entity;
+            name.entity=$scope.entity;
+            $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
+                $scope.n = notyfy({
+                    text: 'Changes Saved for '+data.entity.business_name,
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+                $scope.url=data
+                })
+            $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){
+                $scope.name=data
+                })
+                
+            console.log(name)
+            console.log(url)
+            
+        }
+
+    })
+
+
+
 //Account settings cntrlr
-    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout) {
+    .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies,$window) {
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
+            if(response.status != '200'){
+                $window.location.href = 'index.html'
+            }
             User = response.data;
             $scope.user = User;
+            console.log(response)
+            $http.get(API_URL+'Entity/?user__id='+User.id+'&format=json').success(function (data) {
+                    console.log(data.objects)
+                    $scope.entities=data.objects
+                })
             console.log(User);
         })
         $scope.save_password = function(user,user1){

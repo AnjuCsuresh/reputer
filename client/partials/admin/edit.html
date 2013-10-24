@@ -1,0 +1,638 @@
+	
+	<h1>&nbsp;&nbsp;Profile <span></span></h1>
+	<div class="innerLR">
+
+		<!-- Widget -->
+		<div class="widget widget-tabs widget-tabs-gray widget-tabs-double-2 border-bottom-none">
+			
+			<!-- Widget heading -->
+			<div class="widget-head">
+				<ul>
+					<!--<li class="active"><a class="glyphicons display" href="#overview" data-toggle="tab"><i></i>Overview</a></li>-->
+					<li class="active"><a class="glyphicons edit" href="#edit-account" data-toggle="tab"><i></i>Entity Details</a></li>
+					<!--<li><a class="glyphicons luggage" href="#projects" data-toggle="tab"><i></i>Projects</a></li>-->
+				</ul>
+			</div>
+			<!-- // Widget heading END -->
+			
+			<div class="widget-body">
+				
+				
+
+						<!-- Tab content -->
+						<div class="tab-pane widget-body-regular active" id="edit-account" ng-show="business">
+							
+							<div class="widget widget-tabs widget-tabs-gray widget-tabs-vertical row-fluid row-merge margin-none widget-body-white">
+								
+								<!-- Widget heading -->
+								<div class="widget-head span3">
+									<ul>
+										<li class="active"><a class="glyphicons user" href="#privacy-settings" data-toggle="tab"><i></i>Entity Name </a></li>
+										<li><a class="glyphicons settings" href="#account-settings" data-toggle="tab"><i></i>Location/Address</a></li>
+										<li ><a class="glyphicons pencil" href="#account-details" data-toggle="tab"><i></i>Additional Details</a></li>
+										
+									</ul>
+								</div>
+								<!-- // Widget heading END -->
+								
+								<div class="widget-body span9">
+									
+									<div class="tab-content">
+										<div class="tab-pane " id="account-details">
+											<form ng-submit="save_businessname(name,url);">
+											<!-- Row -->
+											<div class="row-fluid">
+												
+												<!-- Column -->
+												<div class="span6">
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">Alternate name</label>
+														<div class="controls">
+															<input type="text"  class="span10"  ng-model="name.alternate_name" />
+															
+														</div>
+													</div>
+													<!-- // Group END -->
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">Common Misspellings of the name:</label>
+														<div class="controls">
+															<input type="text" class="span10"  ng-model="name.common_misspellings_of_the_name" />
+															
+														</div>
+													</div>
+													
+												</div>
+												
+												
+											</div>
+											<!-- // Row END -->
+											
+											<div class="separator line bottom"></div>
+											
+											<!-- Group -->
+											<div class="control-group ">
+												<div class="span12"> 
+													
+												<label class="control-label span2"> Website</label>
+											
+											
+												<input type="url" id="inputPasswordNew" class="span11"  ng-model="url.url"/>
+												<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Enter a valid url or Leave empty"><i></i></span>
+											
+											</div>
+											</div>
+											<!-- // Group END -->
+											
+											<!-- Form actions -->
+											<div class="" style="margin: 0;">
+												<button type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ><i></i>Save changes</button>
+												
+											</div>
+											<!-- // Form actions END -->
+											</form>
+										</div>
+
+
+										<div class="tab-pane " id="account-settings">
+											<form  name="myForm1" ng-submit="save_businesslocation(entity,phone,fax,loctn);">
+											<!-- Row -->
+											<div class="row-fluid">
+												
+												<!-- Column -->
+												<div class="span3">
+													<strong>Add location</strong>
+													<p class="muted"></p>
+												</div>
+												<!-- // Column END -->
+												
+												<!-- Column -->
+												<div class="span9">
+													<div class="span12">
+													</div>
+													<div class="span12">
+														<div class="span2">
+														<label for="inputUsername">Address</label>
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address1" required/>
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													<div class="span12">
+														<div class="span2">
+														
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address2" />
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													
+													<div class="span12">
+														<div class="span2">
+														<label for="inputUsername">City</label>
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.city" />
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													<div class="span12">
+														<div class="span2">
+														<label for="inputUsername">State</label>
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.state" />
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													<div class="span12">
+														<div class="span2">
+														<label for="inputUsername">Zip code</label>
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.zip_code" />
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													
+												</div>
+												<!-- // Column END -->
+												
+											</div>
+											<!-- // Row END -->
+											
+											<div class="separator line bottom"></div>
+											
+											<!-- Row -->
+											<div class="row-fluid">
+												
+												<!-- Column -->
+												<div class="span3">
+													<strong>Contact details</strong>
+													<p class="muted"></p>
+												</div>
+												<!-- // Column END -->
+												
+												<!-- Column -->
+												<div class="span9">
+													<div class="row-fluid">
+														<div class="span6">
+															<label for="inputPhone">Phone</label>
+															<div class="input-prepend">
+																<span class="add-on glyphicons phone"><i></i></span>
+																<input name="phone" type="text" id="inputPhone" class="input-large" ng-model="phone.number" ng-pattern="/^[0-9]+$/" ng-minlength=10 ng-maxlength=12/>
+																<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Enter valid phone number or Leave empty "><i></i></span>
+															</div>
+															<div class="separator"></div>
+															
+															
+															
+														</div>
+														<div class="span6">
+															<label for="inputEmail">Fax</label>
+															<div class="input-prepend">
+																<span class="add-on glyphicons envelope"><i></i></span>
+																<input type="text" id="inputEmail" class="input-large"  ng-model="fax.number" />
+															</div>
+															<div class="separator"></div>
+															
+														</div>
+													</div>
+												</div>
+												<!-- // Column END -->
+												
+											</div>
+											<!-- // Row END -->
+											
+											<!-- Form actions -->
+											<div class="" style="margin: 0;">
+												<button  type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled=" myForm1.phone.$dirty && myForm1.phone.$invalid"><i></i>Save changes</button>
+											</div>
+											<!-- // Form actions END -->
+											</form>
+										</div>
+										
+										<div class="tab-pane active" id="privacy-settings">
+											
+											<!-- Row -->
+											<div class="row-fluid">
+							
+												<!-- Column -->
+												<div class="span12">
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">Name of Business</label>
+														<div class="controls">
+															<input type="text" ng-model="entity.business_name" class="span5" required/>
+															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Name is mandatory"><i></i></span>
+														</div>
+													</div>
+													
+													
+												</div>
+												
+												
+											</div>
+											<!-- // Row END -->
+											
+											
+											
+
+
+														<!-- Form actions -->
+														<div class="" style="margin: 0;">
+														<button ng-disabled="!(entity.business_name!=null)" ng-click="edit_business(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+														</div>
+														<!-- // Form actions END -->
+
+													</div>
+
+													
+									</div>	
+								</div>
+							</div>	
+						</div>
+					
+						<!-- // Tab content END -->
+				
+					
+						
+						<!-- Tab content -->
+						<div class="tab-pane widget-body-regular active" id="edit-account" ng-hide="business">
+							
+							<div class="widget widget-tabs widget-tabs-gray widget-tabs-vertical row-fluid row-merge margin-none widget-body-white">
+								
+								<!-- Widget heading -->
+								<div class="widget-head span3">
+									<ul>
+										<li class="active"><a class="glyphicons user" href="#privacy-settings1" data-toggle="tab"><i></i>Entity Name </a></li>
+										<li><a class="glyphicons settings" href="#account-settings1" data-toggle="tab"><i></i>Location/Address</a></li>
+										<li ><a class="glyphicons pencil" href="#account-details1" data-toggle="tab"><i></i>Additional Details</a></li>
+										
+									</ul>
+								</div>
+								<!-- // Widget heading END -->
+								
+								<div class="widget-body span9">
+									
+									<div class="tab-content">
+										<div class="tab-pane " id="account-details1">
+											<form ng-submit="save_name(name,url);">
+											<!-- Row -->
+											<div class="row-fluid">
+												
+												<!-- Column -->
+												<div class="span6">
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">Alternate name</label>
+														<div class="controls">
+															<input type="text"  class="span10"  ng-model="name.alternate_name" />
+															
+														</div>
+													</div>
+													<!-- // Group END -->
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">Common Misspellings of the name:</label>
+														<div class="controls">
+															<input type="text" class="span10"  ng-model="name.common_misspellings_of_the_name" />
+															
+														</div>
+													</div>
+													<!-- // Group END -->
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">School attended</label>
+														<div class="controls">
+															<input type="text" class="span10"  ng-model="name.school_attended1" />
+															
+														</div>
+													</div>
+													<!-- // Group END -->
+													
+												</div>
+												<!-- // Column END -->
+												
+												<!-- Column -->
+												<div class="span6">
+													
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">Previous places lived</label>
+														<div class="controls">
+															<input type="text"  class="span10"  ng-model="name.previous_places_lived1" />
+															
+														</div>
+													</div>
+													<!-- // Group END -->
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">Previous places worked</label>
+														<div class="controls">
+															<input type="text"class="span10" ng-model="name.previous_places_worked1"/>
+															
+														</div>
+													</div>
+													<!-- // Group END -->
+													
+													
+												</div>
+												<!-- // Column END -->
+												
+											</div>
+											<!-- // Row END -->
+											
+											<div class="separator line bottom"></div>
+											
+											<!-- Group -->
+											<div class="control-group ">
+												<div class="span12"> 
+													
+												<label class="control-label span2"> Website</label>
+											
+											
+												<input type="url" id="inputPasswordNew" class="span11"  ng-model="url.url"/>
+												<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Enter a valid url or Leave empty"><i></i></span>
+												
+											
+											</div>
+											</div>
+											<!-- // Group END -->
+											
+											<!-- Form actions -->
+											<div class="" style="margin: 0;">
+												<button type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ><i></i>Save changes</button>
+												
+											</div>
+										</form>
+											<!-- // Form actions END -->
+											
+										</div>
+
+
+										<div class="tab-pane " id="account-settings1">
+											<form  name="myForm" ng-submit="save_location(entity,phone,fax,loctn);">
+											<!-- Row -->
+											<div class="row-fluid">
+												
+												<!-- Column -->
+												<div class="span3">
+													<strong>Add location</strong>
+													<p class="muted"></p>
+												</div>
+												<!-- // Column END -->
+												
+												<!-- Column -->
+												<div class="span9">
+													<div class="span12">
+													</div>
+													<div class="span12">
+														<div class="span2">
+														<label for="inputUsername">Address</label>
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address1" required/>
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													<div class="span12">
+														<div class="span2">
+														
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.address2" />
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													<div class="span12">
+														<div class="span2">
+														<label for="inputUsername">City</label>
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.city" />
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													<div class="span12">
+														<div class="span2">
+														<label for="inputUsername">State</label>
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.state"/>
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													<div class="span12">
+														<div class="span2">
+														<label for="inputUsername">Zip code</label>
+													</div>
+													<div class="span10">
+														<input type="text" id="inputUsername" class="span10"  ng-model="loctn.zip_code"/>
+														
+														</div>
+													</div>
+													<div class="span12">
+														<div class="separator">
+														</div>
+													</div>
+													
+												</div>
+												<!-- // Column END -->
+												
+											</div>
+											<!-- // Row END -->
+											
+											<div class="separator line bottom"></div>
+											
+											<!-- Row -->
+											<div class="row-fluid">
+												
+												<!-- Column -->
+												<div class="span3">
+													<strong>Contact details</strong>
+													<p class="muted"></p>
+												</div>
+												<!-- // Column END -->
+												
+												<!-- Column -->
+												<div class="span9">
+													<div class="row-fluid">
+														<div class="span6">
+															<label for="inputPhone">Phone</label>
+															<div class="input-prepend">
+																<span class="add-on glyphicons phone"><i></i></span>
+																<input name="phone" type="text" id="inputPhone" class="input-large" ng-model="phone.number" ng-pattern="/^[0-9]+$/" ng-minlength=10 ng-maxlength=12/>
+																<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Enter valid phone number or Leave empty"><i></i></span>
+															</div>
+															<div class="separator"></div>
+															
+															
+															
+														</div>
+														<div class="span6">
+															<label for="inputEmail">Fax</label>
+															<div class="input-prepend">
+																<span class="add-on glyphicons envelope"><i></i></span>
+																<input type="text" id="inputEmail" class="input-large"  ng-model="fax.number" />
+															</div>
+															<div class="separator"></div>
+															
+														</div>
+													</div>
+												</div>
+												<!-- // Column END -->
+												
+											</div>
+											<!-- // Row END -->
+											
+											<!-- Form actions -->
+											<div class="" style="margin: 0;">
+												<button  type="submit" class="btn btn-icon btn-primary glyphicons circle_ok" ng-disabled=" myForm.phone.$dirty && myForm.phone.$invalid"><i></i>Save changes</button>
+											</div>
+											<!-- // Form actions END -->
+										</form>
+											
+										</div>
+										
+										<div class="tab-pane active" id="privacy-settings1">
+											
+											<!-- Row -->
+											<div class="row-fluid">
+							
+												<!-- Column -->
+												<div class="span12">
+													
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">First name</label>
+														<div class="controls">
+															<input type="text" ng-model="entity.first_name" class="span5" required/>
+															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="First name is mandatory"><i></i></span>
+														</div>
+													</div>
+													<!-- // Group END -->
+													<div class="control-group">
+														<label class="control-label">Middle name</label>
+														<div class="controls">
+															<input type="text" ng-model="entity.middle_name" class="span5" />
+															
+														</div>
+													</div>
+													<!-- Group -->
+													<div class="control-group">
+														<label class="control-label">Last name</label>
+														<div class="controls">
+															<input type="text" ng-model="entity.last_name" class="span5" required/>
+															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
+														</div>
+													</div>
+													<div class="control-group">
+														<label class="control-label">Profession</label>
+														<div class="controls">
+															<select ng-model="entity.profession" ng-options="p.resource_uri as p.name for p in professions" class="span5" name="" id="" width="1000" height="500">
+															</select>
+															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Profession is mandatory"><i></i></span>
+														</div>
+													</div>
+													<div class="control-group" ng-show="entity.profession=='/api/v1/Profession/1/'||entity.other_profession!=''">
+														<label class="control-label">Other Profession</label>
+														<div class="controls">
+															<input type="text" ng-model="entity.other_profession"  class="span5" />
+															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
+														</div>
+													</div>
+													<br>
+													<!-- // Group END -->
+													
+													<!-- Group -->
+													
+													<!-- // Group END -->
+													
+												</div>
+												<!-- // Column END -->
+												
+												<!-- Column -->
+												
+												<!-- // Column END -->
+												
+											</div>
+											<!-- // Row END -->
+											
+											
+											
+
+
+														<!-- Form actions -->
+														<div class="" style="margin: 0;">
+														<button ng-disabled="!(entity.first_name!=null&&entity.last_name!=null&&entity.profession!=null)" ng-click="edit_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+														</div>
+														<!-- // Form actions END -->
+
+													</div>
+
+
+									</div>	
+								</div>
+							</div>	
+						</div>
+						<!-- // Tab content END -->
+						
+						<!-- Tab content -->
+
+						
+						<!-- // Tab content END -->
+					</div>
+				
+			</div>
+		</div>
+		<!-- // Widget END -->
+		
+	</div>

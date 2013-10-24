@@ -475,7 +475,7 @@ p.separator i {
 }
 #wrapper {
   overflow: hidden;
-  overflow-y: scroll;
+  
   -webkit-overflow-scrolling: touch;
   float: left;
   width: 100%;
@@ -1520,6 +1520,9 @@ html.top-full .navbar.main .topnav > li {
 }
 html.top-full .navbar.main .topnav > li a {
   cursor: pointer;
+}
+html.top-full .navbar.main .topnav > li{
+cursor: pointer;
 }
 html.top-full .navbar.main .topnav > li .badge {
   top: 7px;
