@@ -5,8 +5,7 @@
 	<script src="partials/jquery-1.10.2.min.js"></script>
 	<script src="partials/jquery-migrate-1.2.1.min.js"></script>
 	<script src="lib/angular/angular.js"></script>
-	<script src="lib/angular/angular-cookies.js"></script>
-	<script src="lib/angular/nggrid.2.0.7.js"></script>
+	 <script src="//cdn.jsdelivr.net/angularjs/1.0.2/angular-cookies.min.js"></script>
 		<script src="common/theme/scripts/plugins/notifications/notyfy/jquery.notyfy.js"></script>
 
 	
@@ -153,7 +152,7 @@
 								<li><a href="" ng-click="location.path('/account/settings/')"  class="glyphicons cogwheel">Settings<i></i></a></li>
 								<li><a href="#/my_account_advanced"><i></i>{{user.email}}</a></li>
 									<span>
-										<a class="btn btn-default btn-mini pull-right" href="/#/login">Sign Out</a>
+										<a class="btn btn-default btn-mini pull-right" ng-click="logout()">Sign Out</a>
 									</span>
 								</li>
 							</ul>
