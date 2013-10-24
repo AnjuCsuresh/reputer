@@ -51,7 +51,7 @@ angular.module('myApp.controllers', []).
                 }
             })
                 .error(function (data, status, headers, config) {
-                    $scope.error = "Please check your email or password"
+                    $scope.error = "The email or password that you entered was incorrect"
                 });
         }
 
