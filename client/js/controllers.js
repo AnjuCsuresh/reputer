@@ -66,9 +66,7 @@ angular.module('myApp.controllers', []).
             $http.put(API_URL + 'user/password_reset/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
-                    console.log(data)
-                    
-                    
+                    console.log(data)                    
                     var d = window.confirm("We've emailed you your new password to the email address you submitted. You should be receiving it shortly.");
                     if(d){
                         $window.location.href = 'index.html'

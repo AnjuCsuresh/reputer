@@ -4,21 +4,11 @@
 // Declare app level module which depends on filters, and services
 angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 'myApp.controllers', 'ngCookies']).
     config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/', {templateUrl: 'partials/front/home.html'});
-        $routeProvider.when('/view2', {templateUrl: '/partials/front/partial2.html'});
-        $routeProvider.when('/oops', {templateUrl: '/partials/front/404.html'});
-        $routeProvider.when('/pricing', {templateUrl: '/partials/front/pricing.html'});
-        $routeProvider.when('/about', {templateUrl: '/partials/front/about.html'});
-        $routeProvider.when('/blog', {templateUrl: '/partials/front/blog.html'});
-        $routeProvider.when('/blog_timeline', {templateUrl: '/partials/front/blog_timeline.html'});
-        $routeProvider.when('/contact', {templateUrl: '/partials/front/contact.html'});
-        $routeProvider.when('/index_2', {templateUrl: '/partials/front/index_2.html'});
-        $routeProvider.when('/login', {templateUrl: '/partials/front/login.html', controller: 'LoginCtrl'});
-        $routeProvider.when('/forgot', {templateUrl: '/partials/front/forgot.html', controller: 'LoginCtrl'});
+        $routeProvider.when('/', {templateUrl: '/partials/front/login.html', controller: 'LoginCtrl'});
         $routeProvider.when('/signup', {templateUrl: '/partials/front/signup.html', controller: 'RegisterCtrl'});
-        
-        $routeProvider.otherwise({redirectTo: '/oops'});
+        $routeProvider.otherwise({redirectTo: '/'});
     }])
+
     .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.defaults.useXDomain = true;
         $httpProvider.defaults.withCredentials = true;
