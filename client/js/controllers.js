@@ -253,7 +253,7 @@ angular.module('dashApp.controllers', []).
         $scope.save_person = function(entity){
             delete entity['business_name']
             entity.user=$scope.user;
-            if(entity.profession!='/api/v1/Profession/1/'){
+            if(entity.profession.name!='Other'){
                 entity.other_profession="";
             }
             $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
@@ -340,6 +340,9 @@ angular.module('dashApp.controllers', []).
         //edit basic entity details
         $scope.edit_person = function(entity){
             console.log(entity)
+            if(entity.profession.name!='Other'){
+                entity.other_profession="";
+            }
             $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
                 $scope.n = notyfy({
                     text: 'Changes Saved for '+data.first_name,

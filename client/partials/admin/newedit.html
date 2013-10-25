@@ -374,12 +374,12 @@
 													<div class="control-group">
 														<label class="control-label">Profession</label>
 														<div class="controls">
-															<select ng-model="entity.profession" ng-options="p.resource_uri as p.name for p in professions" class="span5" name="" id="" width="1000" height="500">
+															<select ng-model="entity.profession" ng-options="p.name for p in professions" class="span5" name="" id="" width="1000" height="500">
 															</select>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Profession is mandatory"><i></i></span>
 														</div>
 													</div>
-													<div class="control-group" ng-show="entity.profession=='/api/v1/Profession/1/'||entity.other_profession!=''">
+													<div class="control-group" ng-show="entity.profession.name=='Other'">
 														<label class="control-label">Other Profession</label>
 														<div class="controls">
 															<input type="text" ng-model="entity.other_profession"  class="span5" />
