@@ -17,7 +17,6 @@ angular.module('myApp.controllers', []).
         $scope.register = function (user) {
             //adding some simple verifications
             var data = {
-                username: user.username,
                 password: user.password1,
                 email: user.email1
             };
