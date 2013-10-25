@@ -33,7 +33,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/:id', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
         $routeProvider.when('/form_wiz', {templateUrl: '/partials/admin/form_wiz.html'});
         $routeProvider.when('/entity/:id', {templateUrl: '/partials/admin/entity.html', controller: 'EntityCtrl'});
-        $routeProvider.when('/edit/:id', {templateUrl: '/partials/admin/edit.html', controller: 'EntityEditCtrl'});
+        $routeProvider.when('/edit/:id', {templateUrl: '/partials/admin/newedit.html', controller: 'EntityEditCtrl'});
         $routeProvider.when('/view', {templateUrl: '/partials/admin/view.html', controller: 'EntityCtrl'});
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
 
