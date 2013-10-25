@@ -134,9 +134,12 @@
               				<!-- Components Submenu Level 2 -->
                
                    				<li ng-repeat="entity in entities"><a href="" ng-click="location.path('/'+entity.id)">{{entity.business_name}}{{entity.first_name}}  {{entity.last_name}}</a></li>
-                   				
                				</ul>
-            		 </li>
+            		 	</li>
+            		 	<li class="dropdown dd-1">
+							<a href="" ng-click="" class="glyphicons settings"><i></i>Manage Entity </a>
+							
+						</li>
 					</ul>
 					<!-- // Full Top Style END -->
 
@@ -145,24 +148,38 @@
 
 					<!-- Top Menu Right -->
 					<ul class="topnav pull-right hidden-phone">
-						<!-- Profile / Logout menu -->
-						<li class="account dropdown dd-1">
-							<a data-toggle="dropdown" href="my_account_advance" class="glyphicons logout lock"><span class="hidden-tablet hidden-phone hidden-desktop-1">{{user.username}}</span><i></i></a>
-							<ul class="dropdown-menu pull-right">
-								<li><a href="" ng-click="location.path('/account/settings/')"  class="glyphicons cogwheel">Settings<i></i></a></li>
-								<li><a href="#/my_account_advanced"><i></i>{{user.email}}</a></li>
-									<span>
-										<a class="btn btn-default btn-mini pull-right" ng-click="logout()">Sign Out</a>
-									</span>
-								</li>
-							</ul>
-						</li>
-						<!-- // Profile / Logout menu END -->
 
+						<li class="dropdown dd-1">
+							<a href="/#/login" ng-click="" class="glyphicons lock"><i></i>Log Out </a>
+							
+						</li>
+						
+						<!-- Profile / Logout menu -->
+						<!--li class="account dropdown dd-1">
+							<a data-toggle="dropdown" href="my_account_advance" class="glyphicons logout lock"><span class="hidden-tablet hidden-phone hidden-desktop-1">{{user.username}}</span><i></i>Sign Out</a>
+							<ul class="dropdown-menu pull-right">
+								<li><a href="#/my_account_advanced"><i></i>{{user.email}}</a>
+								</li>
+									<span>
+										<a class="btn btn-default btn-mini pull-right" href="/#/login">Sign Out</a>
+									</span>
+							</ul>
+						</li-->
 					</ul>
 					<!-- // Top Menu Right END -->
 
 					<ul class="topnav pull-right hidden-phone">
+						<li class="dropdown dd-1">
+           					<a href="" data-toggle="dropdown" class="glyphicons cogwheel"><i></i>Settings<span class="caret"></span></a>       
+           					<ul class="dropdown-menu pull-left">
+              				<!-- Components Submenu Level 2 -->
+               
+                   				<li><a href="" ng-click="">Plan</a></li>
+                   				<li><a href="" ng-click="">Notification</a></li>
+                   				<li><a href="" ng-click="">Password</a></li>
+                   				
+               				</ul>
+            		 	</li>
 						<li><a href="" class="glyphicons envelope single-icon"><i></i><span class="badge fix badge-primary">5</span></a></li>
 					</ul>
 					<div class="clearfix"></div>
