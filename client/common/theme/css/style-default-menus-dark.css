@@ -3944,7 +3944,7 @@ div.glyphicons.glyphicon-primary i:before {
 .widget-employees input[type=password],
 .widget-employees select,
 .widget-employees textarea {
-  border-color: #fff;
+  border-color:#B9B3B3;
 }
 .widget-employees .row-fluid.row-merge > [class*="span"] ~ [class*="span"]:after {
   display: none !important;
@@ -5041,7 +5041,7 @@ input[type="search"]:focus,
 input[type="tel"]:focus,
 input[type="color"]:focus,
 .uneditable-input:focus {
-  border-color: #efefef;
+  border-color: #83807F;
   box-shadow: none !important;
   -moz-box-shadow: none !important;
   -webkit-box-shadow: none !important;
@@ -5070,7 +5070,7 @@ input[type="color"],
   -webkit-border-radius: 0 0 0 0;
   -moz-border-radius: 0 0 0 0;
   border-radius: 0 0 0 0;
-  border-color: #efefef;
+  border-color: #B6B2B2;
 }
 .uniformjs .radio .disabled input[type="radio"],
 .uniformjs .checkbox .disabled input[type="checkbox"] {
@@ -5134,7 +5134,7 @@ input[type=text],
 input[type=password],
 select,
 textarea {
-  border-color: #efefef;
+  border-color: #B9B3B3;
   color: #A7A7A7;
 }
 .control-label.center {
