@@ -219,6 +219,7 @@ class UserResource(ModelResource):
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
 
         email = data.get('email', '')
+        newemail = data.get('email1', '')
         password = data.get('password', '')
         password1 = data.get('password1', '')
         user = authenticate(email=email, password=password)
@@ -227,6 +228,7 @@ class UserResource(ModelResource):
                 user1=User.objects.get(email=email)
                 if user1:
                     user1.set_password(password1)
+                    user1.email=newemail
                     user1.save()
             
                     return self.create_response(request, { 'success': True ,'user':user1})

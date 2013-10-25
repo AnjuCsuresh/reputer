@@ -57,7 +57,7 @@
 												<!-- Column -->
 												<div class="span9">
 													<label for="inputUsername">Email</label>
-													<input type="text" id="inputUsername" class="span10" value="john.doe2012" disabled="disabled" ng-model="user.email"/>
+													<input type="email" id="inputUsername" class="span10" value="john.doe2012"  ng-model="user.email" required/>
 													<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Username can't be changed"><i></i></span>
 													<div class="separator"></div>
 													
@@ -87,7 +87,7 @@
 											
 											<!-- Form actions -->
 											<div class="form-actions" style="margin: 0;">
-												<button ng-disabled="(user1.password1!=user1.password2||user1.password==null||user1.password1==null||user1.password2==null)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-click="save_password(user,user1)"><i></i>Save changes</button>
+												<button ng-disabled="(user1.password1!=user1.password2||user1.password==null||user1.password1==null||user1.password2==null||user.email==null)" class="btn btn-icon btn-primary glyphicons circle_ok" ng-click="save_password(user,user1)"><i></i>Save changes</button>
 											</div>
 											<!-- // Form actions END -->
 											
