@@ -135,11 +135,15 @@
                
                    				<li ng-repeat="entity in entities"><a href="" ng-click="location.path('/'+entity.id)">{{entity.business_name}}{{entity.first_name}}  {{entity.last_name}}</a></li>
                				</ul>
-            		 	</li>
-            		 	<li class="dropdown dd-1">
-							<a href="" ng-click="" class="glyphicons settings"><i></i>Manage Entity </a>
-							
-						</li>
+            		 </li>
+            		 <li class="dropdown dd-1">
+           					<a href="" data-toggle="dropdown" class="glyphicons settings"><i></i>Manage Entity<span class="caret"></span></a>       <ul class="dropdown-menu pull-left">
+              				<!-- Components Submenu Level 2 -->
+               
+                   				<li ng-repeat="entity in entities"><a href="" ng-click="location.path('/edit/'+entity.id)" >{{entity.business_name}}{{entity.first_name}}  {{entity.last_name}}</a></li>
+                   				
+               				</ul>
+            		 </li>
 					</ul>
 					<!-- // Full Top Style END -->
 

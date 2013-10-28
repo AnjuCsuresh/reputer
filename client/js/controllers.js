@@ -17,7 +17,6 @@ angular.module('myApp.controllers', []).
         $scope.register = function (user) {
             //adding some simple verifications
             var data = {
-                username: user.username,
                 password: user.password1,
                 email: user.email1
             };
@@ -253,7 +252,7 @@ angular.module('dashApp.controllers', []).
         $scope.save_person = function(entity){
             delete entity['business_name']
             entity.user=$scope.user;
-            if(entity.profession!='/api/v1/Profession/1/'){
+            if(entity.profession.name!='Other'){
                 entity.other_profession="";
             }
             $http.post(API_URL+'Entity/',entity).success(function(data, status, headers, config){
@@ -340,6 +339,9 @@ angular.module('dashApp.controllers', []).
         //edit basic entity details
         $scope.edit_person = function(entity){
             console.log(entity)
+            if(entity.profession.name!='Other'){
+                entity.other_profession="";
+            }
             $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
                 $scope.n = notyfy({
                     text: 'Changes Saved for '+data.first_name,
@@ -471,11 +473,13 @@ angular.module('dashApp.controllers', []).
 
 //Account settings cntrlr
     .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies,$window,$cookieStore) {
+        var email;
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
             if(response.status != '200'){
                 $window.location.href = 'index.html'
             }
             User = response.data;
+            email=response.data.email
             $scope.user = User;
             console.log(response)
             $http.get(API_URL+'Entity/?user__id='+User.id+'&format=json').success(function (data) {
@@ -492,11 +496,13 @@ angular.module('dashApp.controllers', []).
         })
         $scope.save_password = function(user,user1){
             var u = {
-                email: user.email,
+                email:email,
+                email1: user.email,
                 password: user1.password,
                 password1:user1.password1
                 
             };
+            console.log(u)
             $http.post(API_URL + 'user/test/',u, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                   $scope.n = notyfy({
