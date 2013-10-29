@@ -1,6 +1,6 @@
-<div id="login">
+<div id="login" ng-init="signup=false">
 
-	<div class="container">
+	<div class="container" ng-hide="signup">
 
 		<div class="wrapper">
 
@@ -31,7 +31,7 @@
 						</div>
 						<div class="row-fluid">
 							<div class="span8">
-								<label for=""><a  href="/#/signup" >SignUp</a></label>
+								<label for=""><a  ng-click="signup=true" >SignUp</a></label>
 							</div>
 							<div class="span4 center">
 								<label for=""><a class="password" href="/#/forgot" >Forgot Password?</a></label>
@@ -50,3 +50,50 @@
 		</div>
 
 	</div>
+
+	<div class="container" ng-show="signup">
+
+		<div class="wrapper">
+
+			<h1 class="glyphicons unlock">Sign Up <i></i></h1>
+
+			<!-- Box -->
+			<div class="widget widget-heading-simple widget-body-gray">
+
+				<div class="widget-body">
+
+					<!-- Form -->
+					<form name="myForm" novalidate ng-submit="register(user);"
+					>
+						<label>Email</label>
+						<input type="email" class="input-block-level" name="user.email" ng-model="user.email1" placeholder="Your Email Address" required/>
+						<label>Password</label>
+						<input ng-model="user.password1"  type="password" class="input-block-level margin-none" placeholder="Your Password" />
+						<div class="separator bottom"></div>
+						<div class="row-fluid">
+							<div class="span8">
+								
+							</div>
+							<div class="span4 center">
+								<button ng-disabled="!(user.password1!=null&&user.email1!=null)" type="submit" class="btn btn-block btn-inverse">Sign up</button>
+
+							</div>
+						
+						
+					
+								<label for=""><p>Having trouble? <a  href="" >Get Help</a></label>
+							</div>
+						
+					</form>
+					<!-- // Form END -->
+
+				</div>
+				
+			</div>
+			<!-- // Box END -->
+
+		</div>
+
+	</div>
+
+</div>
