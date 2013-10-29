@@ -17,7 +17,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
         delete $httpProvider.defaults.headers.common['X-Requested-With'];
     }
     ])
-    .run(function ($rootScope, $location, $anchorScroll, $routeParams) {
+    .run(function ($rootScope, $location, $anchorScroll, $routeParams,$window,$cookies) {
 
         $rootScope.$on('$routeChangeSuccess', function (newRoute, oldRoute) {
                 $location.hash($routeParams.scrollTo);
@@ -25,6 +25,13 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
             },
             $rootScope.location = $location
         );
+        $rootScope.$on('$routeChangeStart', function(event, currRoute, prevRoute){
+                if ($.cookie('the_cookie')) {
+                    $window.location.href = 'dashboard.html'
+                    // reload the login route
+                }
+                
+            });
     });
 
 
@@ -78,7 +85,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
             };
         });
     })
-    .run(function ($rootScope, $location, $anchorScroll, $routeParams, $cookies, $http) {
+    .run(function ($rootScope, $location, $anchorScroll, $routeParams, $cookies, $http,$window) {
         $http.defaults.headers.common['X-CSRFToken'] = $cookies.csrftoken;
         $rootScope.$on('$routeChangeSuccess', function (newRoute, oldRoute) {
                 $location.hash($routeParams.scrollTo);
@@ -86,6 +93,13 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
             },
             $rootScope.location = $location
         );
+        $rootScope.$on('$routeChangeStart', function(event, currRoute, prevRoute){
+                if ($.cookie('the_cookie')==null) {
+                    $window.location.href = 'index.html'
+                    // reload the login route
+                }
+               
+            });
     });
 
 Array.prototype.remove = function () {
