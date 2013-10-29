@@ -8,35 +8,15 @@ angular.module('myApp.controllers', []).
     controller('RegisterCtrl',function ($http, $scope, $location ,$window, $cookies) {
         console.log('This is register');
 
-        $scope.register = function (user) {
-            //adding some simple verifications
-            var data = {
-                password: user.password1,
-                email: user.email1
-            };
-            $http.post(API_URL + 'newuser/', data).then(function (data) {
-                console.log(data.data.username)
-                var u = {
-                username: data.data.email,
-                password: user.password1
-                
-            };
-            
-                $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
-                if (status == '200') {
-                    $.cookie('the_cookie', true, { expires: 7 });
-                    $window.location.href = 'dashboard.html'
-                }
-            })
-                    
-            })
-        }
+        
     }).
 
     controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login,$cookies) {
         console.log('This is LoginCtrl');
         $scope.login = function (user) {
             //adding some simple verifications
+            user['username']= user.email
+            delete user['email']
             $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
@@ -47,6 +27,29 @@ angular.module('myApp.controllers', []).
                 .error(function (data, status, headers, config) {
                     $scope.error = "The email or password that you entered was incorrect"
                 });
+        }
+        $scope.register = function (user) {
+            //adding some simple verifications
+            var data = {
+                password: user.password,
+                email: user.email
+            };
+            $http.post(API_URL + 'newuser/', data).then(function (data) {
+                console.log(data.data.username)
+                var u = {
+                    username: data.data.email,
+                    password: user.password
+                };
+            
+                $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
+                if (status == '200') {
+                    $.cookie('the_cookie', true, { expires: 7 });
+                    //todo: redirect to add entity screen
+                    $window.location.href = 'dashboard.html'
+                }
+            })
+                    
+            })
         }
 
          /* ************************************************

@@ -35,11 +35,15 @@ class UserSignUpResource(ModelResource):
 
   def obj_create(self, bundle, request=None, **kwargs):
     try:
+      #Creating the usernamme using _ instead of @ in email
+      username = bundle.data['email'].replace('@','_')
+      bundle.data['username'] = username
       bundle = super(UserSignUpResource, self).obj_create(bundle,**kwargs)
       bundle.obj.set_password(bundle.data.get('password'))
+      print bundle.data
       bundle.obj.save()
     except IntegrityError:
-      raise BadRequest('The username already exists')
+      raise BadRequest('The email already exists')
     return bundle
 
   def apply_authorization_limits(self, request, object_list):
