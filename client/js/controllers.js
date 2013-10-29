@@ -30,8 +30,7 @@ angular.module('myApp.controllers', []).
             
                 $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
-                    
-                    //console.log(data)
+                    $.cookie('the_cookie', true, { expires: 7 });
                     $window.location.href = 'dashboard.html'
                 }
             })
@@ -40,13 +39,14 @@ angular.module('myApp.controllers', []).
         }
     }).
 
-    controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login) {
+    controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login,$cookies) {
         console.log('This is LoginCtrl');
         $scope.login = function (user) {
             //adding some simple verifications
             $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
+                    $.cookie('the_cookie', true, { expires: 7 });
                     $window.location.href = 'dashboard.html'
                 }
             })
@@ -475,9 +475,6 @@ angular.module('dashApp.controllers', []).
     .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies,$window,$cookieStore) {
         var email;
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
-            if(response.status != '200'){
-                $window.location.href = 'index.html'
-            }
             User = response.data;
             email=response.data.email
             $scope.user = User;
@@ -490,6 +487,7 @@ angular.module('dashApp.controllers', []).
 
             $scope.logout = function(){
                $http.get(API_URL + 'user/logout/',{withCredentials: true}).success(function (data, status, headers, config) {
+                    $.removeCookie('the_cookie');
                     $window.location.href=WEBSITE_URL;
                 });
             }
