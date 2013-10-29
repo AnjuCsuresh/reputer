@@ -2,12 +2,6 @@
 
 /* Controllers */
 
-//API URLS 
-// Add Trailing Slash
-//var API_URL = 'https://app.reputer.co/api/v1/';
-var API_URL = 'http://localhost:8000/api/v1/';
-var DATA_API_URL = 'http://localhost:5000/'
-var WEBSITE_URL = 'http://localhost:8888'
 
 angular.module('myApp.controllers', []).
 
