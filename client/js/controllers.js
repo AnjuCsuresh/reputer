@@ -20,7 +20,7 @@ angular.module('myApp.controllers', []).
             $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
-                    $.cookie('the_cookie', true, { expires: 7 });
+                    $.cookie('the_cookie', data.user.id, { expires: 7 });
                     $window.location.href = 'dashboard.html'
                 }
             })
@@ -43,9 +43,9 @@ angular.module('myApp.controllers', []).
             
                 $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
-                    $.cookie('the_cookie', true, { expires: 7 });
+                    $.cookie('the_cookie', data.user.id, { expires: 7 });
                     //todo: redirect to add entity screen
-                    $window.location.href = 'dashboard.html'
+                    $window.location.href = 'dashboard.html#/account/entity'
                 }
             })
                     
@@ -80,12 +80,27 @@ angular.module('myApp.controllers', []).
     }]);
 
 angular.module('dashApp.controllers', []).
-    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams,$cookieStore) {
+    controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams,$cookieStore,$location) {
         var id=$routeParams.id;
         if(id>0){
             $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
             });
+        }
+        else{
+            console.log($.cookie('the_cookie'))
+            var userid=$.cookie('the_cookie');
+            $http.get(API_URL+'Entity/?user__id='+userid+'&format=json').success(function (data) {
+                    console.log(data.objects)
+                    $scope.entities=data.objects
+                    if(data.objects.length>0){
+                        $scope.entity=data.objects[0]
+                    }
+                    else{
+                        $location.path('/account/entity');
+                    }
+
+                })
         }
         $http.get(DATA_API_URL+'getcrawltable/11').success(function(data, status, headers, config){
             $scope.items = data.aaData;
@@ -238,8 +253,8 @@ angular.module('dashApp.controllers', []).
         
     })
      .controller('EntityCtrl', function ($http, $scope, User,$window, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams) {
-        var d=$routeParams.id;
-        $http.get(API_URL+'user/?id='+d+'&format=json').success(function (data) {
+        var userid=$.cookie('the_cookie');
+        $http.get(API_URL+'user/?id='+userid+'&format=json').success(function (data) {
                     $scope.user=data.objects[0]
                     console.log($scope.user)
                 })

@@ -40,7 +40,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
             $rootScope.location = $location
         );
         $rootScope.$on('$routeChangeStart', function(event, currRoute, prevRoute){
-                if ($.cookie('the_cookie')) {
+                if ($.cookie('the_cookie')!=null) {
                     $window.location.href = 'dashboard.html'
                     // reload the login route
                 }
@@ -53,7 +53,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
     config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/:id', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
         $routeProvider.when('/form_wiz', {templateUrl: '/partials/admin/form_wiz.html'});
-        $routeProvider.when('/entity/:id', {templateUrl: '/partials/admin/entity.html', controller: 'EntityCtrl'});
+        $routeProvider.when('/account/entity', {templateUrl: '/partials/admin/entity.html', controller: 'EntityCtrl'});
         $routeProvider.when('/edit/:id', {templateUrl: '/partials/admin/edit.html', controller: 'EntityEditCtrl'});
         $routeProvider.when('/view', {templateUrl: '/partials/admin/view.html', controller: 'EntityCtrl'});
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
