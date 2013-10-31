@@ -24,6 +24,13 @@ angular.module('myApp.services', [])
     });
 
 angular.module('dashApp.services', [])
+.factory("MessageBus", function($rootScope) {
+    return {
+        broadcast : function(event, data) {
+            $rootScope.$broadcast(event, data);
+        }
+    };
+    })
     .factory('User', function () {
         var user;
         //factory function body that constructs shinyNewServiceInstance

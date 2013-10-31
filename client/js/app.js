@@ -56,6 +56,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/account/entity', {templateUrl: '/partials/admin/entity.html', controller: 'EntityCtrl'});
         $routeProvider.when('/edit/:id', {templateUrl: '/partials/admin/edit.html', controller: 'EntityEditCtrl'});
         $routeProvider.when('/view', {templateUrl: '/partials/admin/view.html', controller: 'EntityCtrl'});
+        $routeProvider.when('/account/manage', {templateUrl: '/partials/admin/manage.html', controller: 'ManageEntityCtrl'});
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
 
         $routeProvider.when('/oops', {templateUrl: '/partials/front/404.html'});

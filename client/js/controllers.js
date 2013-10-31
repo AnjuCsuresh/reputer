@@ -90,7 +90,7 @@ angular.module('dashApp.controllers', []).
         else{
             console.log($.cookie('the_cookie'))
             var userid=$.cookie('the_cookie');
-            $http.get(API_URL+'Entity/?user__id='+userid+'&format=json').success(function (data) {
+            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
                     console.log(data.objects)
                     $scope.entities=data.objects
                     if(data.objects.length>0){
@@ -252,7 +252,7 @@ angular.module('dashApp.controllers', []).
         })
         
     })
-     .controller('EntityCtrl', function ($http, $scope, User,$window, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams) {
+     .controller('EntityCtrl', function ($http, $scope, User,$window,Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams,MessageBus) {
         var userid=$.cookie('the_cookie');
         $http.get(API_URL+'user/?id='+userid+'&format=json').success(function (data) {
                     $scope.user=data.objects[0]
@@ -274,11 +274,9 @@ angular.module('dashApp.controllers', []).
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
-                $timeout(function(){
-                    $window.location.href = 'dashboard.html' 
-                }, 750);  
-                
-            })
+                MessageBus.broadcast("data");
+                $location.path('/account/manage');
+                })
         }
         $scope.save_business = function(entity){
             var business = {
@@ -292,9 +290,8 @@ angular.module('dashApp.controllers', []).
                     dismissQueue:true,
                     closeWith:['hover'] 
                 });
-                $timeout(function(){
-                    $window.location.href = 'dashboard.html' 
-                }, 750);  
+                MessageBus.broadcast("data");
+                $location.path('/account/manage');
             })
         }
     })
@@ -486,12 +483,13 @@ angular.module('dashApp.controllers', []).
 //Account settings cntrlr
     .controller('TopNavCtrl', function (User, $scope, $location, $http,$timeout,$cookies,$window,$cookieStore) {
         var email;
+        var userid=$.cookie('the_cookie');
         $http.get(API_URL + 'user/info/', {withCredentials: true}).then(function (response) {
             User = response.data;
             email=response.data.email
             $scope.user = User;
             console.log(response)
-            $http.get(API_URL+'Entity/?user__id='+User.id+'&format=json').success(function (data) {
+            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
                     console.log(data.objects)
                     $scope.entities=data.objects
                 })
@@ -503,6 +501,12 @@ angular.module('dashApp.controllers', []).
                     $window.location.href=WEBSITE_URL;
                 });
             }
+        })
+        $scope.$on("data", function() {
+            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
+                    console.log(data.objects)
+                    $scope.entities=data.objects
+                })
         })
         $scope.save_password = function(user,user1){
             var u = {
@@ -535,7 +539,30 @@ angular.module('dashApp.controllers', []).
         }
 
     })
-
+.controller('ManageEntityCtrl', function ($scope, $location, $http,$timeout,$cookies,$window, MessageBus){
+   var userid=$.cookie('the_cookie');
+    $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
+            console.log(data.objects)
+            $scope.entities=data.objects
+    })
+   $scope.deleteentity=function(entity){
+    console.log(entity.resource_uri)
+        $http.delete("http://localhost:8000" + entity.resource_uri).success(function (data) {
+            $scope.n = notyfy({
+                    text: 'Deleted',
+                    type: 'success',
+                    dismissQueue:true,
+                    closeWith:['hover'] 
+                });
+            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
+                $scope.entities=data.objects
+                MessageBus.broadcast("data");
+            })
+            
+         })
+   }  
+   
+})
 .controller('ChartCtrl',function($scope,$http,$location){
     
 })

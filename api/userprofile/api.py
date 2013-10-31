@@ -258,11 +258,13 @@ class EntityResource(ModelResource):
     class Meta:
         queryset = Entity.objects.all()
         resource_name = 'Entity'
+        allowed_methods = ['get', 'post','put','delete']
         authentication = Authentication()
         authorization = Authorization()
         always_return_data = True
         filtering = {
             'id': ALL,
+            'alive': ALL,
             'user':ALL_WITH_RELATIONS,
         }
     
