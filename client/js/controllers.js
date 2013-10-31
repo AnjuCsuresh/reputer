@@ -561,26 +561,7 @@ angular.module('dashApp.controllers', []).
             
          })
    }  
-   $scope.delete=function(entities){
-    console.log(entities)
-    for(var i=0;i<entities.length;i++){
-        if(entities[i].checked){
-            console.log(entities[i])
-            $http.delete("http://localhost:8000" + entities[i].resource_uri).success(function (data) {
-
-            })
-        }
-        console.log("manju")
-    }
-    $timeout(function() {
-        console.log("anju")
-        $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
-                $scope.entities=data.objects
-                MessageBus.broadcast("data");
-        })
-    }, 250);
-        
-   }  
+   
 })
 .controller('ChartCtrl',function($scope,$http,$location){
     
