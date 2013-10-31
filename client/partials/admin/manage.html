@@ -1,0 +1,84 @@
+
+
+<!-- Heading -->
+<div class="heading-buttons">
+	<h1>Manage Entity<span></span></h1>
+	<div class="buttons pull-right">
+				<a ng-click="location.path('/account/entity')" class="btn btn-primary btn-icon glyphicons circle_plus"><i></i> Add Entity</a>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+<!-- // Heading END -->
+
+<div class="innerLR">
+
+	<!-- Row -->
+	
+	<!-- // Row END -->
+
+	<!-- Widget -->
+	<div class="widget widget-heading-simple widget-body-white">
+	
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading glyphicons list"><i></i> Manage Entity</h4>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+		
+			<!-- Total products & Sort by options -->
+			
+			<!-- // Total products & Sort by options END -->
+			
+			<!-- Filters -->
+			
+			<!-- // Filters END -->
+			
+			<!-- Products table -->
+			<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs js-table-sortable">
+				<thead>
+					<tr>
+						<th>Entity</th>
+						<th style="width: 10%;" class="uniformjs"></th>
+						<th class="center" style="width: 200px;">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="selectable" ng-repeat="entity in entities">
+						<td class="important">{{entity.business_name}}{{entity.first_name}}  {{entity.last_name}}</td>
+						<td class="center uniformjs"><input type="checkbox" ng-model="entity.checked"/></td>
+						<td class="center">
+							<button class="btn btn-success" ng-click="location.path('/edit/'+entity.id)">Edit</button>
+							<button class="btn btn-danger " ng-click="deleteentity(entity)">Delete</button>
+						</td>
+					</tr>
+					
+										
+				</tbody>
+			</table>
+			<!-- // Products table END -->
+			
+			<!-- Options -->
+			<div class="form-inline small">
+			
+				<!-- With selected actions -->
+				
+				<!-- // With selected actions END -->
+				<div class="span2 pull-right">
+					<button class="btn btn-danger btn-block " ng-click="delete(entities)">DELETE</button>
+				</div>
+				<!-- Pagination -->
+				
+				<div class="clearfix"></div>
+				<!-- // Pagination END -->
+				
+			</div>
+			<!-- // Options END -->
+			
+		</div>
+	</div>
+	<!-- // Widget END -->
+	
+</div>	
