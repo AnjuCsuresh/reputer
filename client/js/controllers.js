@@ -217,38 +217,39 @@ angular.module('dashApp.controllers', []).
         });
 
         $http.get(DATA_API_URL+'getscoretrend/10').success(function(data, status, headers, config){
-            $scope.chartConfig = {
-                options: {
-                    chart: {
-                        type: 'line'
-                    }
-                },
-
-                series: [{
-                    name: 'Popularity Count',
-                    data: data['pop_count']
-                },
+            var dataChart = {
+              "xScale": "time",
+              "yScale": "linear",
+              "type": "line",
+              "main": [
                 {
-                    name: 'Search Sentiment',
-                    data: data['sentiment']
+                  "className": ".pizza",
+                  "data": data.sentiment
                 }
-                ],
-                xAxis: {
-                    categories: data['time'],
-                    labels:
-                    {
-                      enabled: false
-                    }
-                },
-                yAxis: {
-                    lineWidth: 0,
-                },
-                title: {
-                    text: 'Sentiment Score Trend'
-                },
+              ]
+            };
+            var opts = {
+              "dataFormatX": function (x) { return d3.time.format('%Y-%m-%d').parse(x); },
+              "tickFormatX": function (x) { return d3.time.format('%A')(x); }
+            };
+            var dataChart2 = {
+              "xScale": "time",
+              "yScale": "linear",
+              "type": "line",
+              "main": [
+                {
+                  "className": ".pizza",
+                  "data": data.pop_count
+                }
+              ]
+            };
+            var opts = {
+              "dataFormatX": function (x) { return d3.time.format('%Y-%m-%d').parse(x); },
+              "tickFormatX": function (x) { return d3.time.format('%A')(x); }
+            };
 
-                loading: false
-            }
+            var myChart = new xChart('line', dataChart, '#myChart', opts);
+            var myChart2  = new xChart('line', dataCh, '#myChart2', opts);
         })
         
     })

@@ -129,3 +129,12 @@ font-size: 20px;
 .logo{
   width: 200px !important;
 }
+
+/* D3js Codes */
+.xchart .color0 .fill {
+fill: rgba(244,244,244,0.5) !important;
+}
+.xchart .color0 .line {
+stroke: #e5412d !important;
+}
+/* END D3js */

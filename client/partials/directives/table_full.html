@@ -1,0 +1,53 @@
+{{items}}
+<table class="crawltable footable table table-striped table-bordered table-white table-primary" ng-init="search()">
+			
+			<!-- Table heading -->
+			<thead>
+					<tr>
+						<th ng-click="sort_by('Rank')">Rank&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('domain')">Website&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('Title')">Title&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('Summary')">Summary&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
+						<th>Actions</th>
+					</tr>
+				</thead>	
+			<!-- // Table heading END -->
+			
+			<!-- Table body -->
+			<tfoot>
+                <td colspan="6">
+                    <div class="pagination pull-right">
+                        <ul>
+                            <li ng-class="{disabled: currentPage == 0}">
+                                <a href ng-click="prevPage()">« Prev</a>
+                            </li>
+                            <li ng-repeat="n in range(pagedItems.length)"
+                                ng-class="{active: n == currentPage}"
+                            ng-click="setPage()">
+                                <a href ng-bind="n + 1">1</a>
+                            </li>
+                            <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                                <a href ng-click="nextPage()">Next »</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tfoot>
+			<tbody>
+				
+				<!-- Table row -->
+				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
+					<td>{{result.Rank}}</td>
+					<td>{{result.domain}}</td>
+					<td>{{result.Title}}</td>
+					<td>{{result.Summary}}</td>
+					<td>{{result.rating}}</td>
+					<td><button class="btn btn-inverse" ng-click="ignore(result)"> Ignore</button></td>
+				</tr>
+				<!-- // Table row END -->
+				
+			</tbody>
+			<!-- // Table body END -->
+			
+		</table>
