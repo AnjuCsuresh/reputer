@@ -102,7 +102,7 @@ angular.module('dashApp.controllers', []).
 
                 })
         }
-        $http.get(DATA_API_URL+'getcrawltable/11').success(function(data, status, headers, config){
+        $http.get(DATA_API_URL+'getcrawltable/'+id).success(function(data, status, headers, config){
             $scope.items = data.aaData;
             $scope.predicate = 'Rank';
             $scope.reverse = false;
@@ -216,7 +216,7 @@ angular.module('dashApp.controllers', []).
         }
         });
 
-        $http.get(DATA_API_URL+'getscoretrend/10').success(function(data, status, headers, config){
+        $http.get(DATA_API_URL+'getscoretrend/'+id).success(function(data, status, headers, config){
             $scope.chartConfig = {
                 options: {
                     chart: {

@@ -124,12 +124,7 @@
 					<ul class="topnav pull-left">
 						<li class="active"><a href="#/" class="glyphicons dashboard"><i></i> Dashboard</a></li>
 
-						
-						<li class="dropdown dd-1">
-							<a href="" ng-click="location.path('/account/entity')" class="glyphicons circle_plus"><i></i>Add Entity </a>
-							
-						</li>
-						<li class="dropdown dd-1">
+					<li class="dropdown dd-1">
            					<a href="" data-toggle="dropdown" class="glyphicons user"><i></i>Select Entity<span class="caret"></span></a>       <ul class="dropdown-menu pull-left">
               				<!-- Components Submenu Level 2 -->
                
@@ -137,8 +132,12 @@
                				</ul>
             		 </li>
             		 <li>
-           					<a ng-click="location.path('/account/manage')" class="glyphicons settings"><i></i>Manage Entity</a>       
+           					<a ng-click="location.path('/account/manage')" class="glyphicons settings"><i></i>Manage Entities</a>       
             		 </li>
+            		 <li class="dropdown dd-1">
+							<a href="" ng-click="location.path('/account/entity')" class="glyphicons circle_plus"><i></i>Add Entity </a>
+							
+						</li>
 					</ul>
 					<!-- // Full Top Style END -->
 
