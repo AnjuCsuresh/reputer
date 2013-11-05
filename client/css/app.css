@@ -54,7 +54,15 @@ background-color: black;
 .crawltable th:hover{
   cursor: pointer;
 }
-
+.not_entity h3{
+  margin: 3.5em 0px;
+  text-align: center; 
+}
+span.thank {
+  font-weight: bold;
+  color:red;
+  font-size: 25px;
+}
 .add_entity h1{
   margin: 1.5em 0px;
   text-align: center; 

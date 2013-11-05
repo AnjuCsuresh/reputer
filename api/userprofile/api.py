@@ -265,6 +265,7 @@ class EntityResource(ModelResource):
         filtering = {
             'id': ALL,
             'alive': ALL,
+            'live':ALL,
             'user':ALL_WITH_RELATIONS,
         }
     

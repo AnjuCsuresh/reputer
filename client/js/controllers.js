@@ -85,12 +85,15 @@ angular.module('dashApp.controllers', []).
         if(id>0){
             $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
+                  if(data.objects[0].live==false){
+                    $location.path('/account/entity/oops');
+                  }
             });
         }
         else{
             console.log($.cookie('the_cookie'))
             var userid=$.cookie('the_cookie');
-            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
+            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&live=true&format=json').success(function (data) {
                     console.log(data.objects)
                     $scope.entities=data.objects
                     if(data.objects.length>0){
