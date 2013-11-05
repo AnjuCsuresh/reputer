@@ -249,7 +249,7 @@ angular.module('dashApp.controllers', []).
             };
 
             var myChart = new xChart('line', dataChart, '#myChart', opts);
-            var myChart2  = new xChart('line', dataCh, '#myChart2', opts);
+            var myChart2  = new xChart('line', dataChart2, '#myChart2', opts);
         })
         
     })
