@@ -157,6 +157,7 @@ class URL(SoftDeletionModel):
 
 
 class Entity(SoftDeletionModel):
+    live = models.BooleanField(default=False)
     entity_name = models.CharField(max_length=200,null=True,blank=True)
     first_name = models.CharField(max_length=50,null=True,blank=True)
     middle_name = models.CharField(max_length=50,null=True,blank=True)
