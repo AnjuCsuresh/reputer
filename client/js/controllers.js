@@ -6,14 +6,11 @@
 angular.module('myApp.controllers', []).
 
     controller('RegisterCtrl',function ($http, $scope, $location ,$window, $cookies) {
-        console.log('This is register');
-
-        
+       
     }).
 
     controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login,$cookies) {
-        console.log('This is LoginCtrl');
-        $scope.login = function (user) {
+       $scope.login = function (user) {
             //adding some simple verifications
             user['username']= user.email
             delete user['email']
@@ -35,8 +32,7 @@ angular.module('myApp.controllers', []).
                 email: user.email
             };
             $http.post(API_URL + 'newuser/', data).then(function (data) {
-                console.log(data.data.username)
-                var u = {
+               var u = {
                     username: data.data.email,
                     password: user.password
                 };
@@ -62,7 +58,6 @@ angular.module('myApp.controllers', []).
             $http.put(API_URL + 'user/password_reset/', user, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
-                    console.log(data)                    
                     var d = window.confirm("We've emailed you your new password to the email address you submitted. You should be receiving it shortly.");
                     if(d){
                         $window.location.href = 'index.html'
@@ -76,7 +71,6 @@ angular.module('myApp.controllers', []).
         }
     })
     .controller('MyCtrl2', [function () {
-        console.log("2dd")
     }]);
 
 angular.module('dashApp.controllers', []).
@@ -91,10 +85,8 @@ angular.module('dashApp.controllers', []).
             });
         }
         else{
-            console.log($.cookie('the_cookie'))
             var userid=$.cookie('the_cookie');
             $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&live=true&format=json').success(function (data) {
-                    console.log(data.objects)
                     $scope.entities=data.objects
                     if(data.objects.length>0){
                         $scope.entity=data.objects[0]
@@ -255,11 +247,10 @@ angular.module('dashApp.controllers', []).
         })
         
     })
-     .controller('EntityCtrl', function ($http, $scope, User,$window,Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams,MessageBus) {
+     .controller('EntityCtrl', function ($http, $scope, User,$window,$location,$timeout,$routeParams,MessageBus) {
         var userid=$.cookie('the_cookie');
         $http.get(API_URL+'user/?id='+userid+'&format=json').success(function (data) {
                     $scope.user=data.objects[0]
-                    console.log($scope.user)
                 })
         $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
             $scope.professions = data.objects;
@@ -300,12 +291,10 @@ angular.module('dashApp.controllers', []).
     })
 
 //Edit entity cntrlr
-    .controller('EntityEditCtrl', function ($http, $scope, User, Loctns, Names, URLS, Entity, Phone, Fax, PhoneNo, FaxNo,$location,$timeout,$routeParams) {
+    .controller('EntityEditCtrl', function ($http, $scope, User,$location,$timeout,$routeParams) {
         var id=$routeParams.id;
-        console.log(id)
         $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
             $scope.professions = data.objects;
-            console.log(data.objects)
         })
         $scope.name={};
         $scope.url={};
@@ -350,7 +339,6 @@ angular.module('dashApp.controllers', []).
         })
         //edit basic entity details
         $scope.edit_person = function(entity){
-            console.log(entity)
             if(entity.profession.name!='Other'){
                 entity.other_profession="";
             }
@@ -367,9 +355,7 @@ angular.module('dashApp.controllers', []).
 
         //save location details
         $scope.save_location = function(entity,phone,fax,loctn){
-                console.log(loctn)
-                $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
-                        console.log(data)
+               $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
                         entity.location[0]=data
                         phone.location=data
                         fax.location=data
@@ -395,7 +381,6 @@ angular.module('dashApp.controllers', []).
         }
         //save name and url
         $scope.save_name = function(name,url){
-            console.log(name)
             url.entity=$scope.entity;
             name.entity=$scope.entity;
             $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
@@ -410,15 +395,10 @@ angular.module('dashApp.controllers', []).
             $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){
                 $scope.name=data
                 })
-                
-            console.log(name)
-            console.log(url)
-            
         }
         //edit basic business details
         $scope.edit_business = function(entity){
-            console.log(entity)
-            $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
+             $http.put(API_URL+'Entity/'+entity.id+'/',entity).success(function(data, status, headers, config){
                 $scope.n = notyfy({
                     text: 'Changes Saved for '+data.business_name,
                     type: 'success',
@@ -431,9 +411,7 @@ angular.module('dashApp.controllers', []).
 
         //save business location details
         $scope.save_businesslocation = function(entity,phone,fax,loctn){
-                console.log(loctn)
-                $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
-                        console.log(data)
+               $http.post(API_URL+'Location/',loctn).success(function(data, status, headers, config){
                         entity.location[0]=data
                         phone.location=data
                         fax.location=data
@@ -458,7 +436,6 @@ angular.module('dashApp.controllers', []).
         }
         //save business name and url
         $scope.save_businessname = function(name,url){
-            console.log(name)
             url.entity=$scope.entity;
             name.entity=$scope.entity;
             $http.post(API_URL+'Url/',url).success(function(data, status, headers, config){
@@ -473,10 +450,6 @@ angular.module('dashApp.controllers', []).
             $http.post(API_URL+'Name/',name).success(function(data, status, headers, config){
                 $scope.name=data
                 })
-                
-            console.log(name)
-            console.log(url)
-            
         }
 
     })
@@ -491,14 +464,10 @@ angular.module('dashApp.controllers', []).
             User = response.data;
             email=response.data.email
             $scope.user = User;
-            console.log(response)
-            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
-                    console.log(data.objects)
+           $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
                     $scope.entities=data.objects
                 })
-            console.log(User);
-
-            $scope.logout = function(){
+        $scope.logout = function(){
                $http.get(API_URL + 'user/logout/',{withCredentials: true}).success(function (data, status, headers, config) {
                     $.removeCookie('the_cookie');
                     $window.location.href=WEBSITE_URL;
@@ -507,8 +476,7 @@ angular.module('dashApp.controllers', []).
         })
         $scope.$on("data", function() {
             $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
-                    console.log(data.objects)
-                    $scope.entities=data.objects
+                   $scope.entities=data.objects
                 })
         })
         $scope.save_password = function(user,user1){
@@ -519,7 +487,6 @@ angular.module('dashApp.controllers', []).
                 password1:user1.password1
                 
             };
-            console.log(u)
             $http.post(API_URL + 'user/test/',u, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                   $scope.n = notyfy({
@@ -545,11 +512,9 @@ angular.module('dashApp.controllers', []).
 .controller('ManageEntityCtrl', function ($scope, $location, $http,$timeout,$cookies,$window, MessageBus){
    var userid=$.cookie('the_cookie');
     $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
-            console.log(data.objects)
-            $scope.entities=data.objects
+        $scope.entities=data.objects
     })
    $scope.deleteentity=function(entity){
-    console.log(entity.resource_uri)
         $http.delete("http://localhost:8000" + entity.resource_uri).success(function (data) {
             $scope.n = notyfy({
                     text: 'Deleted',

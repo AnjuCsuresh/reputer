@@ -60,11 +60,11 @@
 									</div>
 									<div class="modal-body">
 										<p>Type <b> {{entity.business_name}}{{entity.first_name}}</b> exactly in the box below to confirm delete</p>
-										<input type="text" ng-model="delentity">
+										<input type="text" ng-model="delentity" required>
 									</div>
 									<div class="modal-footer">
 										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-										<button ng-disabled="entity.first_name!=delentity&&entity.business_name!=delentity" type="button" class="btn btn-primary" ng-click="deleteentity(entity)" data-dismiss="modal">Delete</button>
+										<button ng-disabled="(entity.first_name!=delentity&&entity.business_name!=delentity)||delentity==null" type="button" class="btn btn-primary" ng-click="deleteentity(entity)" data-dismiss="modal">Delete</button>
 									</div>
 								</div><!-- /.modal-content -->
 							</div><!-- /.modal-dialog -->
