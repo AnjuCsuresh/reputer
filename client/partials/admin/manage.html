@@ -1,0 +1,101 @@
+
+
+<!-- Heading -->
+<div class="heading-buttons">
+	<h1>Manage Entities<span></span></h1>
+	<div class="buttons pull-right">
+		<a ng-click="location.path('/account/entity')" class="btn btn-success btn-icon glyphicons circle_plus"><i></i> Add Entity</a>
+	</div>
+	<div class="clearfix"></div>
+</div>
+<div class="separator bottom"></div>
+<!-- // Heading END -->
+
+<div class="innerLR">
+
+	<!-- Row -->
+	
+	<!-- // Row END -->
+
+	<!-- Widget -->
+	<div class="widget widget-heading-simple widget-body-white">
+
+		<!-- Widget heading -->
+		<div class="widget-head">
+			<h4 class="heading glyphicons list"><i></i>Entities</h4>
+		</div>
+		<!-- // Widget heading END -->
+		
+		<div class="widget-body">
+
+			<!-- Total products & Sort by options -->
+			
+			<!-- // Total products & Sort by options END -->
+			
+			<!-- Filters -->
+			
+			<!-- // Filters END -->
+			
+			<!-- Products table -->
+			<table class="table table-bordered table-condensed table-striped table-primary table-vertical-center checkboxs js-table-sortable">
+				<thead>
+					<tr>
+						<th>Entity Name</th>
+						
+						<th class="center" style="width: 300px;">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="selectable" ng-repeat="entity in entities">
+						<td class="important">{{entity.business_name}}{{entity.first_name}}  {{entity.last_name}}</td>
+						<td class="center">
+							<button class="btn btn-success" ng-click="location.path('/edit/'+entity.id)">Edit</button>
+							<button class="btn btn-danger " data-toggle="modal" data-target="#{{entity.id}}" >Delete</button>
+							<div class="modal fade" id="{{entity.id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+										<h4 class="modal-title" id="myModalLabel">Delete Entity</h4>
+									</div>
+									<div class="modal-body">
+										<p>Type <b> {{entity.business_name}}{{entity.first_name}}</b> exactly in the box below to confirm delete</p>
+										<input type="text" ng-model="delentity" required>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+										<button ng-disabled="(entity.first_name!=delentity&&entity.business_name!=delentity)||delentity==null" type="button" class="btn btn-primary" ng-click="deleteentity(entity)" data-dismiss="modal">Delete</button>
+									</div>
+								</div><!-- /.modal-content -->
+							</div><!-- /.modal-dialog -->
+						</div><!-- /.modal -->
+
+						</td>
+
+					</tr>
+					
+
+				</tbody>
+			</table>
+			<!-- // Products table END -->
+			
+			<!-- Options -->
+			<div class="form-inline small">
+
+				<!-- With selected actions -->
+				
+				<!-- // With selected actions END -->
+				
+				<!-- Pagination -->
+				
+				<div class="clearfix"></div>
+				<!-- // Pagination END -->
+				
+			</div>
+			<!-- // Options END -->
+			
+		</div>
+	</div>
+	<!-- // Widget END -->
+	
+</div>	

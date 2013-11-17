@@ -21,8 +21,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
         var numLoadings = 0;
         var loadingScreen = $('<div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;background-color:white;background-color:rgba(255,255,255,0.6);"><div style="position:absolute;top:45%;left:45.5%;font-size:4em;text-align:center"><i class="icon-spinner icon-spin icon-large"></i></div></div>')
             .appendTo($('body')).hide();
-        console.log('loadingScreen')
-        $httpProvider.responseInterceptors.push(function() {
+       $httpProvider.responseInterceptors.push(function() {
             return function(promise) {
                 numLoadings++;
                 loadingScreen.show();
@@ -54,11 +53,13 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/:id', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
         $routeProvider.when('/form_wiz', {templateUrl: '/partials/admin/form_wiz.html'});
         $routeProvider.when('/account/entity', {templateUrl: '/partials/admin/entity.html', controller: 'EntityCtrl'});
+        $routeProvider.when('/account/entity/oops', {templateUrl: '/partials/admin/disp.html', controller: 'EntityCtrl'});
         $routeProvider.when('/edit/:id', {templateUrl: '/partials/admin/edit.html', controller: 'EntityEditCtrl'});
         $routeProvider.when('/view', {templateUrl: '/partials/admin/view.html', controller: 'EntityCtrl'});
+        $routeProvider.when('/account/manage', {templateUrl: '/partials/admin/manage.html', controller: 'ManageEntityCtrl'});
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
 
-        $routeProvider.when('/oops', {templateUrl: '/partials/front/404.html'});
+        //$routeProvider.when('/oops', {templateUrl: '/partials/front/404.html'});
         $routeProvider.when('/table', {templateUrl: '/partials/admin/table.html'});
         $routeProvider.when('/table_res', {templateUrl: '/partials/admin/table_res.html'});
         $routeProvider.when('/pricing', {templateUrl: '/partials/admin/pricing_tab.html'});
@@ -89,7 +90,6 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         var numLoadings = 0;
         var loadingScreen = $('<div style="position:fixed;top:0;left:0;right:0;bottom:0;z-index:10000;background-color:white;background-color:rgba(255,255,255,0.6);"><div style="position:absolute;top:45%;left:45.5%;font-size:4em;text-align:center"><i class="icon-spinner icon-spin icon-large"></i></div></div>')
             .appendTo($('body')).hide();
-        console.log('loadingScreen')
         $httpProvider.responseInterceptors.push(function() {
             return function(promise) {
                 numLoadings++;
