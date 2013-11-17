@@ -126,14 +126,18 @@ from django.core.mail import send_mail
 
 
 class ExtendedUserResource(MyResource):
-    user = fields.ToOneField('userprofile.api.UserResource','user')
+    user = fields.ToOneField('userprofile.api.UserResource','user',full=True)
     notification = fields.ForeignKey('userprofile.api.NotificationLevelResource','notification',full=True,null=True)
     class Meta: 
         queryset = ExtendedUser.objects.all()
         resource_name = 'extended_user'
         authorization = Authorization()
         authentication = Authentication()
-
+        filtering = {
+            'id':ALL,
+            'username': ALL,
+            'user': ALL_WITH_RELATIONS
+        }
 class UserResource(ModelResource):
     #extended_re = fields.ToOneField('userprofile.api.ExtendedUserResource','extended_user',full=True,null=True)
     class Meta:

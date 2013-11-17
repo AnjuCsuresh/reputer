@@ -532,6 +532,7 @@ angular.module('dashApp.controllers', []).
    
 })
 .controller('NotificationSettingsCtrl',function($scope,$http,$location){
+    var userid=$.cookie('the_cookie');
     $http.get(API_URL+'NotificationLevel/',{withCredentials:true}).success(function (data, status, headers, config) {
             $scope.levels = data.objects;
             $scope.levelInfo = {}
@@ -539,34 +540,46 @@ angular.module('dashApp.controllers', []).
                 var l = $scope.levels[i]
                 $scope.levelInfo[l.level] = l.description
             }
-            $scope.message = $scope.levelInfo[1]
-            if ($('.increments-slider').size() > 0)
-            {
-                $( ".increments-slider .slider" ).slider({
-                    create: JQSliderCreate,
-                    value:1,
-                    min: $scope.levels[0].level,
-                    max: $scope.levels[$scope.levels.length-1].level,
-                    step: 1,
-                    slide: function( event, ui ) {
-                        $scope.message = $scope.levelInfo[ui.value]
-                        $scope.sav_level = ui.value;
-                        $scope.$apply();
-                    },
-                    start: function() { if (typeof mainYScroller != 'undefined') mainYScroller.disable(); },
-                    stop: function() { if (typeof mainYScroller != 'undefined') mainYScroller.enable(); }
+            
+            
+            $http.get(API_URL+'extended_user/?user__id='+userid).success(function (data, status, headers, config) {
+                    var user = data.objects[0]
+                    $scope.message = $scope.levelInfo[user.notification.level]
+                    if ($('.increments-slider').size() > 0)
+                    {
+                        $( ".increments-slider .slider" ).slider({
+                            create: JQSliderCreate,
+                            value:user.notification.level,
+                            min: $scope.levels[0].level,
+                            max: $scope.levels[$scope.levels.length-1].level,
+                            step: 1,
+                            slide: function( event, ui ) {
+                                $scope.message = $scope.levelInfo[ui.value]
+                                $scope.sav_level = ui.value;
+                                $scope.$apply();
+                            },
+                            start: function() { if (typeof mainYScroller != 'undefined') mainYScroller.disable(); },
+                            stop: function() { if (typeof mainYScroller != 'undefined') mainYScroller.enable(); }
+                        });
+                        $( ".increments-slider .amount" ).val( "$" + $( ".increments-slider .slider" ).slider( "value" ) );
+                    }
+                    $scope.save = function(){
+                        for(var i=0;i<$scope.levels.length;i++){
+                            var l = $scope.levels[i]
+                            if(l.level==$scope.sav_level){
+                                user.notification = l
+                                $http.put(API_SERVER_URL+user.resource_uri,data=user).success(function (data, status, headers, config) {
+                                    $scope.n = notyfy({
+                                        text: 'Changed notifications to Level '+user.notification.level,
+                                        type: 'success',
+                                        dismissQueue:true,
+                                        closeWith:['hover'] 
+                                    });
+                                });
+                            } 
+                        }
+                    }       
                 });
-                $( ".increments-slider .amount" ).val( "$" + $( ".increments-slider .slider" ).slider( "value" ) );
-            }
-            $scope.save = function(){
-                for(var i=0;i<$scope.levels.length;i++){
-                    var l = $scope.levels[i]
-                    if(l.level==$scope.sav_level){
-                        //save to users profile
-                        console.log(l)
-                    } 
-                }
-            }       
-        });
+    });
     
 })
