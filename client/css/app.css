@@ -55,12 +55,12 @@ background-color: black;
   cursor: pointer;
 }
 .not_entity h3{
-  margin: 3.5em 0px;
-  text-align: center; 
+  width: 60%;
+margin: 3em auto;
 }
 span.thank {
   font-weight: bold;
-  color:red;
+  color:#e5412d;
   font-size: 25px;
 }
 .add_entity h1{
