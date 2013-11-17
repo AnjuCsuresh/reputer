@@ -341,4 +341,14 @@ class NameResource(MyResource):
 
 
 
-    
+class NotificationLevelResource(MyResource):
+    class Meta:
+        queryset = NotificationLevel.objects.all()
+        resource_name = 'NotificationLevel'
+        authentication = Authentication()
+        authorization = Authorization()
+        always_return_data = True
+        filtering = {
+            'id': ALL,
+            'entity':ALL_WITH_RELATIONS,
+        }

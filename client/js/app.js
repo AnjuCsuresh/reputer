@@ -58,6 +58,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/view', {templateUrl: '/partials/admin/view.html', controller: 'EntityCtrl'});
         $routeProvider.when('/account/manage', {templateUrl: '/partials/admin/manage.html', controller: 'ManageEntityCtrl'});
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
+        $routeProvider.when('/account/settings/notification', {templateUrl: '/partials/admin/noty.html',controller: 'NotificationSettingsCtrl'});
 
         //$routeProvider.when('/oops', {templateUrl: '/partials/front/404.html'});
         $routeProvider.when('/table', {templateUrl: '/partials/admin/table.html'});

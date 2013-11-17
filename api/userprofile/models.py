@@ -149,8 +149,7 @@ class Location(SoftDeletionModel):
 
 class URL(SoftDeletionModel):
     entity = models.ForeignKey('Entity')
-    url = models.URLField()
-    
+    url = models.URLField()    
 
     def __unicode__(self):
         return self.url
@@ -201,3 +200,13 @@ class ReviewWebsite(SoftDeletionModel):
     
     def __unicode__(self):
         return self.name
+
+class NotificationLevel(SoftDeletionModel):
+    level = models.IntegerField()
+    description = models.CharField(max_length=200)
+
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
+
+    def __unicode__(self):
+        return str(self.level)

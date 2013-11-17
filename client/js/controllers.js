@@ -515,7 +515,7 @@ angular.module('dashApp.controllers', []).
         $scope.entities=data.objects
     })
    $scope.deleteentity=function(entity){
-        $http.delete("http://localhost:8000" + entity.resource_uri).success(function (data) {
+        $http.delete(API_URL + entity.resource_uri).success(function (data) {
             $scope.n = notyfy({
                     text: 'Deleted',
                     type: 'success',
@@ -531,6 +531,42 @@ angular.module('dashApp.controllers', []).
    }  
    
 })
-.controller('ChartCtrl',function($scope,$http,$location){
+.controller('NotificationSettingsCtrl',function($scope,$http,$location){
+    $http.get(API_URL+'NotificationLevel/',{withCredentials:true}).success(function (data, status, headers, config) {
+            $scope.levels = data.objects;
+            $scope.levelInfo = {}
+            for(var i=0;i<$scope.levels.length;i++){
+                var l = $scope.levels[i]
+                $scope.levelInfo[l.level] = l.description
+            }
+            $scope.message = $scope.levelInfo[1]
+            if ($('.increments-slider').size() > 0)
+            {
+                $( ".increments-slider .slider" ).slider({
+                    create: JQSliderCreate,
+                    value:1,
+                    min: $scope.levels[0].level,
+                    max: $scope.levels[$scope.levels.length-1].level,
+                    step: 1,
+                    slide: function( event, ui ) {
+                        $scope.message = $scope.levelInfo[ui.value]
+                        $scope.sav_level = ui.value;
+                        $scope.$apply();
+                    },
+                    start: function() { if (typeof mainYScroller != 'undefined') mainYScroller.disable(); },
+                    stop: function() { if (typeof mainYScroller != 'undefined') mainYScroller.enable(); }
+                });
+                $( ".increments-slider .amount" ).val( "$" + $( ".increments-slider .slider" ).slider( "value" ) );
+            }
+            $scope.save = function(){
+                for(var i=0;i<$scope.levels.length;i++){
+                    var l = $scope.levels[i]
+                    if(l.level==$scope.sav_level){
+                        //save to users profile
+                        console.log(l)
+                    } 
+                }
+            }       
+        });
     
 })

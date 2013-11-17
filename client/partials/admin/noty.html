@@ -1,244 +1,33 @@
-				<ul class="breadcrumb">
-					<li>You are here</li>
-					<li><a href="index.html?lang=en&amp;layout_type=fluid&amp;menu_position=menu-left&amp;style=style-default-menus-dark&amp;sidebar_type=collapsible" class="glyphicons dashboard"><i></i> FLAT KIT</a></li>
-					<li class="divider"><i class="icon-caret-right"></i></li>
-					<li>Components</li>
-					<li class="divider"><i class="icon-caret-right"></i></li>
-					<li>Notifications</li>
-				</ul>
-
-				<h1>Notification <span>Plugins</span></h1>
-				<div class="innerLR">
-					
-					<div class="widget widget-heading-simple widget-body-gray">
-
-						
-						<div class="widget-head">
-							<h4 class="heading">Top notifications</h4>
-						</div>
-						<!-- // Widget heading END -->
-
-						<div class="widget-body center">
-							<span class="btn btn-default" data-layout="top" data-type="alert" data-toggle="notyfy">Alert</span>
-							<span class="btn btn-success" data-layout="top" data-type="success" data-toggle="notyfy">Success</span>
-							<span class="btn btn-danger" data-layout="top" data-type="error" data-toggle="notyfy">Danger</span>
-							<span class="btn btn-warning" data-layout="top" data-type="warning" data-toggle="notyfy">Warning</span>
-							<span class="btn btn-info" data-layout="top" data-type="information" data-toggle="notyfy">Information</span>
-							<span class="btn btn-inverse" data-layout="top" data-type="confirm" data-toggle="notyfy">Confirm</span>
-						</div>
-					</div>
-					<!-- // Top Notyfy Options & Styles Live Demo END -->
-
-					<div class="row-fluid">
-
-						<!-- Left Notyfy Options Live Demo -->
-						<div class="span4">
-							<div class="widget widget-heading-simple widget-body-gray">
-
-								<!-- Widget heading -->
-								<div class="widget-head">
-									<h4 class="heading">Left</h4>
-								</div>
-								<!-- // Widget heading END -->
-
-								<div class="widget-body center">
-									<span class="btn btn-inverse" data-layout="topLeft" data-type="primary" data-toggle="notyfy">Top</span>
-									<span class="btn btn-inverse" data-layout="centerLeft" data-type="primary" data-toggle="notyfy">Center</span>
-									<span class="btn btn-inverse" data-layout="bottomLeft" data-type="primary" data-toggle="notyfy">Bottom</span>
-								</div>
-							</div>
-						</div>
-						<!-- // Left Notyfy Options Live Demo END -->
-
-						<!-- Center Notyfy Options Live Demo -->
-						<div class="span4">
-							<div class="widget widget-heading-simple widget-body-gray">
-
-								<!-- Widget heading -->
-								<div class="widget-head">
-									<h4 class="heading">Center</h4>
-								</div>
-								<!-- // Widget heading END -->
-
-								<div class="widget-body center">
-									<span class="btn btn-inverse btn-block" data-layout="center" data-type="primary" data-toggle="notyfy">Center notification</span>
-								</div>
-							</div>
-						</div>
-						<!-- // Center Notyfy Options Live Demo END -->
-
-						<!-- Right Notyfy Options Live Demo -->
-						<div class="span4">
-							<div class="widget widget-heading-simple widget-body-gray">
-
-								<!-- Widget heading -->
-								<div class="widget-head">
-									<h4 class="heading">Right</h4>
-								</div>
-								<!-- // Widget heading END -->
-
-								<div class="widget-body center">
-									<span class="btn btn-inverse" data-layout="topRight" data-type="primary" data-toggle="notyfy">Top</span>
-									<span class="btn btn-inverse" data-layout="centerRight" data-type="primary" data-toggle="notyfy">Center</span>
-									<span class="btn btn-inverse" data-layout="bottomRight" data-type="primary" data-toggle="notyfy">Bottom</span>
-								</div>
-							</div>
-						</div>
-						<!-- // Right Notyfy Options Live Demo END -->
-
-					</div>
-
-					<!-- Creating a Notyfy Code Sample -->
-					<div class="widget widget-heading-simple widget-body-gray">
-
-						<!-- Widget heading -->
-						<div class="widget-head">
-							<h4 class="heading">Creating a notyfy</h4>
-						</div>
-						<!-- // Widget heading END -->
-
-						<div class="widget-body">
-							<pre class="prettyprint">
-								var notyfy = notyfy(
-								{
-								text: 'notyfy - Yet another jQuery notification plugin',
-								type: 'primary' // alert|error|success|information|warning|primary|confirm
-								});
-							</pre>
-						</div>
-					</div>
-					<!-- // Creating a Notyfy Code Sample END -->
-
-					<!-- Default Options Code Sample -->
-					<div class="widget widget-heading-simple widget-body-white">
-
-						<!-- Widget heading -->
-						<div class="widget-head">
-						<h4 class="heading">Default Options</h4>
-						</div>
-						<!-- // Widget heading END -->
+<div class="notification_settings">
+	<div>
+		<h1>Notification Settings</h1>
+		<!-- // Widget heading END -->
 		
-						<div class="widget-body">
-							<pre class="prettyprint">
-							$.notyfy.defaults = {
-							layout: 'top',
-							theme: 'default',
-							type: 'alert',
-							text: '',
-							dismissQueue: true, // If you want to use queue feature set this true
-							template: '&lt;div class="notyfy_message"&gt;&lt;span class="notyfy_text"&gt;&lt;/span&gt;' + 
-							'&lt;div class="notyfy_close"&gt;&lt;/div&gt;&lt;/div&gt;',
-							showEffect:  function(bar) { bar.animate({ height: 'toggle' }, 500, 'swing'); },
-							hideEffect:  function(bar) { bar.animate({ height: 'toggle' }, 500, 'swing'); },
-							timeout: false, // delay for closing event. Set false for sticky notifications
-							force: false, // adds notification to the beginning of queue when set to true
-							modal: false,
-							closeWith: ['click'], // ['click', 'button', 'hover']
-							events: {
-							show: null,
-							hide: null,
-							shown: null,
-							hidden: null
-							},
-							buttons: false // an array of buttons
-							};
-							</pre>
-						</div>
-					</div>
-						<!-- // Default Options Code Sample END -->
+		<div class="row-fluid" style="margin-top:6em">
+			<div class="span12" style="text-align:center">
+				<h3>Please drag the slider below to adjust your notification preferecnes</h3>
+			</div>
+		</div>
+		<!-- Slider -->
+		<div class="increments-slider row-fluid">
+			<div class="span4 offset4" style="padding: 5px 0 0;">
+				<div class="slider slider-primary"></div>
+			</div>
+		</div>
+		<div class="row-fluid">
+			<div class="span12" style="text-align:center">
+				<h2>{{message}}</h2>
+			</div>
+		</div>
+		<br>
+		<br>
+		<br>
+		<div class="row-fluid">
+			<div class="span4 offset4" style="text-align:center">
+				<button class="btn btn-primary" ng-click="save()">Save</button>
+			</div>
+		</div>
+		<!-- // Slider END -->
 
-					<p class="separator text-center"><i class="icon-ellipsis-horizontal icon-3x"></i></p>
-
-					<h3>Gritter <span>Notifications plugin</span></h3>
-					<div class="row-fluid">
-
-						<!-- Color Options Column -->
-						<div class="span4">
-							<div class="widget widget-heading-simple widget-body-gray">
-
-							<!-- Widget heading -->
-								<div class="widget-head">
-									<h4 class="heading">Color options</h4>
-								</div>
-								<!-- // Widget heading END -->
-
-								<div class="widget-body center">
-									<span class="gritter-add-white btn btn-default btn-block">Light</span>
-									<span class="gritter-add-regular btn btn-inverse btn-block">Dark</span>
-									<span class="gritter-add-primary btn btn-primary btn-block">Primary</span>	
-								</div>	
-							</div>
-						</div>
-				
-
-						<div class="span8">
-							<div class="widget widget-heading-simple widget-body-gray">
-
-									<!-- Widget heading -->
-									<div class="widget-head">
-										<h4 class="heading">Other examples</h4>
-									</div>
-									<!-- // Widget heading END -->
-
-									<div class="widget-body center">
-										<span class="gritter-add-sticky btn btn-default btn-block btn-icon-stacked glyphicons right_arrow"><i></i><strong>Add sticky notification</strong><span>Has to be manually removed</span></span>
-										<span class="gritter-add-without-image btn btn-default btn-block btn-icon glyphicons right_arrow"><i></i>Add notification without image</span>
-										<span class="gritter-add-white btn btn-default btn-block btn-icon-stacked glyphicons right_arrow"><i></i><strong>Add white notification</strong><span>Has a "gritter-light" class applied</span></span>
-										<span class="gritter-add-max btn btn-default btn-block btn-icon-stacked glyphicons right_arrow"><i></i><strong>Add notification with max. of 3</strong><span>Only if there are &lt;= 3 messages already on screen</span></span>
-									</div>
-								</div>
-						</div>
-						<!-- // Other Examples Column END -->
-
-					</div>
-
-					<!-- Code Sample Widget -->
-					<div class="widget widget-heading-simple widget-body-white">
-
-						<!-- Widget heading -->
-						<div class="widget-head">
-							<h4 class="heading">Creating a Regular Gritter</h4>
-						</div>
-						<!-- // Widget heading END -->
-
-						<div class="widget-body">
-							<pre class="prettyprint">
-								$.gritter.add({
-								// (string | mandatory) the heading of the notification
-								title: 'This is a regular notice!',
-								// (string | mandatory) the text inside the notification
-								text: 'This will fade out after a certain amount of time.',
-								// (string | optional) the image to display on the left
-								image: 'http://yourimage.url/image.png',
-								// (bool | optional) if you want it to fade out on its own or just sit there
-								sticky: false,
-								// (int | optional) the time you want it to be alive for before fading out
-								time: ''
-									});
-							</pre>
-						</div>
-					</div>
-					<!-- // Code Sample Widget END -->
-					
-					<!-- Code Sample Widget -->
-					<div class="widget widget-heading-simple widget-body-gray">
-						
-						<!-- Widget heading -->
-						<div class="widget-head">
-							<h4 class="heading">Creating a Primary Gritter</h4>
-						</div>
-						<!-- // Widget heading END -->
-			
-							<div class="widget-body">
-								<pre class="prettyprint">
-									$.gritter.add({
-									title: 'This is a primary notice!',
-									text: ' Lorem ipsum ...',
-									image: 'your image URL goes here'
-									<strong>class_name: 'gritter-primary'</strong>
-									});
-								</pre>
-						</div>
-					</div>
-					<!-- // Code Sample Widget END -->
-				</div>
+	</div>
+</div>
