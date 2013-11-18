@@ -51,7 +51,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
 
 angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.directives', 'dashApp.controllers', 'ngCookies','highcharts-ng']).
     config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/:id', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
+        $routeProvider.when('/', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
         $routeProvider.when('/form_wiz', {templateUrl: '/partials/admin/form_wiz.html'});
         $routeProvider.when('/account/entity', {templateUrl: '/partials/admin/entity.html', controller: 'EntityCtrl'});
         $routeProvider.when('/account/entity/oops', {templateUrl: '/partials/admin/disp.html', controller: 'EntityCtrl'});
