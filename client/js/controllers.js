@@ -75,7 +75,8 @@ angular.module('myApp.controllers', []).
 
 angular.module('dashApp.controllers', []).
     controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams,$cookieStore,$location) {
-        var id=$routeParams.id;
+        console.log($.cookie('entity'))
+        var id=$.cookie('entity');
         if(id>0){
             $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
@@ -85,11 +86,12 @@ angular.module('dashApp.controllers', []).
             });
         }
         else{
-            var userid=$.cookie('the_cookie');
+        var userid=$.cookie('the_cookie');
             $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&live=true&format=json').success(function (data) {
                     $scope.entities=data.objects
                     if(data.objects.length>0){
                         $scope.entity=data.objects[0]
+                        id=data.objects[0].id
                     }
                     else{
                         $location.path('/account/entity');
@@ -467,9 +469,16 @@ angular.module('dashApp.controllers', []).
            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
                     $scope.entities=data.objects
                 })
+
+        $scope.select = function (id) {
+            $.cookie('entity', id);
+            console.log($.cookie('entity'))
+            $window.location.href='dashboard.html'
+        }
         $scope.logout = function(){
                $http.get(API_URL + 'user/logout/',{withCredentials: true}).success(function (data, status, headers, config) {
                     $.removeCookie('the_cookie');
+                    $.removeCookie('entity');
                     $window.location.href=WEBSITE_URL;
                 });
             }
