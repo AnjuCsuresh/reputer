@@ -292,6 +292,7 @@ angular.module('dashApp.controllers', []).
 
 //Edit entity cntrlr
     .controller('EntityEditCtrl', function ($http, $scope, User,$location,$timeout,$routeParams) {
+        var userid=$.cookie('the_cookie');
         var id=$routeParams.id;
         $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
             $scope.professions = data.objects;
@@ -302,7 +303,8 @@ angular.module('dashApp.controllers', []).
         $scope.fax={};
         $scope.loctn={};
          //fetching all data from database for edit selected entity
-        $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
+        $http.get(API_URL+'Entity/?id='+id+'&user__id='+userid+'&alive=true&format=json').success(function (data) {
+            if(data.objects.length>0){
                   $scope.entity=data.objects[0]
                   if(data.objects[0].location.length>0){
                     $scope.loctn=data.objects[0].location[0]
@@ -325,16 +327,17 @@ angular.module('dashApp.controllers', []).
                     }
                 })
                 if(data.objects[0].location.length>0){
-                $http.get(API_URL+'Phone/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
-                    if(data.objects.length>0){
-                        $scope.phone=data.objects[0]
-                    }
-                })
-                $http.get(API_URL+'Fax/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
-                    if(data.objects.length>0){
-                        $scope.fax=data.objects[0]
-                    }
-                })
+                    $http.get(API_URL+'Phone/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
+                        if(data.objects.length>0){
+                            $scope.phone=data.objects[0]
+                        }
+                    })
+                    $http.get(API_URL+'Fax/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
+                        if(data.objects.length>0){
+                            $scope.fax=data.objects[0]
+                        }
+                    })
+                }
             }
         })
         //edit basic entity details
