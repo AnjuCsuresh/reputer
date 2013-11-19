@@ -10,7 +10,7 @@ EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = ''
 
 TEMPLATE_DEBUG = DEBUG
-
+SESSION_COOKIE_AGE =259200 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
