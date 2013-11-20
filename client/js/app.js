@@ -39,13 +39,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
             },
             $rootScope.location = $location
         );
-        $rootScope.$on('$routeChangeStart', function(event, currRoute, prevRoute){
-                if ($.cookie('the_cookie')!=null) {
-                    $window.location.href = 'dashboard.html'
-                    // reload the login route
-                }
-                
-            });
+        
     });
 
 
@@ -109,13 +103,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
             },
             $rootScope.location = $location
         );
-        $rootScope.$on('$routeChangeStart', function(event, currRoute, prevRoute){
-                if ($.cookie('the_cookie')==null) {
-                    $window.location.href = 'index.html'
-                    // reload the login route
-                }
-               
-            });
+        
     });
 
 Array.prototype.remove = function () {
