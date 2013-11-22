@@ -21,10 +21,12 @@ angular.module('myApp.controllers', []).
                     $.cookie('the_cookie', data.user.id, { expires: 7 });
                     $window.location.href = 'dashboard.html'
                 }
+                else{
+                    $scope.error = "We were unable to sign you in - please check the email and password that you entered. "
+                }
+                $scope.user={}
             })
-                .error(function (data, status, headers, config) {
-                    $scope.error = "The email or password that you entered was incorrect"
-                });
+            
         }
         $scope.register = function (user) {
             //adding some simple verifications
@@ -33,19 +35,24 @@ angular.module('myApp.controllers', []).
                 email: user.email
             };
             $http.post(API_URL + 'newuser/', data).then(function (data) {
+            if(data.status == '200'){
                var u = {
                     username: data.data.email,
                     password: user.password
                 };
             
                 $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
-                if (status == '200') {
-                    $.cookie('the_cookie', data.user.id, { expires: 7 });
+                    if (status == '200') {
+                        $.cookie('the_cookie', data.user.id, { expires: 7 });
                     //todo: redirect to add entity screen
-                    $window.location.href = 'dashboard.html#/account/entity'
-                }
-            })
-                    
+                        $window.location.href = 'dashboard.html#/account/entity'
+                    }
+                })
+                }  
+            else{
+                $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
+                $scope.user={}
+            }    
             })
         }
 
