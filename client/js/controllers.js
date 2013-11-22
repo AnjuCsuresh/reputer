@@ -526,6 +526,10 @@ angular.module('dashApp.controllers', []).
     $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
         $scope.entities=data.objects
     })
+    $scope.select = function (id) {
+            $.cookie('entity', id);
+            $window.location.href='dashboard.html'
+        }
    $scope.deleteentity=function(entity){
         $http.delete(API_URL + entity.resource_uri).success(function (data) {
             $scope.n = notyfy({
