@@ -11,6 +11,7 @@ angular.module('myApp.controllers', []).
 
     controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login,$cookies) {
        $scope.login = function (user) {
+        console.log("manju")
             //adding some simple verifications
             user['username']= user.email
             delete user['email']
