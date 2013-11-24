@@ -35,7 +35,8 @@ angular.module('myApp.controllers', []).
                 email: user.email
             };
             $http.post(API_URL + 'newuser/', data).then(function (data) {
-            if(data.status == '200'){
+            console.log(data)
+            if(data.status == '201'){
                var u = {
                     username: data.data.email,
                     password: user.password
