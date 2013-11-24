@@ -42,6 +42,12 @@ class UserSignUpResource(ModelResource):
       bundle.obj.set_password(bundle.data.get('password'))
       print bundle.data
       bundle.obj.save()
+      u = User.objects.get(username=username)
+      print u
+      level = NotificationLevel.objects.get(level=1)
+      e = ExtendedUser(user=u,notification = level)
+      e.save()
+
     except IntegrityError:
       raise BadRequest('The email already exists')
     return bundle
@@ -116,12 +122,26 @@ from django.contrib.auth.views import password_reset
 from tastypie.authorization import Authorization
 import random
 import string
-from django.core.mail import send_mail 
+from django.core.mail import send_mail
 
+
+class ExtendedUserResource(MyResource):
+    user = fields.ToOneField('userprofile.api.UserResource','user',full=True)
+    notification = fields.ForeignKey('userprofile.api.NotificationLevelResource','notification',full=True,null=True)
+    class Meta: 
+        queryset = ExtendedUser.objects.all()
+        resource_name = 'extended_user'
+        authorization = Authorization()
+        authentication = Authentication()
+        filtering = {
+            'id':ALL,
+            'username': ALL,
+            'user': ALL_WITH_RELATIONS
+        }
 class UserResource(ModelResource):
+    #extended_re = fields.ToOneField('userprofile.api.ExtendedUserResource','extended_user',full=True,null=True)
     class Meta:
         queryset = User.objects.all()
-        
         allowed_methods = ['get', 'post','put']
         resource_name = 'user'
         authorization = Authorization()
@@ -251,6 +271,7 @@ class UserResource(ModelResource):
                 }, HttpUnauthorized )
 
 
+
 class EntityResource(ModelResource):
     user=fields.ForeignKey(UserResource,'user',null=True,full=True)
     location =fields.ToManyField(LocationResource,'location',null=True,full=True)
@@ -341,4 +362,12 @@ class NameResource(MyResource):
 
 
 
-    
+class NotificationLevelResource(MyResource):
+    class Meta:
+        queryset = NotificationLevel.objects.all()
+        resource_name = 'NotificationLevel'
+        authentication = Authentication()
+        authorization = Authorization()
+        always_return_data = True
+       
+

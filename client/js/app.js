@@ -6,6 +6,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/', {templateUrl: '/partials/front/login.html', controller: 'LoginCtrl'});
         $routeProvider.when('/signup', {templateUrl: '/partials/front/signup.html', controller: 'RegisterCtrl'});
+        $routeProvider.when('/forgot', {templateUrl: '/partials/front/forgot.html', controller: 'LoginCtrl'});
         $routeProvider.otherwise({redirectTo: '/'});
     }])
 
@@ -38,19 +39,13 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
             },
             $rootScope.location = $location
         );
-        $rootScope.$on('$routeChangeStart', function(event, currRoute, prevRoute){
-                if ($.cookie('the_cookie')!=null) {
-                    $window.location.href = 'dashboard.html'
-                    // reload the login route
-                }
-                
-            });
+        
     });
 
 
 angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.directives', 'dashApp.controllers', 'ngCookies','highcharts-ng']).
     config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/:id', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
+        $routeProvider.when('/', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
         $routeProvider.when('/form_wiz', {templateUrl: '/partials/admin/form_wiz.html'});
         $routeProvider.when('/account/entity', {templateUrl: '/partials/admin/entity.html', controller: 'EntityCtrl'});
         $routeProvider.when('/account/entity/oops', {templateUrl: '/partials/admin/disp.html', controller: 'EntityCtrl'});
@@ -58,6 +53,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/view', {templateUrl: '/partials/admin/view.html', controller: 'EntityCtrl'});
         $routeProvider.when('/account/manage', {templateUrl: '/partials/admin/manage.html', controller: 'ManageEntityCtrl'});
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
+        $routeProvider.when('/account/settings/notification', {templateUrl: '/partials/admin/noty.html',controller: 'NotificationSettingsCtrl'});
 
         //$routeProvider.when('/oops', {templateUrl: '/partials/front/404.html'});
         $routeProvider.when('/table', {templateUrl: '/partials/admin/table.html'});
@@ -107,13 +103,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
             },
             $rootScope.location = $location
         );
-        $rootScope.$on('$routeChangeStart', function(event, currRoute, prevRoute){
-                if ($.cookie('the_cookie')==null) {
-                    $window.location.href = 'index.html'
-                    // reload the login route
-                }
-               
-            });
+        
     });
 
 Array.prototype.remove = function () {

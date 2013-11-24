@@ -21,6 +21,7 @@ WEBSITE_URL : URL to website of Reputer, where user is redirected after Log Out
 config = {
 	development: {
 		API_URL : 'http://localhost:8000/api/v1/',
+		API_SERVER_URL : 'http://localhost:8000',
 		DATA_API_URL: 'http://localhost:5000/',
 		WEBSITE_URL : 'http://localhost:8888/'
 	},
@@ -36,3 +37,4 @@ var MODE = 'development'
 var API_URL = config[MODE]['API_URL']
 var DATA_API_URL = config[MODE]['DATA_API_URL']
 var WEBSITE_URL = config[MODE]['WEBSITE_URL']
+var API_SERVER_URL = config[MODE]['API_SERVER_URL']

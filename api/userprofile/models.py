@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 from django.db.models.query import QuerySet
 
 class LiveField(models.Field):
@@ -71,6 +71,13 @@ class SoftDeletionModel(models.Model):
     def hard_delete(self):
         super(SoftDeletionModel, self).delete()
 
+class ExtendedUser(SoftDeletionModel):
+    user = models.OneToOneField(User)
+    notification = models.ForeignKey('NotificationLevel',on_delete=models.SET_NULL,null=True)
+
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
+
 class PlanDetail(SoftDeletionModel):
     plan_name = models.CharField(max_length=200)
     plan_price = models.FloatField()
@@ -78,6 +85,8 @@ class PlanDetail(SoftDeletionModel):
     plan_end = models.DateField()
     active = models.BooleanField(default=False)
     
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
 
     def __unicode__(self):
         return self.plan_name
@@ -89,6 +98,8 @@ class Invoice(SoftDeletionModel):
     invoice_date = models.DateField()
     charged = models.FloatField()
     
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
 
     def __unicode__(self):
         return self.invoice
@@ -106,6 +117,8 @@ class Name(SoftDeletionModel):
     previous_places_worked2 = models.CharField(max_length=200,null=True,blank=True)
     entity = models.ForeignKey('Entity')
     
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
 
     def __unicode__(self):
         return self.alternate_name
@@ -116,6 +129,8 @@ class PhoneNumber(SoftDeletionModel):
     location = models.ForeignKey('Location')
     number = models.CharField(max_length=15, null=True, blank=True)
     
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
 
     def __unicode__(self):
         return self.number
@@ -126,6 +141,8 @@ class FaxNumber(SoftDeletionModel):
     location = models.ForeignKey('Location')
     number = models.CharField(max_length=15,null=True,blank=True)
     
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
 
     def __unicode__(self):
         return self.number
@@ -140,6 +157,8 @@ class Location(SoftDeletionModel):
     state = models.CharField(max_length=200)
     zip_code = models.CharField(max_length=10)
     
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
 
     def __unicode__(self):
         return self.address1 + "," + self.address2 + "," + self.city + ", " + self.state + ", " + self.zip_code
@@ -149,8 +168,10 @@ class Location(SoftDeletionModel):
 
 class URL(SoftDeletionModel):
     entity = models.ForeignKey('Entity')
-    url = models.URLField()
-    
+    url = models.URLField()    
+
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
 
     def __unicode__(self):
         return self.url
@@ -201,3 +222,13 @@ class ReviewWebsite(SoftDeletionModel):
     
     def __unicode__(self):
         return self.name
+
+class NotificationLevel(SoftDeletionModel):
+    level = models.IntegerField()
+    description = models.CharField(max_length=200)
+
+    objects = SoftDeletionManager()
+    all_objects = SoftDeletionManager(live_only=False)
+
+    def __unicode__(self):
+        return str(self.level)

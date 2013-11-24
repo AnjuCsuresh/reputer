@@ -7,11 +7,11 @@
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="lib/xcharts/xcharts.js"></script>
 	<script src="lib/angular/angular.js"></script>
-	 <script src="//cdn.jsdelivr.net/angularjs/1.0.2/angular-cookies.min.js"></script>
-		<script src="common/theme/scripts/plugins/notifications/notyfy/jquery.notyfy.js"></script>
+	<script src="//cdn.jsdelivr.net/angularjs/1.0.2/angular-cookies.min.js"></script>
+	<script src="common/theme/scripts/plugins/notifications/notyfy/jquery.notyfy.js"></script>
 
 	
-	<link rel="stylesheet" href="lib/xcharts/xcharts.css">
+	<link rel="stylesheet" href="lib/xcharts/xcharts.min.css">
 
 	<!-- Meta -->
 	<meta charset="UTF-8" />
@@ -40,7 +40,8 @@
 	<link href="common/theme/scripts/plugins/gallery/prettyphoto/css/prettyPhoto.css" rel="stylesheet" />
 
 	<!-- JQuery -->
-	
+	<!-- JQRangeSlider Sliders Plugin -->
+	<link href="common/theme/scripts/plugins/sliders/jQRangeSlider/css/iThing.css" rel="stylesheet" />
 
 	<script src="common/theme/scripts/plugins/other/excanvas/excanvas.js"></script>
 	<script language="javascript" type="text/javascript" src="common/theme/scripts/plugins/other/excanvas/excanvas.min.js"></script>
@@ -130,14 +131,14 @@
            					<a href="" data-toggle="dropdown" class="glyphicons user"><i></i>Select Entity<span class="caret"></span></a>       <ul class="dropdown-menu pull-left">
               				<!-- Components Submenu Level 2 -->
                
-                   				<li ng-repeat="entity in entities"><a href="" ng-click="location.path('/'+entity.id)">{{entity.business_name}}{{entity.first_name}}  {{entity.last_name}}</a></li>
+                   				<li ng-repeat="entity in entities"><a ng-click="select(entity.id)">{{entity.business_name}}{{entity.first_name}}  {{entity.last_name}}</a></li>
                				</ul>
             		 </li>
             		 <li>
            					<a ng-click="location.path('/account/manage')" class="glyphicons settings"><i></i>Manage Entities</a>       
             		 </li>
             		 <li class="dropdown dd-1">
-							<a href="" ng-click="location.path('/account/entity')" class="glyphicons circle_plus"><i></i>Add Entity </a>
+							<a ng-click="location.path('/account/entity')" class="glyphicons circle_plus"><i></i>Add Entity </a>
 							
 						</li>
 					</ul>
@@ -163,8 +164,8 @@
               				<!-- Components Submenu Level 2 -->
                
                    				<li><a href="" ng-click="">Plan</a></li>
-                   				<li><a href="" ng-click="">Notification</a></li>
-                   				<li><a href="#/account/settings" ng-click="">My Account</a></li>
+                   				<li><a href="" ng-click="location.path('account/settings/notification')">Notification</a></li>
+                   				<li><a ng-click="location.path('account/settings/')">My Account</a></li>
                    				
                				</ul>
             		 	</li>
@@ -309,9 +310,10 @@
 		<!-- Modals Page Demo Script -->
 		<script src="common/theme/scripts/demo/modals.js"></script>
 
-
-
-		<!-- Notifications Page Demo Script -->
+		<!-- jQRangeSlider Plugin -->
+	<script src="common/theme/scripts/plugins/sliders/jQRangeSlider/jQAllRangeSliders-withRuler-min.js"></script>
+	
+	<!-- Notifications Page Demo Script -->
 		<script src="partials/notifications.js"></script>
 
 		<!-- Form Wizards Page Demo Script -->

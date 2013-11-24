@@ -20,6 +20,8 @@ v1_api.register(NameResource())
 v1_api.register(URLResource())
 v1_api.register(UserResource())
 v1_api.register(ProfessionResource())
+v1_api.register(NotificationLevelResource())
+v1_api.register(ExtendedUserResource())
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'cubator.views.home', name='home'),

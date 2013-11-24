@@ -11,6 +11,7 @@ angular.module('myApp.controllers', []).
 
     controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login,$cookies) {
        $scope.login = function (user) {
+        console.log("manju")
             //adding some simple verifications
             user['username']= user.email
             delete user['email']
@@ -20,10 +21,12 @@ angular.module('myApp.controllers', []).
                     $.cookie('the_cookie', data.user.id, { expires: 7 });
                     $window.location.href = 'dashboard.html'
                 }
+                else{
+                    $scope.error = "We were unable to sign you in - please check the email and password that you entered. "
+                }
+                $scope.user={}
             })
-                .error(function (data, status, headers, config) {
-                    $scope.error = "The email or password that you entered was incorrect"
-                });
+            
         }
         $scope.register = function (user) {
             //adding some simple verifications
@@ -32,19 +35,25 @@ angular.module('myApp.controllers', []).
                 email: user.email
             };
             $http.post(API_URL + 'newuser/', data).then(function (data) {
+            console.log(data)
+            if(data.status == '201'){
                var u = {
                     username: data.data.email,
                     password: user.password
                 };
             
                 $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
-                if (status == '200') {
-                    $.cookie('the_cookie', data.user.id, { expires: 7 });
+                    if (status == '200') {
+                        $.cookie('the_cookie', data.user.id, { expires: 7 });
                     //todo: redirect to add entity screen
-                    $window.location.href = 'dashboard.html#/account/entity'
-                }
-            })
-                    
+                        $window.location.href = 'dashboard.html#/account/entity'
+                    }
+                })
+                }  
+            else{
+                $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
+                $scope.user={}
+            }    
             })
         }
 
@@ -75,7 +84,8 @@ angular.module('myApp.controllers', []).
 
 angular.module('dashApp.controllers', []).
     controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams,$cookieStore,$location) {
-        var id=$routeParams.id;
+        console.log($.cookie('entity'))
+        var id=$.cookie('entity');
         if(id>0){
             $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
                   $scope.entity=data.objects[0]
@@ -85,11 +95,12 @@ angular.module('dashApp.controllers', []).
             });
         }
         else{
-            var userid=$.cookie('the_cookie');
+        var userid=$.cookie('the_cookie');
             $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&live=true&format=json').success(function (data) {
                     $scope.entities=data.objects
                     if(data.objects.length>0){
                         $scope.entity=data.objects[0]
+                        id=data.objects[0].id
                     }
                     else{
                         $location.path('/account/entity');
@@ -98,7 +109,7 @@ angular.module('dashApp.controllers', []).
                 })
         }
         //PRODUCTION CODE: $http.get(DATA_API_URL+'getcrawltable/'+id).success(function(data, status, headers, config){
-        $http.get(DATA_API_URL+'getcrawltable/'+'10').success(function(data, status, headers, config){
+        $http.get(DATA_API_URL+'getcrawltable/999',{withCredentials:true}).success(function(data, status, headers, config){
             $scope.items = data.aaData;
             $scope.predicate = 'Rank';
             $scope.reverse = false;
@@ -212,7 +223,7 @@ angular.module('dashApp.controllers', []).
         }
         });
         //PRODUCTION: $http.get(DATA_API_URL+'getscoretrend/'+id).success(function(data, status, headers, config){
-        $http.get(DATA_API_URL+'getscoretrend/10').success(function(data, status, headers, config){
+        $http.get(DATA_API_URL+'getscoretrend/999',{withCredentials:true}).success(function(data, status, headers, config){
             var dataChart = {
               "xScale": "time",
               "yScale": "linear",
@@ -316,7 +327,7 @@ angular.module('dashApp.controllers', []).
                 })
         }
         //PRODUCTION CODE: $http.get(DATA_API_URL+'getcrawltable/'+id).success(function(data, status, headers, config){
-        $http.get(DATA_API_URL+'getcrawltable/'+'11').success(function(data, status, headers, config){
+        $http.get(DATA_API_URL+'getcrawltable/'+'999',{withCredentials:true}).success(function(data, status, headers, config){
             $scope.items = data.aaData;
             $scope.predicate = 'Rank';
             $scope.reverse = false;
@@ -549,6 +560,7 @@ angular.module('dashApp.controllers', []).
     })
 //Edit entity cntrlr
     .controller('EntityEditCtrl', function ($http, $scope, User,$location,$timeout,$routeParams) {
+        var userid=$.cookie('the_cookie');
         var id=$routeParams.id;
         $http.get(API_URL+'Profession/').success(function(data, status, headers, config){
             $scope.professions = data.objects;
@@ -559,7 +571,8 @@ angular.module('dashApp.controllers', []).
         $scope.fax={};
         $scope.loctn={};
          //fetching all data from database for edit selected entity
-        $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
+        $http.get(API_URL+'Entity/?id='+id+'&user__id='+userid+'&alive=true&format=json').success(function (data) {
+            if(data.objects.length>0){
                   $scope.entity=data.objects[0]
                   if(data.objects[0].location.length>0){
                     $scope.loctn=data.objects[0].location[0]
@@ -582,16 +595,17 @@ angular.module('dashApp.controllers', []).
                     }
                 })
                 if(data.objects[0].location.length>0){
-                $http.get(API_URL+'Phone/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
-                    if(data.objects.length>0){
-                        $scope.phone=data.objects[0]
-                    }
-                })
-                $http.get(API_URL+'Fax/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
-                    if(data.objects.length>0){
-                        $scope.fax=data.objects[0]
-                    }
-                })
+                    $http.get(API_URL+'Phone/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
+                        if(data.objects.length>0){
+                            $scope.phone=data.objects[0]
+                        }
+                    })
+                    $http.get(API_URL+'Fax/?location__id='+data.objects[0].location[0].id+'&format=json').success(function (data) {
+                        if(data.objects.length>0){
+                            $scope.fax=data.objects[0]
+                        }
+                    })
+                }
             }
         })
         //edit basic entity details
@@ -724,9 +738,16 @@ angular.module('dashApp.controllers', []).
            $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
                     $scope.entities=data.objects
                 })
+
+        $scope.select = function (id) {
+            $.cookie('entity', id);
+            console.log($.cookie('entity'))
+            $window.location.href='dashboard.html'
+        }
         $scope.logout = function(){
                $http.get(API_URL + 'user/logout/',{withCredentials: true}).success(function (data, status, headers, config) {
                     $.removeCookie('the_cookie');
+                    $.removeCookie('entity');
                     $window.location.href=WEBSITE_URL;
                 });
             }
@@ -771,8 +792,12 @@ angular.module('dashApp.controllers', []).
     $http.get(API_URL+'Entity/?user__id='+userid+'&alive=true&format=json').success(function (data) {
         $scope.entities=data.objects
     })
+    $scope.select = function (id) {
+            $.cookie('entity', id);
+            $window.location.href='dashboard.html'
+        }
    $scope.deleteentity=function(entity){
-        $http.delete("http://localhost:8000" + entity.resource_uri).success(function (data) {
+        $http.delete(API_URL + entity.resource_uri).success(function (data) {
             $scope.n = notyfy({
                     text: 'Deleted',
                     type: 'success',
@@ -788,6 +813,55 @@ angular.module('dashApp.controllers', []).
    }  
    
 })
-.controller('ChartCtrl',function($scope,$http,$location){
+.controller('NotificationSettingsCtrl',function($scope,$http,$location){
+    var userid=$.cookie('the_cookie');
+    $http.get(API_URL+'NotificationLevel/',{withCredentials:true}).success(function (data, status, headers, config) {
+            $scope.levels = data.objects;
+            $scope.levelInfo = {}
+            for(var i=0;i<$scope.levels.length;i++){
+                var l = $scope.levels[i]
+                $scope.levelInfo[l.level] = l.description
+            }
+            
+            
+            $http.get(API_URL+'extended_user/?user__id='+userid).success(function (data, status, headers, config) {
+                    var user = data.objects[0]
+                    $scope.message = $scope.levelInfo[user.notification.level]
+                    if ($('.increments-slider').size() > 0)
+                    {
+                        $( ".increments-slider .slider" ).slider({
+                            create: JQSliderCreate,
+                            value:user.notification.level,
+                            min: $scope.levels[0].level,
+                            max: $scope.levels[$scope.levels.length-1].level,
+                            step: 1,
+                            slide: function( event, ui ) {
+                                $scope.message = $scope.levelInfo[ui.value]
+                                $scope.sav_level = ui.value;
+                                $scope.$apply();
+                            },
+                            start: function() { if (typeof mainYScroller != 'undefined') mainYScroller.disable(); },
+                            stop: function() { if (typeof mainYScroller != 'undefined') mainYScroller.enable(); }
+                        });
+                        $( ".increments-slider .amount" ).val( "$" + $( ".increments-slider .slider" ).slider( "value" ) );
+                    }
+                    $scope.save = function(){
+                        for(var i=0;i<$scope.levels.length;i++){
+                            var l = $scope.levels[i]
+                            if(l.level==$scope.sav_level){
+                                user.notification = l
+                                $http.put(API_SERVER_URL+user.resource_uri,data=user).success(function (data, status, headers, config) {
+                                    $scope.n = notyfy({
+                                        text: 'Changed notifications to Level '+user.notification.level,
+                                        type: 'success',
+                                        dismissQueue:true,
+                                        closeWith:['hover'] 
+                                    });
+                                });
+                            } 
+                        }
+                    }       
+                });
+    });
     
 })
