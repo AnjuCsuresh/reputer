@@ -1,128 +1,95 @@
-	<ul class="breadcrumb">
-		<li>You are here</li>
-		<li><a href="index.html?lang=en&amp;layout_type=fluid&amp;menu_position=menu-left&amp;style=style-default-menus-dark&amp;sidebar_type=collapsible" class="glyphicons dashboard"><i></i> Reputer</a></li>
-		<li class="divider"><i class="icon-caret-right"></i></li>
-		<li>Pages</li>
-		<li class="divider"><i class="icon-caret-right"></i></li>
-		<li>Finances</li>
-	</ul>
-
 	<!-- Heading -->
 	<div class="heading-buttons">
-		<h1>Finances <span>Page example</span></h1>
-		<div class="buttons pull-right">
-			<a href="" class="btn btn-primary btn-icon glyphicons circle_plus"><i></i> Add record</a>
-			<a href="" class="btn btn-default btn-icon glyphicons history"><i></i> History</a>
-		</div>
+		<h1>Plans <span>Payments and Transactions</span></h1>
 		<div class="clearfix"></div>
 	</div>
 	<div class="separator bottom"></div>
 	<!-- // Heading END -->
 
 	<div class="innerLR">
+    <!-- Pricing table -->
+    <div class="relativeWrap" data-toggle="source-code" data-placement="outside">
+        <table class="table table-white table-bordered table-vertical-center table-pricing">
 
-		<!-- Widget -->
-		<div class="widget finances_summary widget-heading-simple widget-body-gray">
-			
-			<!-- Widget heading -->
-			<div class="widget-head">
-				<h4 class="heading glyphicons alarm"><i></i> Summary</h4>
-			</div>
-			<!-- // Widget heading END -->
-			
-			<div class="widget-body">
-				
-				<!-- Filters -->
-				<div class="filter-bar">
-					<form>
-						
-						<!-- Filter -->
-						<div>
-							<label>From:</label>
-							<div class="input-append">
-								<input type="text" name="from" id="dateRangeFrom" class="input-mini" value="08/05/13" style="width: 53px;" />
-								<span class="add-on glyphicons calendar"><i></i></span>
-							</div>
-						</div>
-						<!-- // Filter END -->
-						
-						<!-- Filter -->
-						<div>
-							<label>To:</label>
-							<div class="input-append">
-								<input type="text" name="to" id="dateRangeTo" class="input-mini" value="08/18/13" style="width: 53px;" />
-								<span class="add-on glyphicons calendar"><i></i></span>
-							</div>
-						</div>
-						<!-- // Filter END -->
-						
-						<!-- Filter -->
-						<div>
-							<label>Min:</label>
-							<div class="input-append">
-								<input type="text" name="from" class="input-mini" style="width: 30px;" value="100" />
-								<span class="add-on glyphicons euro"><i></i></span>
-							</div>
-						</div>
-						<!-- // Filter END -->
-						
-						<!-- Filter -->
-						<div>
-							<label>Max:</label>
-							<div class="input-append">
-								<input type="text" name="from" class="input-mini" style="width: 30px;" value="500" />
-								<span class="add-on glyphicons euro"><i></i></span>
-							</div>
-						</div>
-						<!-- // Filter END -->
-						
-						<!-- Filter -->
-						<div>
-							<label>Select:</label>
-							<select name="from" style="width: 80px;">
-								<option>Some option</option>
-								<option>Other option</option>
-								<option>Some other option</option>
-							</select>
-						</div>
-						<div class="clearfix"></div>
-						<!-- // Filter END -->
-						
-					</form>
-				</div>
-				<!-- // Filters END -->
-				
-				<!-- Row -->
-				<div class="row-fluid">
-					
-					<!-- Column -->
-					<div class="span4">
-						<div class="well">
-							Total expenses						<strong>&euro;32,156.00</strong>
-						</div>
-						<div class="separator bottom center">
-							<span class="glyphicons flash standard"><i></i></span>
-						</div>
-						<div class="well">
-							Total income						<strong>&euro;122,134.00</strong>
-						</div>
-					</div>
-					<!-- // Column END -->
-					
-					<!-- Column -->
-					<div class="span8">
-						<div id="chart_simple" style="height: 290px;"></div>
-					</div>
-					<!-- // Column END -->
-					
-				</div>
-				<!-- // Row END -->
-				
-				<a href="" class="glyphicons list single"><i></i> View details</a>
-			</div>
-		</div>
-		<!-- // Widget END -->
-		
+            <!-- Table heading -->
+            <thead>
+            <tr>
+                <th class="center heading">Choose your plan</th>
+                <th class="center" style="width: 15%">
+                    <span class="plan">Solo</span>
+                    <span class="price">&dollar;0.00</span>
+                    <div class="separator bottom"></div>
+                    <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#creditCardForm" >Sign up</button>
+                    <div class="modal fade" id="creditCardForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3>Please enter your credit card details</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>Number <input type="text" class="span10"></p>
+                            <p>CVC <input type="text" class="span2"></p>
+                            <p>Expiry Month <input type="text" class="span2"></p>
+                            <p>Expiry Year <input type="text" class="span2"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-primary">Pay</a>
+                        </div>
+                    </div>
+                </th>
+                <th class="center" style="width: 15%">
+                    <span class="plan">Group</span>
+                    <span class="price">&dollar;9.99</span>
+                    <div class="separator bottom"></div>
+                    <button class="btn btn-primary btn-block">Sign up</button>
+                </th>
+                <th class="center" style="width: 15%">
+                    <span class="plan">Large Group</span>
+                    <span class="price">&dollar;19.99</span>
+                    <div class="separator bottom"></div>
+                    <button class="btn btn-primary btn-block">Sign up</button>
+                </th>
+
+            </tr>
+            </thead>
+            <!-- // Table heading END -->
+
+            <!-- Table body -->
+            <tbody>
+
+            <!-- Table row -->
+            <tr>
+                <td>Setup &amp; Installation</td>
+                <td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
+                <td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
+                <td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
+            </tr>
+            <!-- // Table row END -->
+
+            <!-- Table row -->
+            <tr>
+                <td>HTML Templates</td>
+                <td class="center"><span class="glyphicons standard remove_2"><i></i></span></td>
+                <td class="center"><span class="glyphicons standard remove_2"><i></i></span></td>
+                <td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
+            </tr>
+            <!-- // Table row END -->
+
+            <!-- Table row -->
+            <tr>
+                <td>SMS Templates</td>
+                <td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
+                <td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
+                <td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
+            </tr>
+            <!-- // Table row END -->
+
+            </tbody>
+            <!-- // Table body END -->
+
+        </table>
+    </div>
+    <div class="separator bottom"></div>
+    <!-- // Pricing table END -->
 		<!-- Widget -->
 		<div class="widget widget-heading-simple widget-body-white">
 			
@@ -131,7 +98,7 @@
 				<h4 class="heading glyphicons fire"><i></i> Transactions</h4>
 			</div>
 			<!-- // Widget heading END -->
-			
+
 			<div class="widget-body">
 				
 				<!-- Table -->

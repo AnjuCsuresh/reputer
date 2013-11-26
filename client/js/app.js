@@ -43,7 +43,7 @@ angular.module('myApp', ['myApp.filters', 'myApp.services', 'myApp.directives', 
     });
 
 
-angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.directives', 'dashApp.controllers', 'ngCookies','highcharts-ng']).
+angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.directives', 'dashApp.controllers', 'ngCookies',]).
     config(['$routeProvider', function ($routeProvider) {
         $routeProvider.when('/', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
         $routeProvider.when('/form_wiz', {templateUrl: '/partials/admin/form_wiz.html'});
@@ -54,7 +54,11 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/account/manage', {templateUrl: '/partials/admin/manage.html', controller: 'ManageEntityCtrl'});
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
         $routeProvider.when('/account/settings/notification', {templateUrl: '/partials/admin/noty.html',controller: 'NotificationSettingsCtrl'});
-
+        //Individual Table
+        $routeProvider.when('/reports/profile', {templateUrl: '/partials/admin/table.html'});
+        $routeProvider.when('/reports/reviews', {templateUrl: '/partials/admin/table.html'});
+        $routeProvider.when('/reports/changes', {templateUrl: '/partials/admin/table.html'});
+        $routeProvider.when('/table', {templateUrl: '/partials/admin/table.html'});
         //$routeProvider.when('/oops', {templateUrl: '/partials/front/404.html'});
         $routeProvider.when('/table', {templateUrl: '/partials/admin/table.html'});
         $routeProvider.when('/table_res', {templateUrl: '/partials/admin/table_res.html'});
@@ -63,7 +67,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/notification', {templateUrl: '/partials/admin/notification.html'});
         $routeProvider.when('/my_account_advance', {templateUrl: '/partials/admin/my_account_advance.html'});
         $routeProvider.when('/my_account', {templateUrl: '/partials/admin/my_account.html'});
-        $routeProvider.when('/finance', {templateUrl: '/partials/admin/finance.html'});
+        $routeProvider.when('/account/settings/plans', {templateUrl: '/partials/admin/finance.html'});
         $routeProvider.when('/rating', {templateUrl: '/partials/admin/rating.html'});
         $routeProvider.when('/invoice', {templateUrl: '/partials/admin/invoice.html'});
         $routeProvider.when('/faq', {templateUrl: '/partials/admin/faq.html'});
@@ -116,4 +120,5 @@ Array.prototype.remove = function () {
     }
     return this;
 };
+
 

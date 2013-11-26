@@ -12,7 +12,7 @@
 
 	
 	<link rel="stylesheet" href="lib/xcharts/xcharts.min.css">
-
+	
 	<!-- Meta -->
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
@@ -163,7 +163,7 @@
            					<ul class="dropdown-menu pull-left">
               				<!-- Components Submenu Level 2 -->
                
-                   				<li><a href="" ng-click="">Plan</a></li>
+                   				<li><a href="" ng-click="location.path('account/settings/plans')">Plan</a></li>
                    				<li><a href="" ng-click="location.path('account/settings/notification')">Notification</a></li>
                    				<li><a ng-click="location.path('account/settings/')">My Account</a></li>
                    				
@@ -319,9 +319,7 @@
 		<!-- Form Wizards Page Demo Script -->
 		<script src="partials/form_wizards.js"></script>
 		<script src="partials/common.js"></script>
-	<script src="lib/highcharts.js"></script>
-	<script src="lib/highcharts-more.js"></script>
-	<script src="lib/highcharts-ng.js"></script>
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script src="js/config.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/services.js"></script>
