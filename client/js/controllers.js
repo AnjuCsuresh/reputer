@@ -11,8 +11,7 @@ angular.module('myApp.controllers', []).
 
     controller('LoginCtrl', function ($http, $scope, $window, $cookieStore,$location,Login,$cookies) {
        $scope.login = function (user) {
-        console.log("manju")
-            //adding some simple verifications
+        //adding some simple verifications
             user['username']= user.email
             delete user['email']
             $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
@@ -35,7 +34,6 @@ angular.module('myApp.controllers', []).
                 email: user.email
             };
             $http.post(API_URL + 'newuser/', data).then(function (data) {
-            console.log(data)
             if(data.status == '201'){
                var u = {
                     username: data.data.email,
@@ -84,7 +82,6 @@ angular.module('myApp.controllers', []).
 
 angular.module('dashApp.controllers', []).
     controller('DashHomeCtrl', function ($http, $scope, User,$filter,$timeout,$routeParams,$cookieStore,$location) {
-        console.log($.cookie('entity'))
         var id=$.cookie('entity');
         if(id>0){
             $http.get(API_URL+'Entity/?id='+id+'&format=json').success(function (data) {
@@ -484,7 +481,6 @@ angular.module('dashApp.controllers', []).
 
         $scope.select = function (id) {
             $.cookie('entity', id);
-            console.log($.cookie('entity'))
             $window.location.href='dashboard.html'
         }
         $scope.logout = function(){
