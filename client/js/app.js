@@ -67,7 +67,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/notification', {templateUrl: '/partials/admin/notification.html'});
         $routeProvider.when('/my_account_advance', {templateUrl: '/partials/admin/my_account_advance.html'});
         $routeProvider.when('/my_account', {templateUrl: '/partials/admin/my_account.html'});
-        $routeProvider.when('/account/settings/plans', {templateUrl: '/partials/admin/finance.html'});
+        $routeProvider.when('/account/settings/plans', {templateUrl: '/partials/admin/finance.html',controller:'PlansCtrl'});
         $routeProvider.when('/rating', {templateUrl: '/partials/admin/rating.html'});
         $routeProvider.when('/invoice', {templateUrl: '/partials/admin/invoice.html'});
         $routeProvider.when('/faq', {templateUrl: '/partials/admin/faq.html'});

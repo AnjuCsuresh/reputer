@@ -874,9 +874,18 @@ angular.module('dashApp.controllers', []).
 
     }).
 
-    controller('PlansCtrl', function ($scope, $http, $location) {
+    controller('PlansCtrl', function ($scope, $http, $location,$rootScope) {
         Stripe.setPublishableKey('pk_test_JHgfevDWh6qVp7uVbbnGtAwa');
-        $scope.openPaymentForm = function(){
-
-        }
+        $scope.saveCustomer = function(status, response) {
+            if (response.error) {
+                console.log("error")
+                //$scope.disabled=false;
+            }
+            else{
+                console.log("success")
+                var stripeCustomerId = response.id;
+            }
+            //$rootScope.user.stripeCustomerId = response.id;
+            //$rootScope.user.save();
+        };
     })
