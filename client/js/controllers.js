@@ -10,6 +10,8 @@ angular.module('myApp.controllers', []).
     }).
 
     controller('LoginCtrl', function ($http, $scope, $window, $cookieStore, $location, Login, $cookies) {
+        var usr;
+        Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
         $scope.login = function (user) {
             //adding some simple verifications
             user['username'] = user.email
@@ -27,34 +29,65 @@ angular.module('myApp.controllers', []).
             })
 
         }
-        $scope.register = function (user) {
-            //adding some simple verifications
-            var data = {
-                password: user.password,
-                email: user.email
-            };
-            $http.post(API_URL + 'newuser/', data).then(function (data) {
+        $scope.register = function (user,stripe) {
+            usr=user;
+            $scope.disabled=true;
+            console.log(stripe)
+            Stripe.card.createToken({
+            number:stripe.number,
+            cvc: stripe.cvc,
+            exp_month: stripe.expmonth,
+            exp_year: stripe.expyear
+            }, $scope.stripeResponseHandler);
+         }   
+        $scope.stripeResponseHandler = function(status, response) {
+            console.log(response)
+            if (response.error) {
+                $scope.error = "Please enter your credit card details correctly"
+                $scope.disabled=false;
+                var d = window.alert('Please enter your credit card details correctly');
+                
+            }
+            else{
+               
+                var stripeCustomerId = response.id;
+                var data = {
+                password: usr.password,
+                email: usr.email,
+                token:stripeCustomerId
+                };
                 console.log(data)
-                if (data.status == '201') {
-                    var u = {
+                $http.post(API_URL + 'newuser/', data).then(function (data) {
+                console.log(data)
+                    if (data.status == '201') {
+                        var u = {
                         username: data.data.email,
-                        password: user.password
-                    };
+                        password: usr.password
+                        };
 
-                    $http.post(API_URL + 'user/login/', u, {withCredentials: true}).success(function (data, status, headers, config) {
-                        if (status == '200') {
-                            $.cookie('the_cookie', data.user.id, { expires: 7 });
-                            //todo: redirect to add entity screen
-                            $window.location.href = 'dashboard.html#/account/entity'
-                        }
-                    })
-                }
-                else {
-                    $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
-                    $scope.user = {}
-                }
-            })
+                        $http.post(API_URL + 'user/login/', u, {withCredentials: true}).success(function (data, status, headers, config) {
+                            if (status == '200') {
+                                $.cookie('the_cookie', data.user.id, { expires: 7 });
+                                //todo: redirect to add entity screen
+                                $window.location.href = 'dashboard.html#/account/entity'
+                            }
+                        })
+                    }
+                    else {
+                        $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
+                        $scope.user = {}
+                        $scope.card={}
+                        $scope.disabled=false;
+                        $scope.signin=true 
+                    }
+
+                })
+                //$scope.disabled=false;
+            }
+            
         }
+       
+           
 
         /* ************************************************
          password reset
@@ -875,17 +908,28 @@ angular.module('dashApp.controllers', []).
     }).
 
     controller('PlansCtrl', function ($scope, $http, $location,$rootScope) {
-        Stripe.setPublishableKey('pk_test_JHgfevDWh6qVp7uVbbnGtAwa');
-        $scope.saveCustomer = function(status, response) {
+        Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
+        $scope.savestriper=function(stripe){
+            console.log(stripe)
+            Stripe.card.createToken({
+            number:stripe.number,
+            cvc: stripe.cvc,
+            exp_month: stripe.expmonth,
+            exp_year: stripe.expyear
+            }, $scope.stripeResponseHandler);
+        }
+        $scope.stripeResponseHandler = function(status, response) {
+            console.log(response)
             if (response.error) {
-                console.log("error")
-                //$scope.disabled=false;
+                console.log(response)
+                $scope.disabled=true;
             }
             else{
-                console.log("success")
+                console.log(response)
                 var stripeCustomerId = response.id;
             }
             //$rootScope.user.stripeCustomerId = response.id;
             //$rootScope.user.save();
-        };
+        }
+        
     })

@@ -8,6 +8,7 @@ from userprofile.models import *
 from tastypie import fields, utils
 from django.forms.models import model_to_dict
 from tastypie.resources import ModelResource,ALL, ALL_WITH_RELATIONS,fields
+import stripe
 
 
 class MyResource(ModelResource):
@@ -36,20 +37,28 @@ class UserSignUpResource(ModelResource):
   def obj_create(self, bundle, request=None, **kwargs):
     try:
       #Creating the usernamme using _ instead of @ in email
-      username = bundle.data['email'].replace('@','_')
-      bundle.data['username'] = username
-      bundle = super(UserSignUpResource, self).obj_create(bundle,**kwargs)
-      bundle.obj.set_password(bundle.data.get('password'))
-      print bundle.data
-      bundle.obj.save()
-      u = User.objects.get(username=username)
-      print u
-      level = NotificationLevel.objects.get(level=1)
-      e = ExtendedUser(user=u,notification = level)
-      e.save()
+        username = bundle.data['email'].replace('@','_')
+        bundle.data['username'] = username
+        bundle = super(UserSignUpResource, self).obj_create(bundle,**kwargs)
+        bundle.obj.set_password(bundle.data.get('password'))
+        print bundle.data
+        bundle.obj.save()
+        u = User.objects.get(username=username)
+        print u
+        #stripe 
+        stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
+        customer = stripe.Customer.create(
+            card=bundle.data['token'],
+            plan="reputertest",
+            email=bundle.data['email']
+        )
+        print customer
+        level = NotificationLevel.objects.get(level=1)
+        e = ExtendedUser(user=u,notification = level)
+        e.save()
 
     except IntegrityError:
-      raise BadRequest('The email already exists')
+        raise BadRequest('The email already exists')
     return bundle
 
   def apply_authorization_limits(self, request, object_list):
