@@ -46,13 +46,6 @@ class UserSignUpResource(ModelResource):
         u = User.objects.get(username=username)
         print u
         #stripe 
-        stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
-        customer = stripe.Customer.create(
-            card=bundle.data['token'],
-            plan="reputertest",
-            email=bundle.data['email']
-        )
-        print customer
         level = NotificationLevel.objects.get(level=1)
         e = ExtendedUser(user=u,notification = level)
         e.save()
@@ -163,6 +156,12 @@ class UserResource(ModelResource):
     def prepend_urls(self):
         return [
             
+            url(r"^(?P<resource_name>%s)/plan%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('plan'), name="api_plan"),
+            url(r"^(?P<resource_name>%s)/customer%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('customer'), name="api_customer"),
             url(r"^(?P<resource_name>%s)/test%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('test'), name="api_test"),
@@ -278,8 +277,63 @@ class UserResource(ModelResource):
                 'success': False,
                 'reason': 'incorrect',
                 }, HttpUnauthorized )
+    def customer(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
 
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        quantity= data.get('quantity', '')
+        plan = data.get('plan', '')
+        email = data.get('email', '')
+        id = data.get('id', '')
+        token = data.get('token', '')
+        type = data.get('type', '')
+        stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
+        customer = stripe.Customer.create(
+            card=token,
+            plan=plan+type,
+            email=email,
+            quantity=quantity
+        )
+        print customer
+        extendeduser=ExtendedUser.objects.get(id=id)
+        
+        if extendeduser:
+            extendeduser.stripe_customer=customer.id
+            extendeduser.stripe_billing_type=type
+            extendeduser.save()
+            return self.create_response(request, { 'success': True ,'user':extendeduser})
+                
+        else:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'incorrect',
+                }, HttpUnauthorized )
 
+    def plan(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        quantity= data.get('quantity', '')
+        customer = data.get('id', '')
+        type = data.get('type', '')
+        stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
+        cu = stripe.Customer.retrieve(customer)
+        if quantity==1:
+            cu.quantity=1
+            cu.plan="Solo"+type
+            cu.save()
+        elif quantity==2:
+            cu.quantity=2
+            cu.plan="Group"+type
+            cu.save()
+        else:
+            cu.quantity=20
+            cu.plan="Large Group"+type
+            cu.save()
+        print cu
+        return self.create_response(request, { 'success': True })
+                
+        
 
 class EntityResource(ModelResource):
     user=fields.ForeignKey(UserResource,'user',null=True,full=True)

@@ -29,63 +29,34 @@ angular.module('myApp.controllers', []).
             })
 
         }
-        $scope.register = function (user,stripe) {
-            usr=user;
-            $scope.disabled=true;
-            console.log(stripe)
-            Stripe.card.createToken({
-            number:stripe.number,
-            cvc: stripe.cvc,
-            exp_month: stripe.expmonth,
-            exp_year: stripe.expyear
-            }, $scope.stripeResponseHandler);
-         }   
-        $scope.stripeResponseHandler = function(status, response) {
-            console.log(response)
-            if (response.error) {
-                $scope.error = "Please enter your credit card details correctly"
-                $scope.disabled=false;
-                var d = window.alert('Please enter your credit card details correctly');
-                
-            }
-            else{
-               
-                var stripeCustomerId = response.id;
-                var data = {
-                password: usr.password,
-                email: usr.email,
-                token:stripeCustomerId
+       $scope.register = function (user) {
+            //adding some simple verifications
+            var data = {
+                password: user.password,
+                email: user.email
+            };
+            $http.post(API_URL + 'newuser/', data).then(function (data) {
+            if(data.status == '201'){
+               var u = {
+                    username: data.data.email,
+                    password: user.password
                 };
-                console.log(data)
-                $http.post(API_URL + 'newuser/', data).then(function (data) {
-                console.log(data)
-                    if (data.status == '201') {
-                        var u = {
-                        username: data.data.email,
-                        password: usr.password
-                        };
-
-                        $http.post(API_URL + 'user/login/', u, {withCredentials: true}).success(function (data, status, headers, config) {
-                            if (status == '200') {
-                                $.cookie('the_cookie', data.user.id, { expires: 7 });
-                                //todo: redirect to add entity screen
-                                $window.location.href = 'dashboard.html#/account/entity'
-                            }
-                        })
-                    }
-                    else {
-                        $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
-                        $scope.user = {}
-                        $scope.card={}
-                        $scope.disabled=false;
-                        $scope.signin=true 
-                    }
-
-                })
-                //$scope.disabled=false;
-            }
             
+                $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
+                    if (status == '200') {
+                        $.cookie('the_cookie', data.user.id, { expires: 7 });
+                    //todo: redirect to add entity screen
+                        $window.location.href = 'dashboard.html#/account/plans'
+                    }
+                })
+                }  
+            else{
+                $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
+                $scope.user={}
+            }    
+            })
         }
+
        
            
 
@@ -135,7 +106,7 @@ angular.module('dashApp.controllers', []).
                     id = data.objects[0].id
                 }
                 else {
-                    $location.path('/account/entity');
+                    $location.path('/account/plans');
                 }
 
             })
@@ -301,6 +272,7 @@ angular.module('dashApp.controllers', []).
 
     })
     .controller('EntityCtrl', function ($http, $scope, User, $window, $location, $timeout, $routeParams, MessageBus) {
+        var userdata={}
         var userid = $.cookie('the_cookie');
         $http.get(API_URL + 'user/?id=' + userid + '&format=json').success(function (data) {
             $scope.user = data.objects[0]
@@ -321,11 +293,13 @@ angular.module('dashApp.controllers', []).
                     dismissQueue: true,
                     closeWith: ['hover']
                 });
+                console.log(data)
                 MessageBus.broadcast("data");
                 $location.path('/account/manage');
             })
         }
         $scope.save_business = function (entity) {
+            var userdata={}
             var business = {
                 business_name: entity['business_name'],
                 user: $scope.user
@@ -337,6 +311,30 @@ angular.module('dashApp.controllers', []).
                     dismissQueue: true,
                     closeWith: ['hover']
                 });
+
+               //stripe plan  
+                console.log(data.user.id)
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                    userdata.id=data.objects[0].stripe_customer
+                    userdata.type=data.objects[0].stripe_billing_type
+                    $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                        userdata.quantity=data.objects.length
+                        console.log(userdata)
+                            //console.log(userdata)
+                        $http.post(API_URL + 'user/plan/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                            if (status == '200') {
+                                console.log("success")
+                            }
+                            else {
+                                console.log("error")
+                            }
+                        })
+
+                    })
+                
+                })
+
+
                 MessageBus.broadcast("data");
                 $location.path('/account/manage');
             })
@@ -835,7 +833,8 @@ angular.module('dashApp.controllers', []).
             $window.location.href = 'dashboard.html'
         }
         $scope.deleteentity = function (entity) {
-            $http.delete(API_URL + entity.resource_uri).success(function (data) {
+            console.log(entity.resource_uri)
+            $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
                 $scope.n = notyfy({
                     text: 'Deleted',
                     type: 'success',
@@ -908,9 +907,51 @@ angular.module('dashApp.controllers', []).
     }).
 
     controller('PlansCtrl', function ($scope, $http, $location,$rootScope) {
+        $scope.plan="";
+        var quantity
+        $scope.solo={
+            select:"Select",
+            quantity:1
+        }
+        $scope.group={
+            select:"Select",
+            quantity:2
+        }
+        $scope.largegroup={
+            select:"Select",
+            quantity:20
+        }
+        var userid = $.cookie('the_cookie');
+        var userdata={}
+        $scope.type="monthly"
         Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
-        $scope.savestriper=function(stripe){
-            console.log(stripe)
+        $scope.select=function(data){
+            quantity=data.quantity
+            if(data.quantity==1){
+                $scope.plan="Solo"
+                $scope.solo.select="Selected"
+                $scope.group.select="Select"
+                $scope.largegroup.select="Select"
+            }
+            else if(data.quantity==2){
+                $scope.plan="Group"
+                $scope.solo.select="Select"
+                $scope.group.select="Selected"
+                $scope.largegroup.select="Select"
+            }
+            else{
+                $scope.plan="Large Group"
+                $scope.solo.select="Select"
+                $scope.group.select="Select"
+                $scope.largegroup.select="Selected"
+            }
+
+        }
+
+        $scope.savestriper=function(stripe,type){
+
+            
+            userdata.type=type
             Stripe.card.createToken({
             number:stripe.number,
             cvc: stripe.cvc,
@@ -919,17 +960,52 @@ angular.module('dashApp.controllers', []).
             }, $scope.stripeResponseHandler);
         }
         $scope.stripeResponseHandler = function(status, response) {
+            
             console.log(response)
             if (response.error) {
                 console.log(response)
-                $scope.disabled=true;
+                
             }
             else{
-                console.log(response)
-                var stripeCustomerId = response.id;
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                  console.log(data.objects[0])
+                  userdata.email=data.objects[0].user.email
+                  userdata.id=data.objects[0].id
+                  userdata.token= response.id;
+                  userdata.quantity=quantity
+                  userdata.plan=$scope.plan
+                    console.log(userdata)
+                    $http.post(API_URL + 'user/customer/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                            console.log("success")
+                        }
+                        else {
+                            console.log(error)
+                        }
+                    })
+                
+               })
+
             }
             //$rootScope.user.stripeCustomerId = response.id;
             //$rootScope.user.save();
+        }
+        $scope.changeplan=function(type){
+            userdata.type=type
+            console.log(type)
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                userdata.id=data.objects[0].stripe_customer
+                userdata.quantity=quantity
+                console.log(userdata)
+                $http.post(API_URL + 'user/plan/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                    if (status == '200') {
+                        console.log("success")
+                    }
+                    else {
+                        console.log("error")
+                    }
+                })
+            })
         }
         
     })
