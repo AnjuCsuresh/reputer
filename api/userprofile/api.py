@@ -125,7 +125,7 @@ from tastypie.authorization import Authorization
 import random
 import string
 from django.core.mail import send_mail
-
+from django.conf import settings
 
 class ExtendedUserResource(MyResource):
     user = fields.ToOneField('userprofile.api.UserResource','user',full=True)
@@ -155,7 +155,9 @@ class UserResource(ModelResource):
     
     def prepend_urls(self):
         return [
-            
+            url(r"^(?P<resource_name>%s)/planchange%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('planchange'), name="api_planchange"),
             url(r"^(?P<resource_name>%s)/plan%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('plan'), name="api_plan"),
@@ -281,13 +283,19 @@ class UserResource(ModelResource):
         self.method_check(request, allowed=['post'])
 
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
-        quantity= data.get('quantity', '')
         plan = data.get('plan', '')
         email = data.get('email', '')
         id = data.get('id', '')
         token = data.get('token', '')
         type = data.get('type', '')
         stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
+        if plan=="Solo":
+            quantity=settings.SOLO_MIN
+        elif plan=="Group":
+            quantity=settings.GROUP_MIN
+        else:
+            quantity=settings.LARGEGROUP_MIN
+        print quantity
         customer = stripe.Customer.create(
             card=token,
             plan=plan+type,
@@ -313,23 +321,48 @@ class UserResource(ModelResource):
         self.method_check(request, allowed=['post'])
 
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
-        quantity= data.get('quantity', '')
         customer = data.get('id', '')
         type = data.get('type', '')
         stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
         cu = stripe.Customer.retrieve(customer)
-        if quantity==1:
-            cu.quantity=1
-            cu.plan="Solo"+type
-            cu.save()
-        elif quantity==2:
-            cu.quantity=2
-            cu.plan="Group"+type
+        quantity= cu.subscription.quantity+1
+        print quantity
+        print cu.subscription.plan.name
+        if quantity>settings.SOLO_MIN and quantity<settings.LARGEGROUP_MIN:
+            if cu.subscription.plan.name=="Group" or cu.subscription.plan.name=="Solo":
+                cu.plan="Group"+type
+                cu.quantity=quantity
+                cu.save()
+            else:
+                pass
+        elif quantity>=settings.LARGEGROUP_MIN:
+            cu.plan="Large Group"+type
+            cu.quantity=quantity
             cu.save()
         else:
-            cu.quantity=20
-            cu.plan="Large Group"+type
-            cu.save()
+            pass
+        print cu
+        return self.create_response(request, { 'success': True })
+    def planchange(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        quantity= data.get('quantity', '')
+        customer = data.get('id', '')
+        type = data.get('type', '')
+        plan= data.get('plan', '')
+        stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
+        cu = stripe.Customer.retrieve(customer)
+        if plan=="Solo":
+            cu.quantity=settings.SOLO_MIN
+            cu.plan=plan+type
+        elif plan=="Group":
+            cu.quantity=settings.GROUP_MIN
+            cu.plan=plan+type
+        else:
+            cu.quantity=settings.LARGEGROUP_MIN
+            cu.plan=plan+type
+        cu.save()
         print cu
         return self.create_response(request, { 'success': True })
                 

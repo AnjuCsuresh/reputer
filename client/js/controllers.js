@@ -274,6 +274,7 @@ angular.module('dashApp.controllers', []).
     .controller('EntityCtrl', function ($http, $scope, User, $window, $location, $timeout, $routeParams, MessageBus) {
         var userdata={}
         var userid = $.cookie('the_cookie');
+        console.log(userid)
         $http.get(API_URL + 'user/?id=' + userid + '&format=json').success(function (data) {
             $scope.user = data.objects[0]
         })
@@ -293,7 +294,25 @@ angular.module('dashApp.controllers', []).
                     dismissQueue: true,
                     closeWith: ['hover']
                 });
-                console.log(data)
+
+                //stripe plan  
+             
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                    userdata.id=data.objects[0].stripe_customer
+                    userdata.type=data.objects[0].stripe_billing_type
+                    console.log(userdata)
+                    $http.post(API_URL + 'user/plan/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                            if (status == '200') {
+                                console.log("success")
+                            }
+                            else {
+                                console.log("error")
+                            }
+                    })
+
+                })
+
+               
                 MessageBus.broadcast("data");
                 $location.path('/account/manage');
             })
@@ -317,22 +336,19 @@ angular.module('dashApp.controllers', []).
                 $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
                     userdata.id=data.objects[0].stripe_customer
                     userdata.type=data.objects[0].stripe_billing_type
-                    $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
-                        userdata.quantity=data.objects.length
-                        console.log(userdata)
-                            //console.log(userdata)
-                        $http.post(API_URL + 'user/plan/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
-                            if (status == '200') {
+                    console.log(data.objects)
+                    userdata.quantity=data.objects.length
+                    console.log(userdata)
+                    $http.post(API_URL + 'user/plan/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
                                 console.log("success")
-                            }
-                            else {
+                        }
+                        else {
                                 console.log("error")
                             }
                         })
 
                     })
-                
-                })
 
 
                 MessageBus.broadcast("data");
@@ -833,20 +849,23 @@ angular.module('dashApp.controllers', []).
             $window.location.href = 'dashboard.html'
         }
         $scope.deleteentity = function (entity) {
-            console.log(entity.resource_uri)
-            $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
-                $scope.n = notyfy({
-                    text: 'Deleted',
-                    type: 'success',
-                    dismissQueue: true,
-                    closeWith: ['hover']
-                });
-                $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
-                    $scope.entities = data.objects
-                    MessageBus.broadcast("data");
-                })
+            console.log(entity)
+            var d = window.confirm('Are you sure to delete');
+            if (d){
+                $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
+                    $scope.n = notyfy({
+                        text: 'Deleted',
+                        type: 'success',
+                        dismissQueue: true,
+                        closeWith: ['hover']
+                    });
+                    $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                        $scope.entities = data.objects
+                        MessageBus.broadcast("data");
+                    })
 
-            })
+                })
+            }
         }
 
     })
@@ -919,7 +938,7 @@ angular.module('dashApp.controllers', []).
         }
         $scope.largegroup={
             select:"Select",
-            quantity:20
+            quantity:21
         }
         var userid = $.cookie('the_cookie');
         var userdata={}
@@ -977,7 +996,7 @@ angular.module('dashApp.controllers', []).
                     console.log(userdata)
                     $http.post(API_URL + 'user/customer/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
                         if (status == '200') {
-                            console.log("success")
+                             $location.path('/account/entity');
                         }
                         else {
                             console.log(error)
@@ -992,12 +1011,13 @@ angular.module('dashApp.controllers', []).
         }
         $scope.changeplan=function(type){
             userdata.type=type
+            userdata.plan=$scope.plan
             console.log(type)
             $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
                 userdata.id=data.objects[0].stripe_customer
                 userdata.quantity=quantity
                 console.log(userdata)
-                $http.post(API_URL + 'user/plan/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                $http.post(API_URL + 'user/planchange/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
                     if (status == '200') {
                         console.log("success")
                     }

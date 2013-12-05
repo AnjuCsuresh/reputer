@@ -10,6 +10,9 @@ EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = ''
 
 TEMPLATE_DEBUG = DEBUG
+SOLO_MIN =1
+GROUP_MIN=2
+LARGEGROUP_MIN=21
 SESSION_COOKIE_AGE =259200 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -20,7 +23,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'reputer12',                      # Or path to database file if using sqlite3.
+        'NAME': 'reputer',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': 'passme',
@@ -171,3 +174,6 @@ LOGGING = {
         },
     }
 }
+
+
+    
