@@ -155,12 +155,21 @@ class UserResource(ModelResource):
     
     def prepend_urls(self):
         return [
+            url(r"^(?P<resource_name>%s)/deletecheck%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('deletecheck'), name="api_deletecheck"),
+            url(r"^(?P<resource_name>%s)/entitydelete%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('entitydelete'), name="api_entitydelete"),
+            url(r"^(?P<resource_name>%s)/addcheck%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('addcheck'), name="api_addcheck"),
             url(r"^(?P<resource_name>%s)/planchange%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('planchange'), name="api_planchange"),
-            url(r"^(?P<resource_name>%s)/plan%s$" %
+            url(r"^(?P<resource_name>%s)/entityadd%s$" %
                 (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('plan'), name="api_plan"),
+                self.wrap_view('entityadd'), name="api_entityadd"),
             url(r"^(?P<resource_name>%s)/customer%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('customer'), name="api_customer"),
@@ -222,6 +231,7 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': True })
         else:
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
+    
 
     def password_reset(self, request, **kwargs):
         self.method_check(request, allowed=['put'])
@@ -288,17 +298,17 @@ class UserResource(ModelResource):
         id = data.get('id', '')
         token = data.get('token', '')
         type = data.get('type', '')
-        stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
-        if plan=="Solo":
+        stripe.api_key = settings.STRIPE_API_KEY
+        if plan==settings.SOLO_PLAN_MONTHLY or plan==settings.SOLO_PLAN_YEARLY:
             quantity=settings.SOLO_MIN
-        elif plan=="Group":
+        elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
             quantity=settings.GROUP_MIN
         else:
             quantity=settings.LARGEGROUP_MIN
         print quantity
         customer = stripe.Customer.create(
             card=token,
-            plan=plan+type,
+            plan=plan,
             email=email,
             quantity=quantity
         )
@@ -308,6 +318,7 @@ class UserResource(ModelResource):
         if extendeduser:
             extendeduser.stripe_customer=customer.id
             extendeduser.stripe_billing_type=type
+            extendeduser.plan=plan
             extendeduser.save()
             return self.create_response(request, { 'success': True ,'user':extendeduser})
                 
@@ -317,55 +328,162 @@ class UserResource(ModelResource):
                 'reason': 'incorrect',
                 }, HttpUnauthorized )
 
-    def plan(self, request, **kwargs):
+    def entityadd(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
 
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
-        customer = data.get('id', '')
+        customer = data.get('customer', '')
+        id= data.get('id', '')
+        plan = data.get('plan', '')
         type = data.get('type', '')
-        stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
+        username= data.get('username', '')
+        stripe.api_key = settings.STRIPE_API_KEY
         cu = stripe.Customer.retrieve(customer)
-        quantity= cu.subscription.quantity+1
+        u = User.objects.get(username=username)
+        quantity=len(Entity.objects.filter(user=u,alive="true"))
         print quantity
-        print cu.subscription.plan.name
+        extendeduser=ExtendedUser.objects.get(id=id)
+        
         if quantity>settings.SOLO_MIN and quantity<settings.LARGEGROUP_MIN:
-            if cu.subscription.plan.name=="Group" or cu.subscription.plan.name=="Solo":
-                cu.plan="Group"+type
+            if plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY or plan==settings.SOLO_PLAN_MONTHLY or plan==settings.SOLO_PLAN_YEARLY:
+                if type=="monthly":
+                    cu.plan=settings.GROUP_PLAN_MONTHLY
+                    extendeduser.plan=settings.GROUP_PLAN_MONTHLY
+                else:
+                    cu.plan=settings.GROUP_PLAN_YEARLY
+                    extendeduser.plan=settings.GROUP_PLAN_YEARLY
                 cu.quantity=quantity
                 cu.save()
-            else:
-                pass
+                extendeduser.save()
+            
         elif quantity>=settings.LARGEGROUP_MIN:
-            cu.plan="Large Group"+type
+            if type=="monthly":
+                cu.plan=settings.LGROUP_PLAN_MONTHLY
+                extendeduser.plan=settings.LGROUP_PLAN_MONTHLY
+            else:
+                cu.plan=settings.LGROUP_PLAN_YEARLY
+                extendeduser.plan=settings.LGROUP_PLAN_YEARLY
             cu.quantity=quantity
             cu.save()
-        else:
-            pass
+            extendeduser.save()
+        
         print cu
         return self.create_response(request, { 'success': True })
+
+
     def planchange(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
 
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
-        quantity= data.get('quantity', '')
-        customer = data.get('id', '')
+        customer = data.get('customer', '')
         type = data.get('type', '')
         plan= data.get('plan', '')
-        stripe.api_key = "sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
+        id = data.get('id', '')
+        stripe.api_key = settings.STRIPE_API_KEY
         cu = stripe.Customer.retrieve(customer)
-        if plan=="Solo":
+        if plan==settings.SOLO_PLAN_MONTHLY or plan==settings.SOLO_PLAN_YEARLY:
             cu.quantity=settings.SOLO_MIN
-            cu.plan=plan+type
-        elif plan=="Group":
+            cu.plan=plan
+        elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
             cu.quantity=settings.GROUP_MIN
-            cu.plan=plan+type
+            cu.plan=plan
         else:
             cu.quantity=settings.LARGEGROUP_MIN
-            cu.plan=plan+type
+            cu.plan=plan
         cu.save()
         print cu
-        return self.create_response(request, { 'success': True })
+        extendeduser=ExtendedUser.objects.get(id=id)
+        if extendeduser:
+            extendeduser.stripe_billing_type=type
+            extendeduser.plan=plan
+            extendeduser.save()
+            return self.create_response(request, { 'success': True ,'user':extendeduser})
                 
+        else:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'incorrect',
+                }, HttpUnauthorized )
+                
+    def addcheck(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        username= data.get('username', '')
+        plan = data.get('plan', '')
+        u = User.objects.get(username=username)
+        l=len(Entity.objects.filter(user=u,alive="true"))+1
+        print l
+        if plan==settings.SOLO_PLAN_MONTHLY or plan==settings.SOLO_PLAN_YEARLY:
+            if l>settings.SOLO_MIN:
+                return self.create_response(request, { 'success': True ,'data':"Group"})
+            
+        elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            if l>=settings.LARGEGROUP_MIN:
+                return self.create_response(request, { 'success': True ,'data':"Large Group"})
+        return self.create_response(request, { 'success': True ,'data':"nochange"})
+
+    def deletecheck(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        username= data.get('username', '')
+        plan = data.get('plan', '')
+        u = User.objects.get(username=username)
+        l=len(Entity.objects.filter(user=u,alive="true"))-1
+        print l
+        if plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
+            if l<settings.LARGEGROUP_MIN:
+                return self.create_response(request, { 'success': True ,'data':"Group"})
+            
+        elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            if l<settings.GROUP_MIN:
+                return self.create_response(request, { 'success': True ,'data':"Solo"})
+        return self.create_response(request, { 'success': True ,'data':"nochange"})
+
+    def entitydelete(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customer = data.get('customer', '')
+        id= data.get('id', '')
+        plan = data.get('plan', '')
+        type = data.get('type', '')
+        username= data.get('username', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        cu = stripe.Customer.retrieve(customer)
+        u = User.objects.get(username=username)
+        quantity= len(Entity.objects.filter(user=u,alive="true"))
+        extendeduser=ExtendedUser.objects.get(id=id)
+        print cu.subscription.plan.name
+        if plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            if quantity>=settings.GROUP_MIN:
+                cu.plan=plan
+                extendeduser.plan=plan
+            else:
+                if type=="monthly":
+                    cu.plan=settings.SOLO_PLAN_MONTHLY
+                    extendeduser.plan=settings.SOLO_PLAN_MONTHLY
+                else:
+                    cu.plan=settings.SOLO_PLAN_YEARLY
+                    extendeduser.plan=settings.SOLO_PLAN_YEARLY
+            
+        elif plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
+            if quantity>=settings.LARGEGROUP_MIN:
+                cu.plan=plan
+                extendeduser.plan=plan
+            else:
+                if type=="monthly":
+                    cu.plan=settings.GROUP_PLAN_MONTHLY
+                    extendeduser.plan=settings.GROUP_PLAN_MONTHLY
+                else:
+                    cu.plan=settings.GROUP_PLAN_YEARLY
+                    extendeduser.plan=settings.GROUP_PLAN_YEARLY
+        cu.quantity=quantity
+        cu.save()
+        extendeduser.save()
+        
+        print cu
+        return self.create_response(request, { 'success': True })
+        
         
 
 class EntityResource(ModelResource):
@@ -373,6 +491,7 @@ class EntityResource(ModelResource):
     location =fields.ToManyField(LocationResource,'location',null=True,full=True)
     profession = fields.ForeignKey(ProfessionResource,'profession',null=True,full=True)
     class Meta:
+        
         queryset = Entity.objects.all()
         resource_name = 'Entity'
         allowed_methods = ['get', 'post','put','delete']

@@ -275,6 +275,46 @@ angular.module('dashApp.controllers', []).
         var userdata={}
         var userid = $.cookie('the_cookie');
         console.log(userid)
+        var userdata={}
+       // stripe planchange
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            userdata.plan=data.objects[0].plan
+            userdata.username=data.objects[0].user.username
+            console.log(userdata)
+            $http.post(API_URL + 'user/addcheck/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                    console.log(data)
+                    userdata={}
+                    if(data.data=="Group"){
+                        bootbox.confirm("Adding Entity will change your plan from Solo to Group", function(result) 
+                        {   
+                            if(!result){
+                                $timeout(function(){
+                                $window.history.back();
+                                },0); 
+                            }
+                            
+                            
+                        });
+                        
+                        
+                    }
+                    else if(data.data=="Large Group"){
+                        bootbox.confirm("Adding Entity will change your plan from Group to Large Group", function(result) 
+                        {
+                           if(!result){
+                                $timeout(function(){
+                                $window.history.back();
+                                },0); 
+                            }
+                        });
+                    }
+                    else{
+                        
+                    }
+
+                })
+        })
+    // stripe planchange
         $http.get(API_URL + 'user/?id=' + userid + '&format=json').success(function (data) {
             $scope.user = data.objects[0]
         })
@@ -298,10 +338,13 @@ angular.module('dashApp.controllers', []).
                 //stripe plan  
              
                 $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
-                    userdata.id=data.objects[0].stripe_customer
+                    userdata.customer=data.objects[0].stripe_customer
+                    userdata.id=data.objects[0].id
                     userdata.type=data.objects[0].stripe_billing_type
+                    userdata.plan=data.objects[0].plan
+                    userdata.username=data.objects[0].user.username
                     console.log(userdata)
-                    $http.post(API_URL + 'user/plan/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                    $http.post(API_URL + 'user/entityadd/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
                             if (status == '200') {
                                 console.log("success")
                             }
@@ -334,12 +377,14 @@ angular.module('dashApp.controllers', []).
                //stripe plan  
                 console.log(data.user.id)
                 $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
-                    userdata.id=data.objects[0].stripe_customer
+                    userdata.customer=data.objects[0].stripe_customer
+                    userdata.id=data.objects[0].id
+                    userdata.plan=data.objects[0].plan
                     userdata.type=data.objects[0].stripe_billing_type
+                    userdata.username=data.objects[0].user.username
                     console.log(data.objects)
-                    userdata.quantity=data.objects.length
                     console.log(userdata)
-                    $http.post(API_URL + 'user/plan/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                    $http.post(API_URL + 'user/entityadd/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
                         if (status == '200') {
                                 console.log("success")
                         }
@@ -848,9 +893,53 @@ angular.module('dashApp.controllers', []).
             $.cookie('entity', id);
             $window.location.href = 'dashboard.html'
         }
+        $scope.delete = function (entity) {
+            var userdata={}
+            // stripe planchange
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                userdata.plan=data.objects[0].plan
+                userdata.username=data.objects[0].user.username
+                console.log(userdata)
+                $http.post(API_URL + 'user/deletecheck/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                    console.log(data)
+                    userdata={}
+                    if(data.data=="Solo"){
+                        bootbox.confirm("Deleting Entity will change your plan from Group to Solo", function(result) 
+                        {   
+                            if(result){
+                                $timeout(function(){
+                                $scope.deleteentity(entity);
+                                },0); 
+                            }
+                            
+                            
+                        });
+                        
+                        
+                    }
+                    else if(data.data=="Group"){
+                        bootbox.confirm("Deleting Entity will change your plan from Large Group to Group", function(result) 
+                        {
+                           if(result){
+                                $timeout(function(){
+                                $scope.deleteentity(entity);
+                                },0); 
+                            }
+                        });
+                    }
+                    else{
+                      $scope.deleteentity(entity);  
+                    }
+
+                })
+        })
+    // stripe planchange
+
+        }
         $scope.deleteentity = function (entity) {
             console.log(entity)
-            var d = window.confirm('Are you sure to delete');
+            var userdata={}
+            var d = window.confirm('Are you sure you want to delete this');
             if (d){
                 $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
                     $scope.n = notyfy({
@@ -860,13 +949,33 @@ angular.module('dashApp.controllers', []).
                         closeWith: ['hover']
                     });
                     $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                        //stripe
+                        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                            userdata.customer=data.objects[0].stripe_customer
+                            userdata.id=data.objects[0].id
+                            userdata.plan=data.objects[0].plan
+                            userdata.type=data.objects[0].stripe_billing_type
+                            userdata.username=data.objects[0].user.username
+                            console.log(data.objects)
+                            console.log(userdata)
+                            $http.post(API_URL + 'user/entitydelete/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                                if (status == '200') {
+                                    console.log("success")
+                                }
+                                else {
+                                    console.log("error")
+                                }
+                            })
+
+                        })
+
                         $scope.entities = data.objects
                         MessageBus.broadcast("data");
                     })
 
                 })
-            }
-        }
+            }//endif
+        }//end function
 
     })
     .controller('NotificationSettingsCtrl',function ($scope, $http, $location) {
@@ -930,15 +1039,18 @@ angular.module('dashApp.controllers', []).
         var quantity
         $scope.solo={
             select:"Select",
-            quantity:1
+            quantity:1,
+            highlight:""
         }
         $scope.group={
             select:"Select",
-            quantity:2
+            quantity:2,
+            highlight:""
         }
         $scope.largegroup={
             select:"Select",
-            quantity:21
+            quantity:21,
+            highlight:""
         }
         var userid = $.cookie('the_cookie');
         var userdata={}
@@ -951,18 +1063,27 @@ angular.module('dashApp.controllers', []).
                 $scope.solo.select="Selected"
                 $scope.group.select="Select"
                 $scope.largegroup.select="Select"
+                $scope.solo.highlight="highlight"
+                $scope.group.highlight=""
+                $scope.largegroup.highlight=""
             }
             else if(data.quantity==2){
                 $scope.plan="Group"
                 $scope.solo.select="Select"
                 $scope.group.select="Selected"
                 $scope.largegroup.select="Select"
+                $scope.solo.highlight=""
+                $scope.group.highlight="highlight"
+                $scope.largegroup.highlight=""
             }
             else{
                 $scope.plan="Large Group"
                 $scope.solo.select="Select"
                 $scope.group.select="Select"
                 $scope.largegroup.select="Selected"
+                $scope.solo.highlight=""
+                $scope.group.highlight=""
+                $scope.largegroup.highlight="highlight"
             }
 
         }
@@ -992,7 +1113,28 @@ angular.module('dashApp.controllers', []).
                   userdata.id=data.objects[0].id
                   userdata.token= response.id;
                   userdata.quantity=quantity
-                  userdata.plan=$scope.plan
+                    if (type=="monthly"){
+                        if($scope.plan=="Solo"){
+                            userdata.plan= SOLO_PLAN_MONTHLY 
+                        }
+                        else if($scope.plan=="Group"){
+                            userdata.plan= GROUP_PLAN_MONTHLY
+                        }
+                        else{
+                            userdata.plan= LGROUP_PLAN_MONTHLY 
+                        }
+                    }
+                    else{
+                        if($scope.plan=="Solo"){
+                            userdata.plan= SOLO_PLAN_YEARLY 
+                        }
+                        else if($scope.plan=="Group"){
+                            userdata.plan= GROUP_PLAN_YEARLY
+                        }
+                        else{
+                            userdata.plan= LGROUP_PLAN_YEARLY 
+                        }
+                    }
                     console.log(userdata)
                     $http.post(API_URL + 'user/customer/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
                         if (status == '200') {
@@ -1011,11 +1153,31 @@ angular.module('dashApp.controllers', []).
         }
         $scope.changeplan=function(type){
             userdata.type=type
-            userdata.plan=$scope.plan
-            console.log(type)
+            if (type=="monthly"){
+                if($scope.plan=="Solo"){
+                  userdata.plan= SOLO_PLAN_MONTHLY 
+                }
+                else if($scope.plan=="Group"){
+                    userdata.plan= GROUP_PLAN_MONTHLY
+                }
+                else{
+                  userdata.plan= LGROUP_PLAN_MONTHLY 
+                }
+            }
+            else{
+                if($scope.plan=="Solo"){
+                  userdata.plan= SOLO_PLAN_YEARLY 
+                }
+                else if($scope.plan=="Group"){
+                    userdata.plan= GROUP_PLAN_YEARLY
+                }
+                else{
+                  userdata.plan= LGROUP_PLAN_YEARLY 
+                }
+            }
             $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
-                userdata.id=data.objects[0].stripe_customer
-                userdata.quantity=quantity
+                userdata.customer=data.objects[0].stripe_customer
+                userdata.id=data.objects[0].id
                 console.log(userdata)
                 $http.post(API_URL + 'user/planchange/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
                     if (status == '200') {
@@ -1028,4 +1190,36 @@ angular.module('dashApp.controllers', []).
             })
         }
         
+    }).
+    controller('PlanchangeCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
+        
+        var userid = $.cookie('the_cookie');
+        var userdata={}
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            userdata.id=data.objects[0].stripe_customer
+            userdata.username=data.objects[0].user.username
+            console.log(userdata)
+            $http.post(API_URL + 'user/entityadd/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                    console.log(data)
+                    if(data.data=="Group"){
+                        //$location.path('/account/entity');
+                    }
+                    else if(data.data=="Large Group"){
+
+                    }
+                    else{
+                        $location.path('/account/entity');
+                    }
+
+                })
+        })
+        /*$http.post(API_URL + 'user/entitycnt/', {withCredentials: true}).success(function (data, status, headers, config) {
+                    if (status == '200') {
+                        console.log("success")
+                    }
+                    else {
+                        console.log("error")
+                    }
+                })
+*/
     })

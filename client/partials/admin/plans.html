@@ -6,10 +6,12 @@
 <div class="separator bottom"></div>
 <!-- // Heading END -->
 <div class="innerLR">
+<!-- 
 	<div class="relativeWrap" data-toggle="source-code" data-placement="outside">
 		<table class="table table-white table-bordered table-vertical-center table-pricing">
 
 			<!-- Table heading -->
+<!-- 
 			<thead>
 				<tr>
 					<th class="center heading">Choose your plan</th>
@@ -39,9 +41,11 @@
 			<!-- // Table heading END -->
 
 			<!-- Table body -->
+<!-- 
 			<tbody>
 
 				<!-- Table row -->
+<!-- 
 				<tr>
 					<td>Setup &amp; Installation</td>
 					<td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
@@ -51,6 +55,7 @@
 				<!-- // Table row END -->
 
 				<!-- Table row -->
+<!-- 
 				<tr>
 					<td>HTML Templates</td>
 					<td class="center"><span class="glyphicons standard remove_2"><i></i></span></td>
@@ -60,6 +65,7 @@
 				<!-- // Table row END -->
 
 				<!-- Table row -->
+<!-- 
 				<tr>
 					<td>SMS Templates</td>
 					<td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
@@ -67,65 +73,147 @@
 					<td class="center"><span class="glyphicons standard circle_ok"><i></i></span></td>
 				</tr>
 				<!-- // Table row END -->
+<!-- 
 
 			</tbody>
 			<!-- // Table body END -->
+<!-- 
 
 		</table>
 	</div>
 	<div class="separator bottom"></div>
-	<div class="widget widget-heading-simple widget-body-gray" data-toggle="collapse-widget">
-
-		<div class="row-fluid" style="margin-top:1em">
-			<div class="span12" style="text-align:center">
-				<h3>How do you want to make payment</h3>
-
-				</div>
-			</div>
-			<!-- // Widget heading END -->
-			<div class="separator bottom"></div>
-			<div  style="text-align:center">
+-->
+<!--pricing table-->
+<div>
+	<div class="row-fluid pricing_table no-space ">
+		<div class="span3">
+			<div class="pr_table_col caption_column " data-color="red"><div class="tb_header">choose plan</div>
+			<ul class="tb_content">
+				<li>Users count</li>
+				<li>Workspaces Count</li>
+				<li># Clients</li>
+				<li>Storage</li>
+				<li>Max file size</li>
+				<li>-</li>
 				
-				<label class="radio">
-					<h4><input type="radio" name="optionsRadios" id="optionsRadios1" value="monthly" ng-model="type" > &nbsp;&nbsp;Monthly&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
-				</label>
-				<label class="radio">
-						<h4><input type="radio" name="optionsRadios" id="optionsRadios2" value="yearly" ng-model="type"> &nbsp;&nbsp;Yearly</h4>
-				</label>
-						<br><br><br>
-						<button class="btn btn-success" data-toggle="modal" data-target="#creditCard" >Set Up Payments</button>
-						<button class="btn btn-success" ng-click="changeplan(type)">Change Plan</button>
-					
+			</ul>
+		</div><!-- end pricing table column --></div>
+		<div class="span3">
+			<div class="pr_table_col {{solo.highlight}}" data-color="red">
+				<div class="tb_header">
+					<h4 class="ttitle">Solo</h4>
+					<h5 style="color:white">For a single professional</h5>
+					<div class="price">
+						<p >$5.99<span>per month</span></p>
+					</div>
 				</div>
-			</div>
-			<div class="modal fade" id="creditCard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                	
-                    <div class="modal-header">
-                        <button class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h3 class="center">Please enter your credit card details</h3>
-                    </div>
-                   
-                    <div class="modal-body" style="overflow:hidden">
-                        <div class="row-fluid  span12">
-                            <div class="span4"><b>Number</b></div>
-                            <div class="span8"><input type="text" class="span8" size="20" ng-model="card.number"></div>
-                        </div>
-                        <div class="row-fluid  span12">
-                            <div class="span4"><b>CVC</b></div>
-                            <div class="span8"><input type="text" class="span8" size="4" ng-model="card.cvc"></div>
-                        </div>
-                        <div class="row-fluid  span12">
-                            <div class="span4"><b>Expiry Month</b></div>
-                            <div class="span8"><input type="text" class="span8" size="2" ng-model="card.expmonth"></div>
-                        </div>
-                        <div class="row-fluid  span12">
-                            <div class="span4"><b>Expiry Year</b></div>
-                            <div class="span8"><input type="text" class="span8" size="4" ng-model="card.expyear"></div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary" data-dismiss="modal" ng-click="savestriper(card,type)" >Pay</button>
-                    </div>
-                
-                </div>
+				<ul class="tb_content">
+						<li><div class="price">
+						<p style="color:black">$59.00<span>per year</span></p>
+					</div></li>
+					</ul>
+				
+				
+				<div class="signin"><a class="btn" ng-click="select(solo)">{{solo.select}}</a>
+				</div>
+			</div><!-- end pricing table column -->
+		</div>
+		<div class="span3">
+			<div class="pr_table_col {{group.highlight}}" data-color="red">
+				<div class="tb_header">
+					<h4 class="ttitle">Group</h4>
+					<h5 style="color:white">Two or more professionals</h5>
+					<div class="price">
+						<p >$4.99<span>per month</span></p>
+					</div>
+				</div>
+				<ul class="tb_content">
+						<li><div class="price">
+						<p style="color:black">$49.00<span>per year</span></p>
+					</div></li>
+					</ul>
+				
+				
+				<div class="signin"><a class="btn" ng-click="select(group)">{{group.select}}</a>
+				</div>
+			</div><!-- end pricing table column -->
+		</div>
+		<div class="span3">
+			<div class="pr_table_col {{largegroup.highlight}}" data-color="red">
+				<div class="tb_header">
+					<h4 class="ttitle">Large Group</h4>
+					<h5 style="color:white">20+ professionals</h5>
+					<div class="price">
+						<p >$3.99<span>per month</span></p>
+					</div>
+				</div>
+				<ul class="tb_content">
+						<li><div class="price">
+						<p style="color:black">$39.00<span>per year</span></p>
+					</div></li>
+					</ul>
+				
+				
+				<div class="signin"><a class="btn" ng-click="select(largegroup)">{{largegroup.select}}</a>
+				</div>
+			</div><!-- end pricing table column -->
+		</div>
+	</div>
+</div>
+
+<!--pricing table-->
+<div class="widget widget-heading-simple widget-body-gray" data-toggle="collapse-widget">
+
+	<div class="row-fluid" style="margin-top:1em">
+		<div class="span12" style="text-align:center">
+			<h3>How do you want to make payment</h3>
+
+		</div>
+	</div>
+	<!-- // Widget heading END -->
+	<div class="separator bottom"></div>
+	<div  style="text-align:center">
+
+		<label class="radio">
+			<h4><input type="radio" name="optionsRadios" id="optionsRadios1" value="monthly" ng-model="type" > &nbsp;&nbsp;Monthly&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h4>
+		</label>
+		<label class="radio">
+			<h4><input type="radio" name="optionsRadios" id="optionsRadios2" value="yearly" ng-model="type"> &nbsp;&nbsp;Yearly</h4>
+		</label>
+		<br><br><br>
+		<button class="btn btn-success" data-toggle="modal" data-target="#creditCard" >Set Up Payments</button>
+		<button class="btn btn-success" ng-click="changeplan(type)">Change Plan</button>
+
+	</div>
+</div>
+<div class="modal fade" id="creditCard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+	<div class="modal-header">
+		<button class="close" data-dismiss="modal" aria-hidden="true">×</button>
+		<h3 class="center">Please enter your credit card details</h3>
+	</div>
+
+	<div class="modal-body" style="overflow:hidden">
+		<div class="row-fluid  span12">
+			<div class="span4"><b>Number</b></div>
+			<div class="span8"><input type="text" class="span8" size="20" ng-model="card.number"></div>
+		</div>
+		<div class="row-fluid  span12">
+			<div class="span4"><b>CVC</b></div>
+			<div class="span8"><input type="text" class="span8" size="4" ng-model="card.cvc"></div>
+		</div>
+		<div class="row-fluid  span12">
+			<div class="span4"><b>Expiry Month</b></div>
+			<div class="span8"><input type="text" class="span8" size="2" ng-model="card.expmonth"></div>
+		</div>
+		<div class="row-fluid  span12">
+			<div class="span4"><b>Expiry Year</b></div>
+			<div class="span8"><input type="text" class="span8" size="4" ng-model="card.expyear"></div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" data-dismiss="modal" ng-click="savestriper(card,type)" >Pay</button>
+	</div>
+
+</div>
 </div>
