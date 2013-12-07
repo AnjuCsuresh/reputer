@@ -96,6 +96,7 @@ angular.module('dashApp.controllers', []).
             $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
+                    console.log("success")
                     $location.path('/account/entity/oops');
                 }
             });
@@ -291,7 +292,7 @@ angular.module('dashApp.controllers', []).
                         console.log(data)
                         userdata={}
                         if(data.data=="Group"){
-                            bootbox.confirm("Adding Entity will change your plan from Solo to Group", function(result) 
+                            bootbox.confirm("<b><center>Adding Entity will change your plan from Solo to Group</center></b>", function(result) 
                             {   
                                 if(!result){
                                     $timeout(function(){
@@ -305,7 +306,7 @@ angular.module('dashApp.controllers', []).
                         
                         }
                         else if(data.data=="Large Group"){
-                            bootbox.confirm("Adding Entity will change your plan from Group to Large Group", function(result) 
+                            bootbox.confirm("<b><center>Adding Entity will change your plan from Group to Large Group</center></b>", function(result) 
                             {
                                 if(!result){
                                     $timeout(function(){
@@ -414,7 +415,7 @@ angular.module('dashApp.controllers', []).
             $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
-                    $location.path('/account/entity/oops');
+                    //$location.path('/account/entity/oops');
                 }
             });
         }
@@ -426,7 +427,7 @@ angular.module('dashApp.controllers', []).
                     $scope.entity = data.objects[0]
                 }
                 else {
-                    $location.path('/account/entity');
+                    //$location.path('/account/entity');
                 }
 
             })
@@ -542,7 +543,7 @@ angular.module('dashApp.controllers', []).
             $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
-                    $location.path('/account/entity/oops');
+                    //$location.path('/account/entity/oops');
                 }
             });
         }
@@ -554,7 +555,7 @@ angular.module('dashApp.controllers', []).
                     $scope.entity = data.objects[0]
                 }
                 else {
-                    $location.path('/account/entity');
+                    //$location.path('/account/entity');
                 }
 
             })
@@ -910,7 +911,7 @@ angular.module('dashApp.controllers', []).
                     console.log(data)
                     userdata={}
                     if(data.data=="Solo"){
-                        bootbox.confirm("Deleting Entity will change your plan from Group to Solo", function(result) 
+                        bootbox.confirm("<b><center>Deleting Entity will change your plan from Group to Solo</center></b>", function(result) 
                         {   
                             if(result){
                                 $timeout(function(){
@@ -924,7 +925,7 @@ angular.module('dashApp.controllers', []).
                         
                     }
                     else if(data.data=="Group"){
-                        bootbox.confirm("Deleting Entity will change your plan from Large Group to Group", function(result) 
+                        bootbox.confirm("<b><center>Deleting Entity will change your plan from Large Group to Group</center></b>", function(result) 
                         {
                            if(result){
                                 $timeout(function(){
@@ -946,57 +947,113 @@ angular.module('dashApp.controllers', []).
             console.log(entity)
             var userdata={}
             if(entity.first_name==null){
-                var d = window.confirm('Are you sure you want to delete '+entity.business_name);
+                bootbox.confirm("<b><center>Are you sure you want to delete "+entity.business_name+"</center></b>", function(result) 
+                        {
+                           if(result){
+                                $timeout(function(){
+                                    $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
+                                        if(entity.first_name==null){
+                                            $scope.n = notyfy({
+                                            text: 'Deleted entity '+entity.business_name,
+                                            type: 'success',
+                                            dismissQueue: true,
+                                            closeWith: ['hover']
+                                            });
+                                        }
+                                        else{
+                                            $scope.n = notyfy({
+                                            text: 'Deleted entity '+entity.first_name+" "+entity.last_name,
+                                            type: 'success',
+                                            dismissQueue: true,
+                                            closeWith: ['hover']
+                                            });
+                                        }
+                    
+                                        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                                            //stripe
+                                            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                                                userdata.customer=data.objects[0].stripe_customer
+                                                userdata.id=data.objects[0].id
+                                                userdata.plan=data.objects[0].plan
+                                                userdata.type=data.objects[0].stripe_billing_type
+                                                userdata.username=data.objects[0].user.username
+                                                console.log(data.objects)
+                                                console.log(userdata)
+                                                $http.post(API_URL + 'user/entitydelete/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                                                    if (status == '200') {
+                                                        console.log("success")
+                                                    }
+                                                    else {
+                                                        console.log("error")
+                                                    }
+                                                })
+
+                                            })
+
+                                            $scope.entities = data.objects
+                                            MessageBus.broadcast("data");
+                                        })
+
+                                    })
+                                },0); 
+                            }
+                        });
+                
             }
             else{
-                var d = window.confirm('Are you sure you want to delete '+entity.first_name+" "+entity.last_name);
-            }
-            if (d){
-                $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
-                    if(entity.first_name==null){
-                        $scope.n = notyfy({
-                        text: 'Deleted entity '+entity.business_name,
-                        type: 'success',
-                        dismissQueue: true,
-                        closeWith: ['hover']
-                    });
-                    }
-                    else{
-                        $scope.n = notyfy({
-                        text: 'Deleted entity '+entity.first_name+" "+entity.last_name,
-                        type: 'success',
-                        dismissQueue: true,
-                        closeWith: ['hover']
-                    });
-                    }
+                bootbox.confirm("<b><center>Are you sure you want to delete "+entity.first_name+" "+entity.last_name+"</center></b>", function(result) 
+                        {
+                           if(result){
+                                $timeout(function(){
+                                    $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
+                                        if(entity.first_name==null){
+                                            $scope.n = notyfy({
+                                            text: 'Deleted entity '+entity.business_name,
+                                            type: 'success',
+                                            dismissQueue: true,
+                                            closeWith: ['hover']
+                                            });
+                                        }
+                                        else{
+                                            $scope.n = notyfy({
+                                            text: 'Deleted entity '+entity.first_name+" "+entity.last_name,
+                                            type: 'success',
+                                            dismissQueue: true,
+                                            closeWith: ['hover']
+                                            });
+                                        }
                     
-                    $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                                        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
                         //stripe
-                        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
-                            userdata.customer=data.objects[0].stripe_customer
-                            userdata.id=data.objects[0].id
-                            userdata.plan=data.objects[0].plan
-                            userdata.type=data.objects[0].stripe_billing_type
-                            userdata.username=data.objects[0].user.username
-                            console.log(data.objects)
-                            console.log(userdata)
-                            $http.post(API_URL + 'user/entitydelete/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
-                                if (status == '200') {
-                                    console.log("success")
-                                }
-                                else {
-                                    console.log("error")
-                                }
-                            })
+                                            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                                                userdata.customer=data.objects[0].stripe_customer
+                                                userdata.id=data.objects[0].id
+                                                userdata.plan=data.objects[0].plan
+                                                userdata.type=data.objects[0].stripe_billing_type
+                                                userdata.username=data.objects[0].user.username
+                                                console.log(data.objects)
+                                                console.log(userdata)
+                                                $http.post(API_URL + 'user/entitydelete/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                                                    if (status == '200') {
+                                                        console.log("success")
+                                                    }
+                                                    else {
+                                                        console.log("error")
+                                                    }
+                                                })
 
-                        })
+                                            })
 
-                        $scope.entities = data.objects
-                        MessageBus.broadcast("data");
-                    })
+                                            $scope.entities = data.objects
+                                            MessageBus.broadcast("data");
+                                        })
 
-                })
-            }//endif
+                                    })
+                                },0); 
+                            }
+                        });
+            }
+            
         }//end function
 
     })
@@ -1077,14 +1134,33 @@ angular.module('dashApp.controllers', []).
         var userid = $.cookie('the_cookie');
         $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
             if(data.objects[0].plan==null){
-                $scope.changeplan=false;
+                $scope.change=false;
+                $scope.type="monthly"
             }
             else{
-               $scope.changeplan=true; 
+               $scope.change=true; 
+               if(data.objects[0].plan==SOLO_PLAN_MONTHLY ||data.objects[0].plan==SOLO_PLAN_YEARLY){
+                    $scope.plan="Solo"
+                    $scope.solo.select="Selected"
+                    $scope.solo.highlight="highlight"
+               }
+               else if(data.objects[0].plan==GROUP_PLAN_MONTHLY ||data.objects[0].plan==GROUP_PLAN_YEARLY){
+                    $scope.plan="Group"
+                    $scope.group.select="Selected"
+                    $scope.group.highlight="highlight"
+               }
+               else{
+                    $scope.plan="Large Group"
+                    $scope.largegroup.select="Selected"
+                    $scope.largegroup.highlight="highlight"
+               }
+               console.log(data.objects[0].stripe_billing_type)
+               $scope.type=data.objects[0].stripe_billing_type
             }
         })
+
         var userdata={}
-        $scope.type="monthly"
+        
         Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
         $scope.select=function(data){
             quantity=data.quantity
