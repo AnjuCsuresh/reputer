@@ -14,9 +14,11 @@ angular.module('myApp.controllers', []).
         Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
         $scope.login = function (user) {
             //adding some simple verifications
-            user['username'] = user.email
-            delete user['email']
-            $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
+            var u = {
+                    username: user.email,
+                    password: user.password
+                };
+            $http.post(API_URL + 'user/login/', u, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
                     $.cookie('the_cookie', data.user.id, { expires: 7 });
@@ -25,7 +27,7 @@ angular.module('myApp.controllers', []).
                 else {
                     $scope.error = "We were unable to sign you in - please check the email and password that you entered. "
                 }
-                $scope.user = {}
+                $scope.user.password = ""
             })
 
         }
@@ -52,7 +54,7 @@ angular.module('myApp.controllers', []).
                 }  
             else{
                 $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
-                $scope.user={}
+                $scope.user.password=""
             }    
             })
         }
@@ -88,6 +90,7 @@ angular.module('myApp.controllers', []).
 angular.module('dashApp.controllers', []).
     controller('DashHomeCtrl', function ($http, $scope, User, $filter, $timeout, $routeParams, $cookieStore, $location) {
         console.log($.cookie('entity'))
+        var userid = $.cookie('the_cookie');
         var id = $.cookie('entity');
         if (id > 0) {
             $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
@@ -98,7 +101,6 @@ angular.module('dashApp.controllers', []).
             });
         }
         else {
-            var userid = $.cookie('the_cookie');
             $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&live=true&format=json').success(function (data) {
                 $scope.entities = data.objects
                 if (data.objects.length > 0) {
@@ -106,7 +108,7 @@ angular.module('dashApp.controllers', []).
                     id = data.objects[0].id
                 }
                 else {
-                    $location.path('/account/plans');
+                    $location.path('/account/entity')
                 }
 
             })
@@ -275,51 +277,54 @@ angular.module('dashApp.controllers', []).
         var userdata={}
         var userid = $.cookie('the_cookie');
         console.log(userid)
-        var userdata={}
+        
        // stripe planchange
         $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
-            userdata.plan=data.objects[0].plan
-            userdata.username=data.objects[0].user.username
-            console.log(userdata)
-            $http.post(API_URL + 'user/addcheck/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
-                    console.log(data)
-                    userdata={}
-                    if(data.data=="Group"){
-                        bootbox.confirm("Adding Entity will change your plan from Solo to Group", function(result) 
-                        {   
-                            if(!result){
-                                $timeout(function(){
-                                $window.history.back();
-                                },0); 
-                            }
+            if(data.objects[0].plan==null){
+                $location.path('/account/plans')
+            }
+            else{
+                userdata.plan=data.objects[0].plan
+                userdata.username=data.objects[0].user.username
+                console.log(userdata)
+                $http.post(API_URL + 'user/addcheck/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                        console.log(data)
+                        userdata={}
+                        if(data.data=="Group"){
+                            bootbox.confirm("Adding Entity will change your plan from Solo to Group", function(result) 
+                            {   
+                                if(!result){
+                                    $timeout(function(){
+                                    $window.history.back();
+                                    },0); 
+                                }
                             
                             
-                        });
+                            });
                         
                         
-                    }
-                    else if(data.data=="Large Group"){
-                        bootbox.confirm("Adding Entity will change your plan from Group to Large Group", function(result) 
-                        {
-                           if(!result){
-                                $timeout(function(){
-                                $window.history.back();
-                                },0); 
-                            }
-                        });
-                    }
-                    else{
+                        }
+                        else if(data.data=="Large Group"){
+                            bootbox.confirm("Adding Entity will change your plan from Group to Large Group", function(result) 
+                            {
+                                if(!result){
+                                    $timeout(function(){
+                                    $window.history.back();
+                                    },0); 
+                                }
+                            });
+                        }
                         
-                    }
-
                 })
-        })
+        
     // stripe planchange
-        $http.get(API_URL + 'user/?id=' + userid + '&format=json').success(function (data) {
-            $scope.user = data.objects[0]
-        })
-        $http.get(API_URL + 'Profession/').success(function (data, status, headers, config) {
-            $scope.professions = data.objects;
+                $http.get(API_URL + 'user/?id=' + userid + '&format=json').success(function (data) {
+                    $scope.user = data.objects[0]
+                })
+                $http.get(API_URL + 'Profession/').success(function (data, status, headers, config) {
+                    $scope.professions = data.objects;
+                })
+            }
         })
         $scope.save_person = function (entity) {
             delete entity['business_name']
@@ -400,6 +405,7 @@ angular.module('dashApp.controllers', []).
                 $location.path('/account/manage');
             })
         }
+        
     })
     //CONTROLLER - REVIEW
     .controller('reviewTable', function ($http, $scope, User, $filter, $timeout, $routeParams, $cookieStore, $location) {
