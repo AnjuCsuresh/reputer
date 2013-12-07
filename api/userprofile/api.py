@@ -379,17 +379,24 @@ class UserResource(ModelResource):
         type = data.get('type', '')
         plan= data.get('plan', '')
         id = data.get('id', '')
+        username= data.get('username', '')
+        u = User.objects.get(username=username)
+        quantity=len(Entity.objects.filter(user=u,alive="true"))
         stripe.api_key = settings.STRIPE_API_KEY
         cu = stripe.Customer.retrieve(customer)
-        if plan==settings.SOLO_PLAN_MONTHLY or plan==settings.SOLO_PLAN_YEARLY:
-            cu.quantity=settings.SOLO_MIN
-            cu.plan=plan
-        elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
-            cu.quantity=settings.GROUP_MIN
-            cu.plan=plan
+        if plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            if quantity<=settings.GROUP_MIN:
+                cu.quantity=settings.GROUP_MIN 
+            else:
+                cu.quantity=quantity
+        elif plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
+            if quantity<=settings.LARGEGROUP_MIN:
+                cu.quantity=settings.LARGEGROUP_MIN 
+            else:
+                cu.quantity=quantity
         else:
-            cu.quantity=settings.LARGEGROUP_MIN
-            cu.plan=plan
+            cu.quantity=quantity
+        cu.plan=plan
         cu.save()
         print cu
         extendeduser=ExtendedUser.objects.get(id=id)

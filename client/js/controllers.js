@@ -1194,6 +1194,7 @@ angular.module('dashApp.controllers', []).
             $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
                 userdata.customer=data.objects[0].stripe_customer
                 userdata.id=data.objects[0].id
+                userdata.username=data.objects[0].user.username
                 console.log(userdata)
                 $http.post(API_URL + 'user/planchange/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
                     if (status == '200') {
