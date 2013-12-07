@@ -939,15 +939,31 @@ angular.module('dashApp.controllers', []).
         $scope.deleteentity = function (entity) {
             console.log(entity)
             var userdata={}
-            var d = window.confirm('Are you sure you want to delete this');
+            if(entity.first_name==null){
+                var d = window.confirm('Are you sure you want to delete '+entity.business_name);
+            }
+            else{
+                var d = window.confirm('Are you sure you want to delete '+entity.first_name+" "+entity.last_name);
+            }
             if (d){
                 $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
-                    $scope.n = notyfy({
-                        text: 'Deleted',
+                    if(entity.first_name==null){
+                        $scope.n = notyfy({
+                        text: 'Deleted entity '+entity.business_name,
                         type: 'success',
                         dismissQueue: true,
                         closeWith: ['hover']
                     });
+                    }
+                    else{
+                        $scope.n = notyfy({
+                        text: 'Deleted entity '+entity.first_name+" "+entity.last_name,
+                        type: 'success',
+                        dismissQueue: true,
+                        closeWith: ['hover']
+                    });
+                    }
+                    
                     $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
                         //stripe
                         $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
@@ -1113,7 +1129,7 @@ angular.module('dashApp.controllers', []).
                   userdata.id=data.objects[0].id
                   userdata.token= response.id;
                   userdata.quantity=quantity
-                    if (type=="monthly"){
+                    if (userdata.type=="monthly"){
                         if($scope.plan=="Solo"){
                             userdata.plan= SOLO_PLAN_MONTHLY 
                         }
