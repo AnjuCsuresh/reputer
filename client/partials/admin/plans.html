@@ -181,8 +181,8 @@
 			<h4><input type="radio" name="optionsRadios" id="optionsRadios2" value="yearly" ng-model="type"> &nbsp;&nbsp;Yearly</h4>
 		</label>
 		<br><br><br>
-		<button class="btn btn-success" data-toggle="modal" data-target="#creditCard" >Set Up Payments</button>
-		<button class="btn btn-success" ng-click="changeplan(type)">Change Plan</button>
+		<button ng-hide="changeplan" class="btn btn-success" data-toggle="modal" data-target="#creditCard" >Set Up Payments</button>
+		<button ng-show="changeplan" class="btn btn-success" ng-click="changeplan(type)">Change Plan</button>
 
 	</div>
 </div>

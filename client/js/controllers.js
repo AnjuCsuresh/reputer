@@ -1075,6 +1075,14 @@ angular.module('dashApp.controllers', []).
             highlight:""
         }
         var userid = $.cookie('the_cookie');
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            if(data.objects[0].plan==null){
+                $scope.changeplan=false;
+            }
+            else{
+               $scope.changeplan=true; 
+            }
+        })
         var userdata={}
         $scope.type="monthly"
         Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
