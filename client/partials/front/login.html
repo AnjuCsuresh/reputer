@@ -19,19 +19,20 @@
                                 <div class="widget-body">
 
                                         <!-- Form -->
-                                        <form ng-submit="login(user)">
+                                        <form>
                                                 <label>Email</label>
                                                 <input type="email" ng-model="user.email" class="input-block-level" placeholder="Your Email Address" required/>
                                                 <label>Password</label>
                                                 <input ng-model="user.password" type="password" class="input-block-level margin-none" placeholder="Your Password" required/>
                                                 <div class="separator bottom"></div>
                                                 <div class="row-fluid">
-                                                        <div class="span6">
-                                                                        <a ng-disabled="!(user.email!=null&&user.password!=null)" class="btn btn-primary btn-block btn-large"  ng-click="register(user)" >Sign Up</a>
+                                                         <div class="span6">
+                                                                <button ng-disabled="!(user.email!=null&&user.password!=null)" class="btn btn-large btn-block btn-inverse" ng-click="login(user)">Sign In</button>
                                                         </div>
                                                         <div class="span6">
-                                                                <button ng-disabled="!(user.email!=null&&user.password!=null)" class="btn btn-large btn-block btn-inverse" type="submit">Sign In</button>
+                                                                        <button ng-disabled="!(user.email!=null&&user.password!=null)" class="btn btn-primary btn-block btn-large"  ng-click="register(user)" >Sign Up</button>
                                                         </div>
+                                                       
                                                 </div>
                                                 <div class="row-fluid">
                                                         <div class="span12">
