@@ -19,6 +19,7 @@ angular.module('myApp.controllers', []).
                     password: user.password
                 };
             $http.post(API_URL + 'user/login/', u, {withCredentials: true}).success(function (data, status, headers, config) {
+
                 if (status == '200') {
                     $scope.error = '';
                     $.cookie('the_cookie', data.user.id, { expires: 7 });
@@ -88,6 +89,7 @@ angular.module('myApp.controllers', []).
     }]);
 
 angular.module('dashApp.controllers', []).
+
     controller('DashHomeCtrl', function ($http, $scope, User, $filter, $timeout, $routeParams, $cookieStore, $location) {
         //console.log($.cookie('entity'))
         var userid = $.cookie('the_cookie');
@@ -851,6 +853,7 @@ angular.module('dashApp.controllers', []).
                 $scope.entities = data.objects
             })
 
+
             $scope.select = function (id) {
                 $.cookie('entity', id);
                 //console.log($.cookie('entity'))
@@ -858,6 +861,7 @@ angular.module('dashApp.controllers', []).
             }
             $scope.logout = function () {
                 $http.get(API_URL + 'user/logout/', {withCredentials: true}).success(function (data, status, headers, config) {
+
                     $.removeCookie('the_cookie');
                     $.removeCookie('entity');
                     $window.location.href = WEBSITE_URL;
