@@ -26,7 +26,7 @@
                     <span class="plan">Group</span>
                     <span class="price">&dollar;9.99</span>
                     <div class="separator bottom"></div>
-                    <button class="btn btn-primary btn-block" >Sign up</button>
+                    <button class="btn btn-primary btn-block">Sign up</button>
 
                 </th>
                 <th class="center" style="width: 15%">
@@ -36,31 +36,34 @@
                     <button class="btn btn-primary btn-block">Sign up</button>
                 </th>
                 <div class="modal fade" id="creditCardForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                	
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <a type="button" class="close" data-dismiss="modal" aria-hidden="true">×</a>
                         <h3 class="center">Please enter your credit card details</h3>
                     </div>
+                   
                     <div class="modal-body" style="overflow:hidden">
                         <div class="row-fluid  span12">
                             <div class="span4"><b>Number</b></div>
-                            <div class="span8"><input type="text" class="span8"></div>
+                            <div class="span8"><input type="text" class="span8" size="20" ng-model="s.number"></div>
                         </div>
                         <div class="row-fluid  span12">
                             <div class="span4"><b>CVC</b></div>
-                            <div class="span8"><input type="text" class="span8"></div>
+                            <div class="span8"><input type="text" class="span8" size="4" ng-model="s.cvc"></div>
                         </div>
                         <div class="row-fluid  span12">
                             <div class="span4"><b>Expiry Month</b></div>
-                            <div class="span8"><input type="text" class="span8"></div>
+                            <div class="span8"><input type="text" class="span8" size="2" ng-model="s.expmonth"></div>
                         </div>
                         <div class="row-fluid  span12">
                             <div class="span4"><b>Expiry Year</b></div>
-                            <div class="span8"><input type="text" class="span8"></div>
+                            <div class="span8"><input type="text" class="span8" size="4" ng-model="s.expyear"></div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#" class="btn btn-primary">Pay</a>
+                        <button class="btn btn-primary" ng-disabled="disabled" ng-click="savestriper(s)" >Pay</button>
                     </div>
+                
                 </div>
             </tr>
             </thead>

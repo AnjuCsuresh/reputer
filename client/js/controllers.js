@@ -10,11 +10,15 @@ angular.module('myApp.controllers', []).
     }).
 
     controller('LoginCtrl', function ($http, $scope, $window, $cookieStore, $location, Login, $cookies) {
+        var usr;
+        Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
         $scope.login = function (user) {
             //adding some simple verifications
-            user['username'] = user.email
-            delete user['email']
-            $http.post(API_URL + 'user/login/', user, {withCredentials: true}).success(function (data, status, headers, config) {
+            var u = {
+                    username: user.email,
+                    password: user.password
+                };
+            $http.post(API_URL + 'user/login/', u, {withCredentials: true}).success(function (data, status, headers, config) {
                 if (status == '200') {
                     $scope.error = '';
                     $.cookie('the_cookie', data.user.id, { expires: 7 });
@@ -23,38 +27,40 @@ angular.module('myApp.controllers', []).
                 else {
                     $scope.error = "We were unable to sign you in - please check the email and password that you entered. "
                 }
-                $scope.user = {}
+                $scope.user.password = ""
             })
 
         }
-        $scope.register = function (user) {
+       $scope.register = function (user) {
             //adding some simple verifications
             var data = {
                 password: user.password,
                 email: user.email
             };
             $http.post(API_URL + 'newuser/', data).then(function (data) {
-                console.log(data)
-                if (data.status == '201') {
-                    var u = {
-                        username: data.data.email,
-                        password: user.password
-                    };
-
-                    $http.post(API_URL + 'user/login/', u, {withCredentials: true}).success(function (data, status, headers, config) {
-                        if (status == '200') {
-                            $.cookie('the_cookie', data.user.id, { expires: 7 });
-                            //todo: redirect to add entity screen
-                            $window.location.href = 'dashboard.html#/account/entity'
-                        }
-                    })
-                }
-                else {
-                    $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
-                    $scope.user = {}
-                }
+            if(data.status == '201'){
+               var u = {
+                    username: data.data.email,
+                    password: user.password
+                };
+            
+                $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
+                    if (status == '200') {
+                        $.cookie('the_cookie', data.user.id, { expires: 7 });
+                    //todo: redirect to add entity screen
+                        $window.location.href = 'dashboard.html#/account/plans'
+                    }
+                })
+                }  
+            else{
+                $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
+                $scope.user.password=""
+            }    
             })
         }
+
+       
+           
 
         /* ************************************************
          password reset
@@ -83,30 +89,39 @@ angular.module('myApp.controllers', []).
 
 angular.module('dashApp.controllers', []).
     controller('DashHomeCtrl', function ($http, $scope, User, $filter, $timeout, $routeParams, $cookieStore, $location) {
-        console.log($.cookie('entity'))
+        //console.log($.cookie('entity'))
+        var userid = $.cookie('the_cookie');
         var id = $.cookie('entity');
         if (id > 0) {
             $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
+                    //console.log("success")
                     $location.path('/account/entity/oops');
                 }
             });
         }
         else {
-            var userid = $.cookie('the_cookie');
-            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&live=true&format=json').success(function (data) {
+            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
                 $scope.entities = data.objects
                 if (data.objects.length > 0) {
-                    $scope.entity = data.objects[0]
-                    id = data.objects[0].id
+                    if(data.objects[0].live==true){
+                        $scope.entity = data.objects[0]
+                        id = data.objects[0].id
+                    }
+                    else{
+                        $.cookie('entity', data.objects[0].id);
+                        $location.path('/account/entity/oops'); 
+                    }
                 }
                 else {
-                    $location.path('/account/entity');
+                    $location.path('/account/entity')
                 }
 
             })
         }
+
+        
         //PRODUCTION CODE: $http.get(DATA_API_URL+'getcrawltable/'+id).success(function(data, status, headers, config){
         $http.get(DATA_API_URL + 'getcrawltable/999', {withCredentials: true}).success(function (data, status, headers, config) {
             $scope.items = data.aaData;
@@ -268,12 +283,57 @@ angular.module('dashApp.controllers', []).
 
     })
     .controller('EntityCtrl', function ($http, $scope, User, $window, $location, $timeout, $routeParams, MessageBus) {
+        var userdata={}
         var userid = $.cookie('the_cookie');
-        $http.get(API_URL + 'user/?id=' + userid + '&format=json').success(function (data) {
-            $scope.user = data.objects[0]
-        })
-        $http.get(API_URL + 'Profession/').success(function (data, status, headers, config) {
-            $scope.professions = data.objects;
+        //console.log(userid)
+        
+       // stripe planchange
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            if(data.objects[0].plan==null){
+                $location.path('/account/plans')
+            }
+            else{
+                userdata.plan=data.objects[0].plan
+                userdata.username=data.objects[0].user.username
+                //console.log(userdata)
+                $http.post(API_URL + 'user/addcheck/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                        //console.log(data)
+                        userdata={}
+                        if(data.data=="Group"){
+                            bootbox.confirm("<b><center>Adding Entity will change your plan from Solo to Group<br>Are you sure you want to change?</center></b>", function(result) 
+                            {   
+                                if(!result){
+                                    $timeout(function(){
+                                    $window.history.back();
+                                    },0); 
+                                }
+                            
+                            
+                            });
+                        
+                        
+                        }
+                        else if(data.data=="Large Group"){
+                            bootbox.confirm("<b><center>Adding Entity will change your plan from Group to Large Group<br>Are you sure you want to change?</center></b>", function(result) 
+                            {
+                                if(!result){
+                                    $timeout(function(){
+                                    $window.history.back();
+                                    },0); 
+                                }
+                            });
+                        }
+                        
+                })
+        
+    // stripe planchange
+                $http.get(API_URL + 'user/?id=' + userid + '&format=json').success(function (data) {
+                    $scope.user = data.objects[0]
+                })
+                $http.get(API_URL + 'Profession/').success(function (data, status, headers, config) {
+                    $scope.professions = data.objects;
+                })
+            }
         })
         $scope.save_person = function (entity) {
             delete entity['business_name']
@@ -288,11 +348,34 @@ angular.module('dashApp.controllers', []).
                     dismissQueue: true,
                     closeWith: ['hover']
                 });
+
+                //stripe plan  
+             
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                    userdata.customer=data.objects[0].stripe_customer
+                    userdata.id=data.objects[0].id
+                    userdata.type=data.objects[0].stripe_billing_type
+                    userdata.plan=data.objects[0].plan
+                    userdata.username=data.objects[0].user.username
+                    //console.log(userdata)
+                    $http.post(API_URL + 'user/entityadd/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                            if (status == '200') {
+                                //console.log("success")
+                            }
+                            else {
+                                //console.log("error")
+                            }
+                    })
+
+                })
+
+               
                 MessageBus.broadcast("data");
                 $location.path('/account/manage');
             })
         }
         $scope.save_business = function (entity) {
+            var userdata={}
             var business = {
                 business_name: entity['business_name'],
                 user: $scope.user
@@ -304,10 +387,34 @@ angular.module('dashApp.controllers', []).
                     dismissQueue: true,
                     closeWith: ['hover']
                 });
+
+               //stripe plan  
+                //console.log(data.user.id)
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                    userdata.customer=data.objects[0].stripe_customer
+                    userdata.id=data.objects[0].id
+                    userdata.plan=data.objects[0].plan
+                    userdata.type=data.objects[0].stripe_billing_type
+                    userdata.username=data.objects[0].user.username
+                    //console.log(data.objects)
+                    //console.log(userdata)
+                    $http.post(API_URL + 'user/entityadd/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                                //console.log("success")
+                        }
+                        else {
+                                //console.log("error")
+                            }
+                        })
+
+                    })
+
+
                 MessageBus.broadcast("data");
                 $location.path('/account/manage');
             })
         }
+        
     })
     //CONTROLLER - REVIEW
     .controller('reviewTable', function ($http, $scope, User, $filter, $timeout, $routeParams, $cookieStore, $location) {
@@ -316,7 +423,7 @@ angular.module('dashApp.controllers', []).
             $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
-                    $location.path('/account/entity/oops');
+                    //$location.path('/account/entity/oops');
                 }
             });
         }
@@ -328,7 +435,7 @@ angular.module('dashApp.controllers', []).
                     $scope.entity = data.objects[0]
                 }
                 else {
-                    $location.path('/account/entity');
+                    //$location.path('/account/entity');
                 }
 
             })
@@ -444,7 +551,7 @@ angular.module('dashApp.controllers', []).
             $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
-                    $location.path('/account/entity/oops');
+                    //$location.path('/account/entity/oops');
                 }
             });
         }
@@ -456,7 +563,7 @@ angular.module('dashApp.controllers', []).
                     $scope.entity = data.objects[0]
                 }
                 else {
-                    $location.path('/account/entity');
+                    //$location.path('/account/entity');
                 }
 
             })
@@ -746,7 +853,7 @@ angular.module('dashApp.controllers', []).
 
             $scope.select = function (id) {
                 $.cookie('entity', id);
-                console.log($.cookie('entity'))
+                //console.log($.cookie('entity'))
                 $window.location.href = 'dashboard.html'
             }
             $scope.logout = function () {
@@ -801,21 +908,161 @@ angular.module('dashApp.controllers', []).
             $.cookie('entity', id);
             $window.location.href = 'dashboard.html'
         }
-        $scope.deleteentity = function (entity) {
-            $http.delete(API_URL + entity.resource_uri).success(function (data) {
-                $scope.n = notyfy({
-                    text: 'Deleted',
-                    type: 'success',
-                    dismissQueue: true,
-                    closeWith: ['hover']
-                });
-                $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
-                    $scope.entities = data.objects
-                    MessageBus.broadcast("data");
-                })
+        $scope.delete = function (entity) {
+            var userdata={}
+            // stripe planchange
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                userdata.plan=data.objects[0].plan
+                userdata.username=data.objects[0].user.username
+                //console.log(userdata)
+                $http.post(API_URL + 'user/deletecheck/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                    //console.log(data)
+                    userdata={}
+                    if(data.data=="Solo"){
+                        bootbox.confirm("<b><center>Deleting Entity will change your plan from Group to Solo<br>Are you sure you want to change?</center></b>", function(result) 
+                        {   
+                            if(result){
+                                $timeout(function(){
+                                $scope.deleteentity(entity);
+                                },0); 
+                            }
+                            
+                            
+                        });
+                        
+                        
+                    }
+                    else if(data.data=="Group"){
+                        bootbox.confirm("<b><center>Deleting Entity will change your plan from Large Group to Group<br>Are you sure you want to change?</center></b>", function(result) 
+                        {
+                           if(result){
+                                $timeout(function(){
+                                $scope.deleteentity(entity);
+                                },0); 
+                            }
+                        });
+                    }
+                    else{
+                      $scope.deleteentity(entity);  
+                    }
 
-            })
+                })
+        })
+    // stripe planchange
+
         }
+        $scope.deleteentity = function (entity) {
+            //console.log(entity)
+            var userdata={}
+            if(entity.first_name==null){
+                bootbox.confirm("<b><center>Are you sure you want to delete "+entity.business_name+"</center></b>", function(result) 
+                        {
+                           if(result){
+                                $timeout(function(){
+                                    $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
+                                        if(entity.first_name==null){
+                                            $scope.n = notyfy({
+                                            text: 'Deleted entity '+entity.business_name,
+                                            type: 'success',
+                                            dismissQueue: true,
+                                            closeWith: ['hover']
+                                            });
+                                        }
+                                        else{
+                                            $scope.n = notyfy({
+                                            text: 'Deleted entity '+entity.first_name+" "+entity.last_name,
+                                            type: 'success',
+                                            dismissQueue: true,
+                                            closeWith: ['hover']
+                                            });
+                                        }
+                    
+                                        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                                            //stripe
+                                            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                                                userdata.customer=data.objects[0].stripe_customer
+                                                userdata.id=data.objects[0].id
+                                                userdata.plan=data.objects[0].plan
+                                                userdata.type=data.objects[0].stripe_billing_type
+                                                userdata.username=data.objects[0].user.username
+                                                //console.log(data.objects)
+                                                //console.log(userdata)
+                                                $http.post(API_URL + 'user/entitydelete/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                                                    if (status == '200') {
+                                                        //console.log("success")
+                                                    }
+                                                    else {
+                                                        //console.log("error")
+                                                    }
+                                                })
+
+                                            })
+
+                                            $scope.entities = data.objects
+                                            MessageBus.broadcast("data");
+                                        })
+
+                                    })
+                                },0); 
+                            }
+                        });
+                
+            }
+            else{
+                bootbox.confirm("<b><center>Are you sure you want to delete "+entity.first_name+" "+entity.last_name+"</center></b>", function(result) 
+                        {
+                           if(result){
+                                $timeout(function(){
+                                    $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
+                                        if(entity.first_name==null){
+                                            $scope.n = notyfy({
+                                            text: 'Deleted entity '+entity.business_name,
+                                            type: 'success',
+                                            dismissQueue: true,
+                                            closeWith: ['hover']
+                                            });
+                                        }
+                                        else{
+                                            $scope.n = notyfy({
+                                            text: 'Deleted entity '+entity.first_name+" "+entity.last_name,
+                                            type: 'success',
+                                            dismissQueue: true,
+                                            closeWith: ['hover']
+                                            });
+                                        }
+                    
+                                        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                        //stripe
+                                            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                                                userdata.customer=data.objects[0].stripe_customer
+                                                userdata.id=data.objects[0].id
+                                                userdata.plan=data.objects[0].plan
+                                                userdata.type=data.objects[0].stripe_billing_type
+                                                userdata.username=data.objects[0].user.username
+                                                //console.log(data.objects)
+                                                //console.log(userdata)
+                                                $http.post(API_URL + 'user/entitydelete/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                                                    if (status == '200') {
+                                                        //console.log("success")
+                                                    }
+                                                    else {
+                                                        //console.log("error")
+                                                    }
+                                                })
+
+                                            })
+
+                                            $scope.entities = data.objects
+                                            MessageBus.broadcast("data");
+                                        })
+
+                                    })
+                                },0); 
+                            }
+                        });
+            }
+            
+        }//end function
 
     })
     .controller('NotificationSettingsCtrl',function ($scope, $http, $location) {
@@ -874,9 +1121,196 @@ angular.module('dashApp.controllers', []).
 
     }).
 
-    controller('PlansCtrl', function ($scope, $http, $location) {
-        Stripe.setPublishableKey('pk_test_JHgfevDWh6qVp7uVbbnGtAwa');
-        $scope.openPaymentForm = function(){
+    controller('PlansCtrl', function ($scope, $http, $location,$rootScope) {
+        $scope.plan="";
+        var quantity
+        $scope.solo={
+            select:"Select",
+            quantity:1,
+            highlight:""
+        }
+        $scope.group={
+            select:"Select",
+            quantity:2,
+            highlight:""
+        }
+        $scope.largegroup={
+            select:"Select",
+            quantity:21,
+            highlight:""
+        }
+        var userid = $.cookie('the_cookie');
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            if(data.objects[0].plan==null){
+                $scope.change=false;
+                $scope.type="monthly"
+            }
+            else{
+               $scope.change=true; 
+               if(data.objects[0].plan==SOLO_PLAN_MONTHLY ||data.objects[0].plan==SOLO_PLAN_YEARLY){
+                    $scope.plan="Solo"
+                    $scope.solo.select="Selected"
+                    $scope.solo.highlight="highlight"
+               }
+               else if(data.objects[0].plan==GROUP_PLAN_MONTHLY ||data.objects[0].plan==GROUP_PLAN_YEARLY){
+                    $scope.plan="Group"
+                    $scope.group.select="Selected"
+                    $scope.group.highlight="highlight"
+               }
+               else{
+                    $scope.plan="Large Group"
+                    $scope.largegroup.select="Selected"
+                    $scope.largegroup.highlight="highlight"
+               }
+               //console.log(data.objects[0].stripe_billing_type)
+               $scope.type=data.objects[0].stripe_billing_type
+            }
+        })
+
+        var userdata={}
+        
+        Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
+        $scope.select=function(data){
+            quantity=data.quantity
+            if(data.quantity==1){
+                $scope.plan="Solo"
+                $scope.solo.select="Selected"
+                $scope.group.select="Select"
+                $scope.largegroup.select="Select"
+                $scope.solo.highlight="highlight"
+                $scope.group.highlight=""
+                $scope.largegroup.highlight=""
+            }
+            else if(data.quantity==2){
+                $scope.plan="Group"
+                $scope.solo.select="Select"
+                $scope.group.select="Selected"
+                $scope.largegroup.select="Select"
+                $scope.solo.highlight=""
+                $scope.group.highlight="highlight"
+                $scope.largegroup.highlight=""
+            }
+            else{
+                $scope.plan="Large Group"
+                $scope.solo.select="Select"
+                $scope.group.select="Select"
+                $scope.largegroup.select="Selected"
+                $scope.solo.highlight=""
+                $scope.group.highlight=""
+                $scope.largegroup.highlight="highlight"
+            }
 
         }
+
+        $scope.savestriper=function(stripe,type){
+
+            
+            userdata.type=type
+            Stripe.card.createToken({
+            number:stripe.number,
+            cvc: stripe.cvc,
+            exp_month: stripe.expmonth,
+            exp_year: stripe.expyear
+            }, $scope.stripeResponseHandler);
+        }
+        $scope.stripeResponseHandler = function(status, response) {
+            
+            //console.log(response)
+            if (response.error) {
+                //console.log(response)
+                
+            }
+            else{
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                  //console.log(data.objects[0])
+                  userdata.email=data.objects[0].user.email
+                  userdata.id=data.objects[0].id
+                  userdata.token= response.id;
+                  userdata.quantity=quantity
+                    if (userdata.type=="monthly"){
+                        if($scope.plan=="Solo"){
+                            userdata.plan= SOLO_PLAN_MONTHLY 
+                        }
+                        else if($scope.plan=="Group"){
+                            userdata.plan= GROUP_PLAN_MONTHLY
+                        }
+                        else{
+                            userdata.plan= LGROUP_PLAN_MONTHLY 
+                        }
+                    }
+                    else{
+                        if($scope.plan=="Solo"){
+                            userdata.plan= SOLO_PLAN_YEARLY 
+                        }
+                        else if($scope.plan=="Group"){
+                            userdata.plan= GROUP_PLAN_YEARLY
+                        }
+                        else{
+                            userdata.plan= LGROUP_PLAN_YEARLY 
+                        }
+                    }
+                    //console.log(userdata)
+                    $http.post(API_URL + 'user/customer/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                             $location.path('/account/entity');
+                        }
+                        else {
+                            //console.log(error)
+                        }
+                    })
+                
+               })
+
+            }
+            //$rootScope.user.stripeCustomerId = response.id;
+            //$rootScope.user.save();
+        }
+        $scope.changeplan=function(type){
+            userdata.type=type
+            if (type=="monthly"){
+                if($scope.plan=="Solo"){
+                  userdata.plan= SOLO_PLAN_MONTHLY 
+                }
+                else if($scope.plan=="Group"){
+                    userdata.plan= GROUP_PLAN_MONTHLY
+                }
+                else{
+                  userdata.plan= LGROUP_PLAN_MONTHLY 
+                }
+            }
+            else{
+                if($scope.plan=="Solo"){
+                  userdata.plan= SOLO_PLAN_YEARLY 
+                }
+                else if($scope.plan=="Group"){
+                    userdata.plan= GROUP_PLAN_YEARLY
+                }
+                else{
+                  userdata.plan= LGROUP_PLAN_YEARLY 
+                }
+            }
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                userdata.customer=data.objects[0].stripe_customer
+                userdata.id=data.objects[0].id
+                userdata.username=data.objects[0].user.username
+                //console.log(userdata)
+                $http.post(API_URL + 'user/planchange/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
+                    if (status == '200') {
+                        //console.log("success")
+                    }
+                    else {
+                        //console.log("error")
+                    }
+                })
+            })
+        }
+        
+    }).
+    controller('OppsCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
+        
+        var id = $.cookie('entity');
+        $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
+                $scope.entity = data.objects[0]
+        
+        })
     })

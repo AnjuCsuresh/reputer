@@ -48,12 +48,14 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/', {templateUrl: '/partials/admin/index.html', controller: 'DashHomeCtrl'});
         $routeProvider.when('/form_wiz', {templateUrl: '/partials/admin/form_wiz.html'});
         $routeProvider.when('/account/entity', {templateUrl: '/partials/admin/entity.html', controller: 'EntityCtrl'});
-        $routeProvider.when('/account/entity/oops', {templateUrl: '/partials/admin/disp.html', controller: 'EntityCtrl'});
+        $routeProvider.when('/account/entity/oops', {templateUrl: '/partials/admin/disp.html', controller: 'OppsCtrl'});
         $routeProvider.when('/edit/:id', {templateUrl: '/partials/admin/edit.html', controller: 'EntityEditCtrl'});
         $routeProvider.when('/view', {templateUrl: '/partials/admin/view.html', controller: 'EntityCtrl'});
         $routeProvider.when('/account/manage', {templateUrl: '/partials/admin/manage.html', controller: 'ManageEntityCtrl'});
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
         $routeProvider.when('/account/settings/notification', {templateUrl: '/partials/admin/noty.html',controller: 'NotificationSettingsCtrl'});
+        $routeProvider.when('/account/plans', {templateUrl: '/partials/admin/plans.html', controller: 'PlansCtrl'});
+        
         //Individual Table
         $routeProvider.when('/reports/profile', {templateUrl: '/partials/admin/table.html'});
         $routeProvider.when('/reports/reviews', {templateUrl: '/partials/admin/table.html'});
@@ -67,7 +69,7 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/notification', {templateUrl: '/partials/admin/notification.html'});
         $routeProvider.when('/my_account_advance', {templateUrl: '/partials/admin/my_account_advance.html'});
         $routeProvider.when('/my_account', {templateUrl: '/partials/admin/my_account.html'});
-        $routeProvider.when('/account/settings/plans', {templateUrl: '/partials/admin/finance.html'});
+        $routeProvider.when('/account/settings/plans', {templateUrl: '/partials/admin/finance.html',controller:'PlansCtrl'});
         $routeProvider.when('/rating', {templateUrl: '/partials/admin/rating.html'});
         $routeProvider.when('/invoice', {templateUrl: '/partials/admin/invoice.html'});
         $routeProvider.when('/faq', {templateUrl: '/partials/admin/faq.html'});

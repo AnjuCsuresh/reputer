@@ -8,19 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'ExtendedUser'
-        db.create_table(u'userprofile_extendeduser', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('alive', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
-            ('NotificationLevel', self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['userprofile.NotificationLevel'], null=True, on_delete=models.SET_NULL)),
-        ))
-        db.send_create_signal(u'userprofile', ['ExtendedUser'])
+        # Adding field 'ExtendedUser.plan'
+        db.add_column(u'userprofile_extendeduser', 'plan',
+                      self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True),
+                      keep_default=False)
 
 
     def backwards(self, orm):
-        # Deleting model 'ExtendedUser'
-        db.delete_table(u'userprofile_extendeduser')
+        # Deleting field 'ExtendedUser.plan'
+        db.delete_column(u'userprofile_extendeduser', 'plan')
 
 
     models = {
@@ -77,9 +73,12 @@ class Migration(SchemaMigration):
         },
         u'userprofile.extendeduser': {
             'Meta': {'object_name': 'ExtendedUser'},
-            'NotificationLevel': ('django.db.models.fields.related.ForeignKey', [], {'default': '1', 'to': u"orm['userprofile.NotificationLevel']", 'null': 'True', 'on_delete': 'models.SET_NULL'}),
             'alive': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notification': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['userprofile.NotificationLevel']", 'null': 'True', 'on_delete': 'models.SET_NULL'}),
+            'plan': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'stripe_billing_type': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'stripe_customer': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'})
         },
         u'userprofile.faxnumber': {

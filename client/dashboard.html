@@ -2,8 +2,10 @@
 <html ng-app="dashApp" class="animations fluid top-full menuh-top sticky-top">
 <head>
 	<title>Reputer</title>
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script src="partials/jquery-1.10.2.min.js"></script>
 	<script src="partials/jquery-migrate-1.2.1.min.js"></script>
+	<script src="js/check.js"></script>
 	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
 	<script src="lib/xcharts/xcharts.js"></script>
 	<script src="lib/angular/angular.js"></script>
@@ -141,6 +143,7 @@
 							<a ng-click="location.path('/account/entity')" class="glyphicons circle_plus"><i></i>Add Entity </a>
 							
 						</li>
+						<li></li>
 					</ul>
 					<!-- // Full Top Style END -->
 
@@ -163,7 +166,7 @@
            					<ul class="dropdown-menu pull-left">
               				<!-- Components Submenu Level 2 -->
                
-                   				<li><a href="" ng-click="location.path('account/settings/plans')">Plan</a></li>
+                   				<li><a href="" ng-click="location.path('account/plans')">Plan</a></li>
                    				<li><a href="" ng-click="location.path('account/settings/notification')">Notification</a></li>
                    				<li><a ng-click="location.path('account/settings/')">My Account</a></li>
                    				
@@ -243,7 +246,7 @@
 
 	<!-- Bootstrap -->
 	<script src="common/bootstrap/js/bootstrap.min.js"></script>
-
+	<script src="common/bootstrap/js/bootbox.js"></script>
 	<!-- SlimScroll Plugin -->
 	<script src="common/theme/scripts/plugins/other/jquery-slimScroll/jquery.slimscroll.js"></script>
 
