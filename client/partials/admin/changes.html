@@ -1,0 +1,61 @@
+<div ng-init="itemsPerPage = 15">
+			<h3>Changes</h3>
+		<br>
+		<table class="crawltable footable table table-striped table-bordered table-white table-primary">
+			
+			<!-- Table heading -->
+			<thead>
+					<tr>
+						<th ng-click="sort_by('Rank')">Good/Bad&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('Rank')">Website&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('domain')">New Rating&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('Title')">Old Rating&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('Summary')">New Votes&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('rating')">Old Votes&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('rating')">Status&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('rating')">Movement&nbsp;<i class="icon-sort"></i></th>
+					</tr>
+				</thead>	
+			<!-- // Table heading END -->
+			
+			<!-- Table body -->
+			<tfoot>
+                <td colspan="6">
+                    <div class="pagination pull-right">
+                        <ul>
+                            <li ng-class="{disabled: currentPage == 0}">
+                                <a href ng-click="prevPage()">« Prev</a>
+                            </li>
+                            <li ng-repeat="n in range(pagedItems.length)"
+                                ng-class="{active: n == currentPage}"
+                            ng-click="setPage()">
+                                <a href ng-bind="n + 1">1</a>
+                            </li>
+                            <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                                <a href ng-click="nextPage()">Next »</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tfoot>
+			<tbody>
+				
+				<!-- Table row -->
+				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
+					<td style="text-align:center"><i class="icon-thumbs-up" style="color:green" ng-show="result.outcome=='G'"></i><i style="color:red" class="icon-thumbs-down" ng-show="result.outcome=='B'"></i></td>
+					<td>{{result.domain}}</td>
+					<td>{{result.new_rating}}</td>
+					<td>{{result.old_rating}}</td>
+					<td>{{result.new_votes}}</td>
+					<td>{{result.old_votes}}</td>
+					<td>{{result.status}}</td>
+					<td style="text-align:center"><i class="icon-circle-arrow-up" style="color:green" ng-show="result.movement=='U'"></i><i style="color:red" class="icon-circle-arrow-down" ng-show="result.movement=='D'"></i></td>
+					
+				</tr>
+				<!-- // Table row END -->
+				
+			</tbody>
+			<!-- // Table body END -->
+			
+		</table>
+		</div>

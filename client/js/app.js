@@ -55,7 +55,9 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/account/settings', {templateUrl: '/partials/admin/settings.html', controller: 'TopNavCtrl'});
         $routeProvider.when('/account/settings/notification', {templateUrl: '/partials/admin/noty.html',controller: 'NotificationSettingsCtrl'});
         $routeProvider.when('/account/plans', {templateUrl: '/partials/admin/plans.html', controller: 'PlansCtrl'});
-        
+        $routeProvider.when('/details/profile', {templateUrl: '/partials/admin/profile.html', controller: 'profileTable'});
+        $routeProvider.when('/details/changes', {templateUrl: '/partials/admin/changes.html', controller: 'changesTable'});
+        $routeProvider.when('/details/review', {templateUrl: '/partials/admin/review.html', controller: 'reviewTable'});
         //Individual Table
         $routeProvider.when('/reports/profile', {templateUrl: '/partials/admin/table.html'});
         $routeProvider.when('/reports/reviews', {templateUrl: '/partials/admin/table.html'});
