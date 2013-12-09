@@ -10,6 +10,16 @@ EMAIL_HOST_PASSWORD = ''
 DEFAULT_FROM_EMAIL = ''
 
 TEMPLATE_DEBUG = DEBUG
+SOLO_PLAN_MONTHLY="Solomonthly"
+SOLO_PLAN_YEARLY="Soloyearly"
+GROUP_PLAN_MONTHLY="Groupmonthly"
+GROUP_PLAN_YEARLY="Groupyearly"
+LGROUP_PLAN_MONTHLY="Large Groupmonthly"
+LGROUP_PLAN_YEARLY="Large Groupyearly"
+STRIPE_API_KEY="sk_test_8a4R0xmqlVFFuQsfk3XjHpO5"
+SOLO_MIN =1
+GROUP_MIN=2
+LARGEGROUP_MIN=21
 SESSION_COOKIE_AGE =259200 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -171,3 +181,6 @@ LOGGING = {
         },
     }
 }
+
+
+    

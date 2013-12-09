@@ -8,6 +8,17 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'ExtendedUser'
+        db.create_table(u'userprofile_extendeduser', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('alive', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
+            ('notification', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['userprofile.NotificationLevel'], null=True, on_delete=models.SET_NULL)),
+            ('stripe_customer', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
+            ('stripe_billing_type', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'userprofile', ['ExtendedUser'])
+
         # Adding model 'PlanDetail'
         db.create_table(u'userprofile_plandetail', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -139,8 +150,20 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'userprofile', ['ReviewWebsite'])
 
+        # Adding model 'NotificationLevel'
+        db.create_table(u'userprofile_notificationlevel', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('alive', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('level', self.gf('django.db.models.fields.IntegerField')()),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=200)),
+        ))
+        db.send_create_signal(u'userprofile', ['NotificationLevel'])
+
 
     def backwards(self, orm):
+        # Deleting model 'ExtendedUser'
+        db.delete_table(u'userprofile_extendeduser')
+
         # Deleting model 'PlanDetail'
         db.delete_table(u'userprofile_plandetail')
 
@@ -176,6 +199,9 @@ class Migration(SchemaMigration):
 
         # Deleting model 'ReviewWebsite'
         db.delete_table(u'userprofile_reviewwebsite')
+
+        # Deleting model 'NotificationLevel'
+        db.delete_table(u'userprofile_notificationlevel')
 
 
     models = {
@@ -230,6 +256,15 @@ class Migration(SchemaMigration):
             'profession': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['userprofile.Profession']", 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']", 'null': 'True', 'blank': 'True'})
         },
+        u'userprofile.extendeduser': {
+            'Meta': {'object_name': 'ExtendedUser'},
+            'alive': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notification': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['userprofile.NotificationLevel']", 'null': 'True', 'on_delete': 'models.SET_NULL'}),
+            'stripe_billing_type': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'stripe_customer': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'})
+        },
         u'userprofile.faxnumber': {
             'Meta': {'object_name': 'FaxNumber'},
             'alive': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
@@ -269,6 +304,13 @@ class Migration(SchemaMigration):
             'previous_places_worked2': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'school_attended1': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'school_attended2': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+        },
+        u'userprofile.notificationlevel': {
+            'Meta': {'object_name': 'NotificationLevel'},
+            'alive': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'level': ('django.db.models.fields.IntegerField', [], {})
         },
         u'userprofile.phonenumber': {
             'Meta': {'object_name': 'PhoneNumber'},

@@ -2,16 +2,19 @@
 <html ng-app="dashApp" class="animations fluid top-full menuh-top sticky-top">
 <head>
 	<title>Reputer</title>
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script src="partials/jquery-1.10.2.min.js"></script>
 	<script src="partials/jquery-migrate-1.2.1.min.js"></script>
 	<script src="js/check.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="lib/xcharts/xcharts.js"></script>
 	<script src="lib/angular/angular.js"></script>
 	<script src="//cdn.jsdelivr.net/angularjs/1.0.2/angular-cookies.min.js"></script>
 	<script src="common/theme/scripts/plugins/notifications/notyfy/jquery.notyfy.js"></script>
 
 	
+	<link rel="stylesheet" href="lib/xcharts/xcharts.min.css">
 	
-
 	<!-- Meta -->
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
@@ -140,6 +143,7 @@
 							<a ng-click="location.path('/account/entity')" class="glyphicons circle_plus"><i></i>Add Entity </a>
 							
 						</li>
+						<li></li>
 					</ul>
 					<!-- // Full Top Style END -->
 
@@ -162,7 +166,7 @@
            					<ul class="dropdown-menu pull-left">
               				<!-- Components Submenu Level 2 -->
                
-                   				<li><a href="" ng-click="">Plan</a></li>
+                   				<li><a href="" ng-click="location.path('account/plans')">Plan</a></li>
                    				<li><a href="" ng-click="location.path('account/settings/notification')">Notification</a></li>
                    				<li><a ng-click="location.path('account/settings/')">My Account</a></li>
                    				
@@ -242,7 +246,7 @@
 
 	<!-- Bootstrap -->
 	<script src="common/bootstrap/js/bootstrap.min.js"></script>
-
+	<script src="common/bootstrap/js/bootbox.js"></script>
 	<!-- SlimScroll Plugin -->
 	<script src="common/theme/scripts/plugins/other/jquery-slimScroll/jquery.slimscroll.js"></script>
 
@@ -318,9 +322,7 @@
 		<!-- Form Wizards Page Demo Script -->
 		<script src="partials/form_wizards.js"></script>
 		<script src="partials/common.js"></script>
-	<script src="lib/highcharts.js"></script>
-	<script src="lib/highcharts-more.js"></script>
-	<script src="lib/highcharts-ng.js"></script>
+	<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
 	<script src="js/config.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/services.js"></script>
