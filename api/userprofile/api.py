@@ -8,6 +8,7 @@ from userprofile.models import *
 from tastypie import fields, utils
 from django.forms.models import model_to_dict
 from tastypie.resources import ModelResource,ALL, ALL_WITH_RELATIONS,fields
+import stripe
 
 
 class MyResource(ModelResource):
@@ -36,20 +37,21 @@ class UserSignUpResource(ModelResource):
   def obj_create(self, bundle, request=None, **kwargs):
     try:
       #Creating the usernamme using _ instead of @ in email
-      username = bundle.data['email'].replace('@','_')
-      bundle.data['username'] = username
-      bundle = super(UserSignUpResource, self).obj_create(bundle,**kwargs)
-      bundle.obj.set_password(bundle.data.get('password'))
-      print bundle.data
-      bundle.obj.save()
-      u = User.objects.get(username=username)
-      print u
-      level = NotificationLevel.objects.get(level=1)
-      e = ExtendedUser(user=u,notification = level)
-      e.save()
+        username = bundle.data['email'].replace('@','_')
+        bundle.data['username'] = username
+        bundle = super(UserSignUpResource, self).obj_create(bundle,**kwargs)
+        bundle.obj.set_password(bundle.data.get('password'))
+        print bundle.data
+        bundle.obj.save()
+        u = User.objects.get(username=username)
+        print u
+        #stripe 
+        level = NotificationLevel.objects.get(level=1)
+        e = ExtendedUser(user=u,notification = level)
+        e.save()
 
     except IntegrityError:
-      raise BadRequest('The email already exists')
+        raise BadRequest('The email already exists')
     return bundle
 
   def apply_authorization_limits(self, request, object_list):
@@ -123,7 +125,7 @@ from tastypie.authorization import Authorization
 import random
 import string
 from django.core.mail import send_mail
-
+from django.conf import settings
 
 class ExtendedUserResource(MyResource):
     user = fields.ToOneField('userprofile.api.UserResource','user',full=True)
@@ -153,7 +155,24 @@ class UserResource(ModelResource):
     
     def prepend_urls(self):
         return [
-            
+            url(r"^(?P<resource_name>%s)/deletecheck%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('deletecheck'), name="api_deletecheck"),
+            url(r"^(?P<resource_name>%s)/entitydelete%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('entitydelete'), name="api_entitydelete"),
+            url(r"^(?P<resource_name>%s)/addcheck%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('addcheck'), name="api_addcheck"),
+            url(r"^(?P<resource_name>%s)/planchange%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('planchange'), name="api_planchange"),
+            url(r"^(?P<resource_name>%s)/entityadd%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('entityadd'), name="api_entityadd"),
+            url(r"^(?P<resource_name>%s)/customer%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('customer'), name="api_customer"),
             url(r"^(?P<resource_name>%s)/test%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('test'), name="api_test"),
@@ -212,6 +231,7 @@ class UserResource(ModelResource):
             return self.create_response(request, { 'success': True })
         else:
             return self.create_response(request, { 'success': False }, HttpUnauthorized)
+    
 
     def password_reset(self, request, **kwargs):
         self.method_check(request, allowed=['put'])
@@ -269,14 +289,216 @@ class UserResource(ModelResource):
                 'success': False,
                 'reason': 'incorrect',
                 }, HttpUnauthorized )
+    def customer(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        plan = data.get('plan', '')
+        email = data.get('email', '')
+        id = data.get('id', '')
+        token = data.get('token', '')
+        type = data.get('type', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        if plan==settings.SOLO_PLAN_MONTHLY or plan==settings.SOLO_PLAN_YEARLY:
+            quantity=settings.SOLO_MIN
+        elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            quantity=settings.GROUP_MIN
+        else:
+            quantity=settings.LARGEGROUP_MIN
+        print quantity
+        customer = stripe.Customer.create(
+            card=token,
+            plan=plan,
+            email=email,
+            quantity=quantity
+        )
+        print customer
+        extendeduser=ExtendedUser.objects.get(id=id)
+        
+        if extendeduser:
+            extendeduser.stripe_customer=customer.id
+            extendeduser.stripe_billing_type=type
+            extendeduser.plan=plan
+            extendeduser.save()
+            return self.create_response(request, { 'success': True ,'user':extendeduser})
+                
+        else:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'incorrect',
+                }, HttpUnauthorized )
+
+    def entityadd(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customer = data.get('customer', '')
+        id= data.get('id', '')
+        plan = data.get('plan', '')
+        type = data.get('type', '')
+        username= data.get('username', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        cu = stripe.Customer.retrieve(customer)
+        u = User.objects.get(username=username)
+        quantity=len(Entity.objects.filter(user=u,alive="true"))
+        print quantity
+        extendeduser=ExtendedUser.objects.get(id=id)
+        
+        if quantity>settings.SOLO_MIN and quantity<settings.LARGEGROUP_MIN:
+            if plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY or plan==settings.SOLO_PLAN_MONTHLY or plan==settings.SOLO_PLAN_YEARLY:
+                if type=="monthly":
+                    cu.plan=settings.GROUP_PLAN_MONTHLY
+                    extendeduser.plan=settings.GROUP_PLAN_MONTHLY
+                else:
+                    cu.plan=settings.GROUP_PLAN_YEARLY
+                    extendeduser.plan=settings.GROUP_PLAN_YEARLY
+                cu.quantity=quantity
+                cu.save()
+                extendeduser.save()
+            
+        elif quantity>=settings.LARGEGROUP_MIN:
+            if type=="monthly":
+                cu.plan=settings.LGROUP_PLAN_MONTHLY
+                extendeduser.plan=settings.LGROUP_PLAN_MONTHLY
+            else:
+                cu.plan=settings.LGROUP_PLAN_YEARLY
+                extendeduser.plan=settings.LGROUP_PLAN_YEARLY
+            cu.quantity=quantity
+            cu.save()
+            extendeduser.save()
+        
+        print cu
+        return self.create_response(request, { 'success': True })
 
 
+    def planchange(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customer = data.get('customer', '')
+        type = data.get('type', '')
+        plan= data.get('plan', '')
+        id = data.get('id', '')
+        username= data.get('username', '')
+        u = User.objects.get(username=username)
+        quantity=len(Entity.objects.filter(user=u,alive="true"))
+        stripe.api_key = settings.STRIPE_API_KEY
+        cu = stripe.Customer.retrieve(customer)
+        if plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            if quantity<=settings.GROUP_MIN:
+                cu.quantity=settings.GROUP_MIN 
+            else:
+                cu.quantity=quantity
+        elif plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
+            if quantity<=settings.LARGEGROUP_MIN:
+                cu.quantity=settings.LARGEGROUP_MIN 
+            else:
+                cu.quantity=quantity
+        else:
+            cu.quantity=quantity
+        cu.plan=plan
+        cu.save()
+        print cu
+        extendeduser=ExtendedUser.objects.get(id=id)
+        if extendeduser:
+            extendeduser.stripe_billing_type=type
+            extendeduser.plan=plan
+            extendeduser.save()
+            return self.create_response(request, { 'success': True ,'user':extendeduser})
+                
+        else:
+            return self.create_response(request, {
+                'success': False,
+                'reason': 'incorrect',
+                }, HttpUnauthorized )
+                
+    def addcheck(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        username= data.get('username', '')
+        plan = data.get('plan', '')
+        u = User.objects.get(username=username)
+        l=len(Entity.objects.filter(user=u,alive="true"))+1
+        print l
+        if plan==settings.SOLO_PLAN_MONTHLY or plan==settings.SOLO_PLAN_YEARLY:
+            if l>settings.SOLO_MIN:
+                return self.create_response(request, { 'success': True ,'data':"Group"})
+            
+        elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            if l>=settings.LARGEGROUP_MIN:
+                return self.create_response(request, { 'success': True ,'data':"Large Group"})
+        return self.create_response(request, { 'success': True ,'data':"nochange"})
+
+    def deletecheck(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        username= data.get('username', '')
+        plan = data.get('plan', '')
+        u = User.objects.get(username=username)
+        l=len(Entity.objects.filter(user=u,alive="true"))-1
+        print l
+        if plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
+            if l<settings.LARGEGROUP_MIN:
+                return self.create_response(request, { 'success': True ,'data':"Group"})
+            
+        elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            if l<settings.GROUP_MIN:
+                return self.create_response(request, { 'success': True ,'data':"Solo"})
+        return self.create_response(request, { 'success': True ,'data':"nochange"})
+
+    def entitydelete(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customer = data.get('customer', '')
+        id= data.get('id', '')
+        plan = data.get('plan', '')
+        type = data.get('type', '')
+        username= data.get('username', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        cu = stripe.Customer.retrieve(customer)
+        u = User.objects.get(username=username)
+        quantity= len(Entity.objects.filter(user=u,alive="true"))
+        extendeduser=ExtendedUser.objects.get(id=id)
+        print cu.subscription.plan.name
+        if plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
+            if quantity>=settings.GROUP_MIN:
+                cu.plan=plan
+                extendeduser.plan=plan
+            else:
+                if type=="monthly":
+                    cu.plan=settings.SOLO_PLAN_MONTHLY
+                    extendeduser.plan=settings.SOLO_PLAN_MONTHLY
+                else:
+                    cu.plan=settings.SOLO_PLAN_YEARLY
+                    extendeduser.plan=settings.SOLO_PLAN_YEARLY
+            
+        elif plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
+            if quantity>=settings.LARGEGROUP_MIN:
+                cu.plan=plan
+                extendeduser.plan=plan
+            else:
+                if type=="monthly":
+                    cu.plan=settings.GROUP_PLAN_MONTHLY
+                    extendeduser.plan=settings.GROUP_PLAN_MONTHLY
+                else:
+                    cu.plan=settings.GROUP_PLAN_YEARLY
+                    extendeduser.plan=settings.GROUP_PLAN_YEARLY
+        cu.quantity=quantity
+        cu.save()
+        extendeduser.save()
+        
+        print cu
+        return self.create_response(request, { 'success': True })
+        
+        
 
 class EntityResource(ModelResource):
     user=fields.ForeignKey(UserResource,'user',null=True,full=True)
     location =fields.ToManyField(LocationResource,'location',null=True,full=True)
     profession = fields.ForeignKey(ProfessionResource,'profession',null=True,full=True)
     class Meta:
+        
         queryset = Entity.objects.all()
         resource_name = 'Entity'
         allowed_methods = ['get', 'post','put','delete']

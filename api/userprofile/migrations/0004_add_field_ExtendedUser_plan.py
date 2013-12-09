@@ -8,23 +8,15 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting field 'ExtendedUser.NotificationLevel'
-        db.delete_column(u'userprofile_extendeduser', 'NotificationLevel_id')
-
-        # Adding field 'ExtendedUser.notification'
-        db.add_column(u'userprofile_extendeduser', 'notification',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['userprofile.NotificationLevel'], null=True, on_delete=models.SET_NULL),
+        # Adding field 'ExtendedUser.plan'
+        db.add_column(u'userprofile_extendeduser', 'plan',
+                      self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True),
                       keep_default=False)
 
 
     def backwards(self, orm):
-        # Adding field 'ExtendedUser.NotificationLevel'
-        db.add_column(u'userprofile_extendeduser', 'NotificationLevel',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, to=orm['userprofile.NotificationLevel'], null=True, on_delete=models.SET_NULL),
-                      keep_default=False)
-
-        # Deleting field 'ExtendedUser.notification'
-        db.delete_column(u'userprofile_extendeduser', 'notification_id')
+        # Deleting field 'ExtendedUser.plan'
+        db.delete_column(u'userprofile_extendeduser', 'plan')
 
 
     models = {
@@ -84,6 +76,9 @@ class Migration(SchemaMigration):
             'alive': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'notification': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['userprofile.NotificationLevel']", 'null': 'True', 'on_delete': 'models.SET_NULL'}),
+            'plan': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'stripe_billing_type': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'stripe_customer': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'})
         },
         u'userprofile.faxnumber': {
