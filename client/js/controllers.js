@@ -1126,6 +1126,8 @@ angular.module('dashApp.controllers', []).
     }).
 
     controller('PlansCtrl', function ($scope, $http, $location,$rootScope) {
+        var oldplan;
+        $scope.type="monthly"
         $scope.plan="";
         var quantity
         $scope.solo={
@@ -1147,22 +1149,25 @@ angular.module('dashApp.controllers', []).
         $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
             if(data.objects[0].plan==null){
                 $scope.change=false;
-                $scope.type="monthly"
+                
             }
             else{
                $scope.change=true; 
                if(data.objects[0].plan==SOLO_PLAN_MONTHLY ||data.objects[0].plan==SOLO_PLAN_YEARLY){
                     $scope.plan="Solo"
+                    oldplan="Solo"
                     $scope.solo.select="Selected"
                     $scope.solo.highlight="highlight"
                }
                else if(data.objects[0].plan==GROUP_PLAN_MONTHLY ||data.objects[0].plan==GROUP_PLAN_YEARLY){
                     $scope.plan="Group"
+                    oldplan="Group"
                     $scope.group.select="Selected"
                     $scope.group.highlight="highlight"
                }
                else{
                     $scope.plan="Large Group"
+                    oldplan="Large Group"
                     $scope.largegroup.select="Selected"
                     $scope.largegroup.highlight="highlight"
                }
@@ -1221,7 +1226,10 @@ angular.module('dashApp.controllers', []).
             
             //console.log(response)
             if (response.error) {
-                //console.log(response)
+                console.log(response.error)
+                bootbox.alert("<b><center>"+response.error.message+"</center></b>",function(result){
+
+                })
                 
             }
             else{
@@ -1300,7 +1308,13 @@ angular.module('dashApp.controllers', []).
                 //console.log(userdata)
                 $http.post(API_URL + 'user/planchange/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
                     if (status == '200') {
-                        //console.log("success")
+                        $scope.n = notyfy({
+                                    text: 'Your plan successfully changed from '+oldplan+' to '+ $scope.plan,
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    closeWith: ['hover']
+                                });
+                        oldplan=$scope.plan
                     }
                     else {
                         //console.log("error")

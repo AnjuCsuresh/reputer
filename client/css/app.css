@@ -260,3 +260,6 @@ box-shadow: none;
 -moz-border-radius: 0 0 0 0;
 border-radius: 0 0 0 0;
 }
+.modal.fade.in {
+top: 20%;
+}
