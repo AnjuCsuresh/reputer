@@ -1221,6 +1221,7 @@ angular.module('dashApp.controllers', []).
             exp_month: stripe.expmonth,
             exp_year: stripe.expyear
             }, $scope.stripeResponseHandler);
+            $scope.card={}
         }
         $scope.stripeResponseHandler = function(status, response) {
             
@@ -1274,6 +1275,7 @@ angular.module('dashApp.controllers', []).
                })
 
             }
+            
             //$rootScope.user.stripeCustomerId = response.id;
             //$rootScope.user.save();
         }
@@ -1322,7 +1324,54 @@ angular.module('dashApp.controllers', []).
                 })
             })
         }
+
+        $scope.savestripe=function(card){
+            
+            Stripe.card.createToken({
+            number:card.number,
+            cvc: card.cvc,
+            exp_month: card.expmonth,
+            exp_year: card.expyear
+            }, $scope.stripeResponse);
+            $scope.card={}
+        }
         
+        $scope.stripeResponse = function(status, response) {
+            
+            if (response.error) {
+                console.log(response.error)
+                bootbox.alert("<b><center>"+response.error.message+"</center></b>",function(result){
+
+                })
+                
+            }
+            else{
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                    var data = {
+                        customer: data.objects[0].stripe_customer,
+                        token: response.id
+                    }; 
+                    console.log(data) 
+                    $http.post(API_URL + 'user/updatecard/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                            $scope.n = notyfy({
+                                    text: 'Your credit card details updated successfully',
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    closeWith: ['hover']
+                                });
+                        }
+                        else {
+                            //console.log(error)
+                        }
+                    })
+                
+               })
+             
+            }
+            
+        }
+
     }).
     controller('OppsCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
         

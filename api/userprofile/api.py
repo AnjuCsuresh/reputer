@@ -155,6 +155,9 @@ class UserResource(ModelResource):
     
     def prepend_urls(self):
         return [
+            url(r"^(?P<resource_name>%s)/updatecard%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('updatecard'), name="api_updatecard"),
             url(r"^(?P<resource_name>%s)/deletecheck%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('deletecheck'), name="api_deletecheck"),
@@ -490,6 +493,19 @@ class UserResource(ModelResource):
         
         print cu
         return self.create_response(request, { 'success': True })
+
+    def updatecard(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customer = data.get('customer', '')
+        token = data.get('token', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        customer = stripe.Customer.retrieve(customer)
+        cardid=customer.cards.data[0].id
+        customer.cards.retrieve(cardid).delete()
+        customer.cards.create(card=token)
+        return self.create_response(request, { 'success': True})
+
         
         
 
