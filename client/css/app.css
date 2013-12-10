@@ -167,7 +167,7 @@ stroke: #e5412d !important;
 @media (max-width: 767px) {
 .row-fluid.no-space [class*="span"] {width: auto !important;} 
 }
-.pricing_table { text-align: center; margin: 25px 0;}
+
 .pricing_table .tb_header {background-color: #8AB623; }
 .pricing_table .tb_header h4 { margin: 0; padding: 15px 0px; border-bottom: 3px solid #5E852C; color: white; 
 font-size:20px; font-weight:700;
@@ -203,31 +203,9 @@ font-weight: 900; letter-spacing: 0px; line-height: 1; }
 /* pricing table skins */
 .pr_table_col[data-color=red] .tb_header h4 { border-bottom: 3px solid #941414;background: #cd2122 }
 .pr_table_col[data-color=red] .signin { border-top: 3px solid #941414; }
+.pr_table_col .signin a{background: #cd2122 ;color:white;}
 .pr_table_col[data-color=red] .tb_header { background-color: #e5412d; }
-.pr_table_col[data-color=blue] .tb_header h4 { border-bottom: 3px solid #345370; }
-.pr_table_col[data-color=blue] .signin { border-top: 3px solid #345370; }
-.pr_table_col[data-color=blue] .tb_header { background-color: #2A8FBD; }
-.pr_table_col[data-color=green] .tb_header h4 { border-bottom: 3px solid #5E852C; }
-.pr_table_col[data-color=green] .signin { border-top: 3px solid #5E852C; }
-.pr_table_col[data-color=green] .tb_header { background-color: #8AB623; }
-.pr_table_col[data-color=turquoise] .tb_header h4 { border-bottom: 3px solid #0A817F; }
-.pr_table_col[data-color=turquoise] .signin { border-top: 3px solid #0A817F; }
-.pr_table_col[data-color=turquoise] .tb_header { background-color: #12C6C2; }
-.pr_table_col[data-color=orange] .tb_header h4 { border-bottom: 3px solid #AF3F08; }
-.pr_table_col[data-color=orange] .signin { border-top: 3px solid #AF3F08; }
-.pr_table_col[data-color=orange] .tb_header { background-color: #EB540A; }
-.pr_table_col[data-color=purple] .tb_header h4 { border-bottom: 3px solid #630C72; }
-.pr_table_col[data-color=purple] .signin { border-top: 3px solid #630C72; }
-.pr_table_col[data-color=purple] .tb_header { background-color: #8A2D9A; }
-.pr_table_col[data-color=yellow] .tb_header h4 { border-bottom: 3px solid #A8A80A; }
-.pr_table_col[data-color=yellow] .signin { border-top: 3px solid #A8A80A; }
-.pr_table_col[data-color=yellow] .tb_header { background-color: #D6D609; }
-.pr_table_col[data-color=green_lemon] .tb_header h4 { border-bottom: 3px solid #708D0B; }
-.pr_table_col[data-color=green_lemon] .signin { border-top: 3px solid #708D0B; }
-.pr_table_col[data-color=green_lemon] .tb_header { background-color: #9CC607; }
-.pr_table_col[data-color=dark] .tb_header h4 { border-bottom: 3px solid #000; }
-.pr_table_col[data-color=dark] .signin { border-top: 3px solid #000; }
-.pr_table_col[data-color=dark] .tb_header { background-color: #333; }
+
 .pr_table_col[data-color=light] .tb_header h4 { border-bottom: 3px solid #747474; }
 .pr_table_col[data-color=light] .signin { border-top: 3px solid #747474; }
 .pr_table_col[data-color=light] .tb_header { background-color: #aaa; }
@@ -262,4 +240,15 @@ border-radius: 0 0 0 0;
 }
 .modal.fade.in {
 top: 20%;
+}
+@media screen and (max-width: 768px){
+    .pricing_table { text-align: center; margin: 25px 0;}
+}
+@media screen and (min-width: 768px){
+    .pricing_table { text-align: center; margin: 25px 0px;
+    }
+    .newpricing_table{
+      padding-left: 20%;
+      
+    }
 }
