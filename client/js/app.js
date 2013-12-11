@@ -71,7 +71,8 @@ angular.module('dashApp', ['dashApp.filters', 'dashApp.services', 'dashApp.direc
         $routeProvider.when('/my_account', {templateUrl: '/partials/admin/my_account.html'});
         $routeProvider.when('/account/settings/plans', {templateUrl: '/partials/admin/finance.html',controller:'PlansCtrl'});
         $routeProvider.when('/rating', {templateUrl: '/partials/admin/rating.html'});
-        $routeProvider.when('/invoice', {templateUrl: '/partials/admin/invoice.html'});
+        $routeProvider.when('/billinghistory', {templateUrl: '/partials/admin/billing_history.html',controller:'BillingCtrl'});
+        $routeProvider.when('/invoice/:id', {templateUrl: '/partials/admin/invoice.html',controller:'InvoiceCtrl'});
         $routeProvider.when('/faq', {templateUrl: '/partials/admin/faq.html'});
         $routeProvider.when('/timeline', {templateUrl: '/partials/admin/timeline.html'});
         $routeProvider.when('/widgets', {templateUrl: '/partials/admin/widgets.html'});
