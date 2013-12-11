@@ -1380,4 +1380,50 @@ angular.module('dashApp.controllers', []).
                 $scope.entity = data.objects[0]
         
         })
-    })
+    }).
+    controller('InvoiceCtrl', function ($scope, $http, $location,$rootScope,$cookies,$routeParams) {
+        var id= $routeParams.id;
+        var userid = $.cookie('the_cookie');
+        $http.get(API_URL + 'user/?id=' + userid + '&format=json').success(function (data) {
+                $scope.user=data.objects[0]
+            })
+        var data = {
+            invoice_id: id,
+                     
+        }; 
+        console.log(data) 
+        $http.post(API_URL + 'user/invoices/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+            if (status == '200') {
+                console.log(data)
+                $scope.invoice=data.data
+                $scope.lines=data.data.lines
+                }
+                
+        })
+                
+               
+}).
+controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
+        
+        var userid = $.cookie('the_cookie');
+      
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                    var data = {
+                        customer: data.objects[0].stripe_customer,
+                     
+                    }; 
+                    console.log(data) 
+                    $http.post(API_URL + 'user/billing_history/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                       
+                            console.log(data)
+                            $scope.invoices=data.data
+                            
+                        }
+                        else {
+                            //console.log(error)
+                        }
+                    })
+                
+               })
+})

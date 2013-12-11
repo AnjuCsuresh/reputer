@@ -9,6 +9,7 @@ from tastypie import fields, utils
 from django.forms.models import model_to_dict
 from tastypie.resources import ModelResource,ALL, ALL_WITH_RELATIONS,fields
 import stripe
+import json
 
 
 class MyResource(ModelResource):
@@ -155,6 +156,12 @@ class UserResource(ModelResource):
     
     def prepend_urls(self):
         return [
+            url(r"^(?P<resource_name>%s)/billing_history%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('billing_history'), name="api_billing_history"),
+            url(r"^(?P<resource_name>%s)/invoices%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('invoices'), name="api_invoices"),
             url(r"^(?P<resource_name>%s)/updatecard%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('updatecard'), name="api_updatecard"),
@@ -506,7 +513,64 @@ class UserResource(ModelResource):
         customer.cards.create(card=token)
         return self.create_response(request, { 'success': True})
 
+    def invoices(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        invoice_id = data.get('invoice_id', '')
+        stripe.api_key = settings.STRIPE_API_KEY
         
+        lines=[]
+        #invoice=stripe.Invoice.retrieve("in_1036LZ21eybl4Q7DrQ2IL53h")
+        invoice=stripe.Invoice.retrieve(invoice_id)
+        for data in invoice.lines.data:
+            d={
+                "totalamount":data["amount"],
+                "currency":data["currency"],
+                "name":data["plan"].name,
+                "planamount":data["plan"].amount,
+                "interval":data["plan"].interval,
+                "quantity":data["quantity"],
+                "type":data["type"],
+                "period_start":data["period"].start,
+                "period_end":data["period"].end
+            }
+            lines.append(d)
+        invoicelist={
+            "amount_due":invoice['amount_due'],
+            "date":invoice['date'],
+            "currency":invoice['currency'],
+            "paid":invoice['paid'],
+            "total":invoice['total'],
+            "subtotal":invoice['subtotal'],
+            "period_start":invoice['period_start'],
+            "period_end":invoice['period_end'],
+            "lines":lines 
+        }
+        return self.create_response(request, { 'success': True,"data":invoicelist})
+
+
+    def billing_history(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customer = data.get('customer', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        #a=stripe.Invoice.all(customer="cus_36LYppXykW2KGf")
+        a=stripe.Invoice.all(customer=customer,count=50)
+        invoices=a.data
+        invoicelist=[]
+        for invoice in invoices:
+            d={
+                "id":invoice['id'],
+                "date":invoice['date'],
+                "currency":invoice['currency'],
+                "total":invoice['total']
+                
+            }
+            invoicelist.append(d)
+            
+        
+        return self.create_response(request, { 'success': True,"data":invoicelist})
+    
         
 
 class EntityResource(ModelResource):
