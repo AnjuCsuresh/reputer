@@ -156,6 +156,9 @@ class UserResource(ModelResource):
     
     def prepend_urls(self):
         return [
+            url(r"^(?P<resource_name>%s)/events%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('events'), name="api_events"),
             url(r"^(?P<resource_name>%s)/billing_history%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('billing_history'), name="api_billing_history"),
@@ -513,6 +516,7 @@ class UserResource(ModelResource):
         customer.cards.create(card=token)
         return self.create_response(request, { 'success': True})
 
+
     def invoices(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
@@ -570,6 +574,18 @@ class UserResource(ModelResource):
             
         
         return self.create_response(request, { 'success': True,"data":invoicelist})
+
+    def events(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customer = data.get('customer', '')
+        token = data.get('token', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        customer = stripe.Customer.retrieve(customer)
+        cardid=customer.cards.data[0].id
+        customer.cards.retrieve(cardid).delete()
+        customer.cards.create(card=token)
+        return self.create_response(request, { 'success': True})
     
         
 
