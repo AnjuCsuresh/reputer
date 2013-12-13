@@ -1403,7 +1403,7 @@ angular.module('dashApp.controllers', []).
                 
                
 }).
-controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
+controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
         
         var userid = $.cookie('the_cookie');
       
@@ -1426,4 +1426,26 @@ controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies
                     })
                 
                })
+}).
+controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
+        
+        var userid = $.cookie('the_cookie');
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            var data = {
+                        customer: data.objects[0].stripe_customer,
+                     
+                    }; 
+            $http.post(API_URL + 'user/events/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                       
+                            console.log(data)
+                            $scope.events=data.data
+                            
+                        }
+                        else {
+                            //console.log(error)
+                        }
+                    })
+        })
+      
 })

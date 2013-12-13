@@ -5,6 +5,7 @@ from tastypie.authentication import Authentication,SessionAuthentication,ApiKeyA
 from django.db import IntegrityError
 from tastypie.exceptions import BadRequest
 from userprofile.models import *
+from stripewebhook.models import *
 from tastypie import fields, utils
 from django.forms.models import model_to_dict
 from tastypie.resources import ModelResource,ALL, ALL_WITH_RELATIONS,fields
@@ -579,13 +580,18 @@ class UserResource(ModelResource):
         self.method_check(request, allowed=['post'])
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
         customer = data.get('customer', '')
-        token = data.get('token', '')
-        stripe.api_key = settings.STRIPE_API_KEY
-        customer = stripe.Customer.retrieve(customer)
-        cardid=customer.cards.data[0].id
-        customer.cards.retrieve(cardid).delete()
-        customer.cards.create(card=token)
-        return self.create_response(request, { 'success': True})
+        events=Event.objects.filter(customer=customer)
+        eventlist=[]
+        for event in events:
+            data={
+                "id":event.event_id,
+                "type":event.type
+            }
+            eventlist.reverse()
+            eventlist.append(data)
+            eventlist.reverse()
+            
+        return self.create_response(request, { 'success': True,'data':eventlist})
     
         
 

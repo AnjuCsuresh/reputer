@@ -16,6 +16,7 @@ class Migration(SchemaMigration):
             ('notification', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['userprofile.NotificationLevel'], null=True, on_delete=models.SET_NULL)),
             ('stripe_customer', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
             ('stripe_billing_type', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
+            ('plan', self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True)),
         ))
         db.send_create_signal(u'userprofile', ['ExtendedUser'])
 
@@ -261,6 +262,7 @@ class Migration(SchemaMigration):
             'alive': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'notification': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['userprofile.NotificationLevel']", 'null': 'True', 'on_delete': 'models.SET_NULL'}),
+            'plan': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'stripe_billing_type': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'stripe_customer': ('django.db.models.fields.CharField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'})

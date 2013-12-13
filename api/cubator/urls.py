@@ -37,6 +37,7 @@ urlpatterns = patterns('',
     
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^api/', include(v1_api.urls)),
-	url(r'^userprofile/', include('userprofile.urls',namespace="userprofile"))
+	url(r'^userprofile/', include('userprofile.urls',namespace="userprofile")),
+    url(r'^stripewebhook/', include('stripewebhook.urls',namespace="stripewebhook"))
 
 )
