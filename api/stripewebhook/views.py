@@ -2,6 +2,7 @@
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from stripewebhook.models import *
+from userprofile.models import *
 import json
 import stripe
 
@@ -16,4 +17,10 @@ def webhook(request):
         event.type=event_json['type']
         event.event_data=event_json['data']
         event.save()
+        if event_json['type']=="charge.failed":
+            extendeduser = ExtendedUser.objects.get(stripe_customer=event_json['data']['object']['customer'])
+            entities=Entity.objects.filter(user=extendeduser.user)
+            for entity in entities:
+                entity.live=False
+                entity.save()
         return HttpResponse('success')
