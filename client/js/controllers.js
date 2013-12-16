@@ -104,23 +104,40 @@ angular.module('dashApp.controllers', []).
             });
         }
         else {
-            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
-                $scope.entities = data.objects
-                if (data.objects.length > 0) {
-                    if(data.objects[0].live==true){
-                        $scope.entity = data.objects[0]
-                        id = data.objects[0].id
-                    }
-                    else{
-                        $.cookie('entity', data.objects[0].id);
-                        $location.path('/account/entity/oops'); 
-                    }
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                if(!data.objects[0].active){
+                    bootbox.confirm("<b><center>Your card has expired<br>So please change credit card details</center></b>", function(result) 
+                        {   
+                            if(result){
+                                $timeout(function(){
+                                $location.path('/account/plans');
+                                },0); 
+                            }
+                            
+                            
+                        });
                 }
-                else {
-                    $location.path('/account/entity')
-                }
+                else{
+                    $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                        $scope.entities = data.objects
+                            if (data.objects.length > 0) {
+                                if(data.objects[0].live==true){
+                                    $scope.entity = data.objects[0]
+                                    id = data.objects[0].id
+                                }
+                                else{
+                                    $.cookie('entity', data.objects[0].id);
+                                    $location.path('/account/entity/oops'); 
+                                }
+                            }
+                            else {
+                                $location.path('/account/entity')
+                            }
 
+                    })
+                }
             })
+        
         }
 
         
@@ -1403,7 +1420,7 @@ angular.module('dashApp.controllers', []).
                 
                
 }).
-controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
+controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
         
         var userid = $.cookie('the_cookie');
       
@@ -1426,4 +1443,26 @@ controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies
                     })
                 
                })
+}).
+controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
+        
+        var userid = $.cookie('the_cookie');
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            var data = {
+                        customer: data.objects[0].stripe_customer,
+                     
+                    }; 
+            $http.post(API_URL + 'user/events/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                       
+                            console.log(data)
+                            $scope.events=data.data
+                            
+                        }
+                        else {
+                            //console.log(error)
+                        }
+                    })
+        })
+      
 })

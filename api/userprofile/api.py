@@ -5,6 +5,7 @@ from tastypie.authentication import Authentication,SessionAuthentication,ApiKeyA
 from django.db import IntegrityError
 from tastypie.exceptions import BadRequest
 from userprofile.models import *
+from stripewebhook.models import *
 from tastypie import fields, utils
 from django.forms.models import model_to_dict
 from tastypie.resources import ModelResource,ALL, ALL_WITH_RELATIONS,fields
@@ -156,6 +157,9 @@ class UserResource(ModelResource):
     
     def prepend_urls(self):
         return [
+            url(r"^(?P<resource_name>%s)/events%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('events'), name="api_events"),
             url(r"^(?P<resource_name>%s)/billing_history%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('billing_history'), name="api_billing_history"),
@@ -504,14 +508,18 @@ class UserResource(ModelResource):
     def updatecard(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
-        customer = data.get('customer', '')
+        customerid = data.get('customer', '')
         token = data.get('token', '')
         stripe.api_key = settings.STRIPE_API_KEY
-        customer = stripe.Customer.retrieve(customer)
+        customer = stripe.Customer.retrieve(customerid)
         cardid=customer.cards.data[0].id
         customer.cards.retrieve(cardid).delete()
         customer.cards.create(card=token)
+        extendeduser = ExtendedUser.objects.get(stripe_customer=customerid)
+        extendeduser.active=True
+        extendeduser.save()
         return self.create_response(request, { 'success': True})
+
 
     def invoices(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
@@ -570,6 +578,23 @@ class UserResource(ModelResource):
             
         
         return self.create_response(request, { 'success': True,"data":invoicelist})
+
+    def events(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customer = data.get('customer', '')
+        events=Event.objects.filter(customer=customer)
+        eventlist=[]
+        for event in events:
+            data={
+                "id":event.event_id,
+                "type":event.type
+            }
+            eventlist.reverse()
+            eventlist.append(data)
+            eventlist.reverse()
+            
+        return self.create_response(request, { 'success': True,'data':eventlist})
     
         
 
