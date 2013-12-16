@@ -395,7 +395,9 @@ class UserResource(ModelResource):
         stripe.api_key = settings.STRIPE_API_KEY
         cu = stripe.Customer.retrieve(customer)
         if plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
-            if quantity<=settings.GROUP_MIN:
+            if quantity>=settings.LARGEGROUP_MIN:
+                return self.create_response(request, {'success': False})
+            elif quantity<=settings.GROUP_MIN:
                 cu.quantity=settings.GROUP_MIN 
             else:
                 cu.quantity=quantity
@@ -405,7 +407,10 @@ class UserResource(ModelResource):
             else:
                 cu.quantity=quantity
         else:
-            cu.quantity=quantity
+            if quantity>=settings.GROUP_MIN:
+                return self.create_response(request, {'success': False})
+            else:
+                cu.quantity=quantity
         cu.plan=plan
         cu.save()
         print cu
