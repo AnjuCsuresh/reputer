@@ -1326,7 +1326,8 @@ angular.module('dashApp.controllers', []).
                 userdata.username=data.objects[0].user.username
                 //console.log(userdata)
                 $http.post(API_URL + 'user/planchange/', userdata, {withCredentials: true}).success(function (data, status, headers, config) {
-                    if (status == '200') {
+                    console.log(data)
+                    if (data.success == true) {
                         $scope.n = notyfy({
                                     text: 'Your plan successfully changed from '+oldplan+' to '+ $scope.plan,
                                     type: 'success',
@@ -1336,7 +1337,12 @@ angular.module('dashApp.controllers', []).
                         oldplan=$scope.plan
                     }
                     else {
-                        //console.log("error")
+                        $scope.n = notyfy({
+                        text: 'Error',
+                        type: 'error',
+                        dismissQueue: true,
+                        closeWith: ['hover']
+                    });
                     }
                 })
             })
