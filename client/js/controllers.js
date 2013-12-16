@@ -104,23 +104,40 @@ angular.module('dashApp.controllers', []).
             });
         }
         else {
-            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
-                $scope.entities = data.objects
-                if (data.objects.length > 0) {
-                    if(data.objects[0].live==true){
-                        $scope.entity = data.objects[0]
-                        id = data.objects[0].id
-                    }
-                    else{
-                        $.cookie('entity', data.objects[0].id);
-                        $location.path('/account/entity/oops'); 
-                    }
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                if(!data.objects[0].active){
+                    bootbox.confirm("<b><center>Your card has expired<br>So please change credit card details</center></b>", function(result) 
+                        {   
+                            if(result){
+                                $timeout(function(){
+                                $location.path('/account/plans');
+                                },0); 
+                            }
+                            
+                            
+                        });
                 }
-                else {
-                    $location.path('/account/entity')
-                }
+                else{
+                    $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                        $scope.entities = data.objects
+                            if (data.objects.length > 0) {
+                                if(data.objects[0].live==true){
+                                    $scope.entity = data.objects[0]
+                                    id = data.objects[0].id
+                                }
+                                else{
+                                    $.cookie('entity', data.objects[0].id);
+                                    $location.path('/account/entity/oops'); 
+                                }
+                            }
+                            else {
+                                $location.path('/account/entity')
+                            }
 
+                    })
+                }
             })
+        
         }
 
         

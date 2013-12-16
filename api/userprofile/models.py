@@ -72,6 +72,7 @@ class SoftDeletionModel(models.Model):
         super(SoftDeletionModel, self).delete()
 
 class ExtendedUser(SoftDeletionModel):
+    active = models.BooleanField(default=True)
     user = models.OneToOneField(User)
     notification = models.ForeignKey('NotificationLevel',on_delete=models.SET_NULL,null=True)
     stripe_customer= models.CharField(max_length=200,null=True,blank=True)

@@ -508,13 +508,16 @@ class UserResource(ModelResource):
     def updatecard(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
-        customer = data.get('customer', '')
+        customerid = data.get('customer', '')
         token = data.get('token', '')
         stripe.api_key = settings.STRIPE_API_KEY
-        customer = stripe.Customer.retrieve(customer)
+        customer = stripe.Customer.retrieve(customerid)
         cardid=customer.cards.data[0].id
         customer.cards.retrieve(cardid).delete()
         customer.cards.create(card=token)
+        extendeduser = ExtendedUser.objects.get(stripe_customer=customerid)
+        extendeduser.active=True
+        extendeduser.save()
         return self.create_response(request, { 'success': True})
 
 
