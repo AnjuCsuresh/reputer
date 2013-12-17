@@ -20,7 +20,7 @@ def webhook(request):
             if event_json['type']=="customer.card.created":
                 event.display_text="Added a new "+event_json['data']['object']['type']+" ending in "+event_json['data']['object']['last4']
             elif event_json['type']=="invoice.payment_succeeded":
-                event.display_text="Your invoice for "+event_json['data']['object']['currency']+" "+event_json['data']['object']['total']+" was paid"
+                event.display_text="Your invoice for "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['total'])+" was paid"
             elif event_json['type']=="customer.subscription.updated":
                 if "plan" in event_json['data']['previous_attributes']:
                     event.display_text="Your plan changed from "+event_json['data']['previous_attributes']['plan']['name']+" to"+event_json['data']['object']['plan']['name']
@@ -29,7 +29,7 @@ def webhook(request):
             elif event_json['type']=="customer.card.deleted":
                 event.display_text="Deleted a "+event_json['data']['object']['type']+" ending in "+event_json['data']['object']['last4']
             elif event_json['type']=="invoice.created":
-                event.display_text="You has a new invoice for "+event_json['data']['object']['currency']+" "+event_json['data']['object']['total']
+                event.display_text="You has a new invoice for "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['total'])
             elif event_json['type']=="customer.card.updated":
                 event.display_text="Updated a "+event_json['data']['object']['type']+" ending in "+event_json['data']['object']['last4']
             elif event_json['type']=="invoiceitem.updated":
