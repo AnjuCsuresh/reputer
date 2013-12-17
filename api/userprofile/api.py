@@ -160,9 +160,9 @@ class UserResource(ModelResource):
             url(r"^(?P<resource_name>%s)/events%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('events'), name="api_events"),
-            url(r"^(?P<resource_name>%s)/billing_history%s$" %
+            url(r"^(?P<resource_name>%s)/fullinvoices%s$" %
                 (self._meta.resource_name, trailing_slash()),
-                self.wrap_view('billing_history'), name="api_billing_history"),
+                self.wrap_view('fullinvoices'), name="api_fullinvoices"),
             url(r"^(?P<resource_name>%s)/invoices%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('invoices'), name="api_invoices"),
@@ -521,6 +521,10 @@ class UserResource(ModelResource):
         customer.cards.retrieve(cardid).delete()
         customer.cards.create(card=token)
         extendeduser = ExtendedUser.objects.get(stripe_customer=customerid)
+        entities=Entity.objects.filter(user=extendeduser.user)
+        for entity in entities:
+            entity.live=True
+            entity.save()
         extendeduser.active=True
         extendeduser.save()
         return self.create_response(request, { 'success': True})
@@ -562,7 +566,7 @@ class UserResource(ModelResource):
         return self.create_response(request, { 'success': True,"data":invoicelist})
 
 
-    def billing_history(self, request, **kwargs):
+    def fullinvoices(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
         customer = data.get('customer', '')
@@ -593,7 +597,7 @@ class UserResource(ModelResource):
         for event in events:
             data={
                 "id":event.event_id,
-                "type":event.type
+                "display_text":event.display_text
             }
             eventlist.reverse()
             eventlist.append(data)

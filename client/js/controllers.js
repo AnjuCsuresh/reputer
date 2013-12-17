@@ -1436,7 +1436,7 @@ controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$coo
                      
                     }; 
                     console.log(data) 
-                    $http.post(API_URL + 'user/billing_history/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+                    $http.post(API_URL + 'user/fullinvoices/',data, {withCredentials: true}).success(function (data, status, headers, config) {
                         if (status == '200') {
                        
                             console.log(data)

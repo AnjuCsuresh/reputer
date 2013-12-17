@@ -6,5 +6,6 @@ class Event(models.Model):
     customer= models.CharField(max_length=200,null=True,blank=True)
     type= models.CharField(max_length=200,null=True,blank=True)
     event_data = models.TextField()
+    display_text=models.TextField()
 
 # Create your models here.
