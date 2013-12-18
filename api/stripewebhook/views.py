@@ -17,9 +17,27 @@ def webhook(request):
         if "customer" in event_json['data']['object']:
             event.customer=event_json['data']['object']['customer']
             event.type=event_json['type']
-            event.event_data=event_json['data']
-            event.save()
-            if event_json['type']=="charge.failed":
+            if event_json['type']=="customer.card.created":
+                event.display_text="Added a new "+event_json['data']['object']['type']+" ending in "+event_json['data']['object']['last4']
+            elif event_json['type']=="invoice.payment_succeeded":
+                event.display_text="Your invoice for "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['total'])+" was paid"
+            elif event_json['type']=="customer.subscription.updated":
+                if "plan" in event_json['data']['previous_attributes']:
+                    event.display_text="Your plan changed from "+event_json['data']['previous_attributes']['plan']['name']+" to "+event_json['data']['object']['plan']['name']
+                else:
+                    event.display_text="Your subscription has changed"
+            elif event_json['type']=="customer.card.deleted":
+                event.display_text="Deleted a "+event_json['data']['object']['type']+" ending in "+event_json['data']['object']['last4']
+            elif event_json['type']=="invoice.created":
+                event.display_text="You has a new invoice for "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['total'])
+            elif event_json['type']=="customer.card.updated":
+                event.display_text="Updated a "+event_json['data']['object']['type']+" ending in "+event_json['data']['object']['last4']
+            elif event_json['type']=="invoiceitem.updated":
+                event.display_text="Your invoice item was invoiced"
+            elif event_json['type']=="customer.subscription.created":
+                event.display_text="Subscribed to the "+event_json['data']['object']['plan']['name']+" plan"
+            elif event_json['type']=="charge.failed":
+                event.display_text="Your card has expired"
                 extendeduser = ExtendedUser.objects.get(stripe_customer=event_json['data']['object']['customer'])
                 entities=Entity.objects.filter(user=extendeduser.user)
                 for entity in entities:
@@ -27,4 +45,21 @@ def webhook(request):
                     entity.save()
                 extendeduser.active=False
                 extendeduser.save()
+            else:
+                event.display_text=event_json['type']
+            event.event_data=event_json['data']
+            event.save()
+        if event_json['data']['object']['object']=="customer":
+            event.customer=event_json['data']['object']['id']
+            event.type=event_json['type']
+            if event_json['type']=="customer.updated":
+                if event_json['data']['previous_attributes']['default_card']==None:
+                    event.display_text="Your details were updated"
+                else:
+                    event.display_text="Your default credit card changed"
+            elif event_json['type']=="customer.created":
+                event.display_text="You are a new customer"
+            event.event_data=event_json['data']
+            event.save()
+
         return HttpResponse('success')

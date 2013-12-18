@@ -26,9 +26,10 @@ config = {
 		WEBSITE_URL : 'http://localhost:8888/'
 	},
 	production: {
-		API_URL : '',
-		DATA_API_URL: '',
-		WEBSITE_URL : ''
+		API_URL : 'https://app.reputer.co/api/v1/',
+		API_SERVER_URL : 'https://app.reputer.co',
+		DATA_API_URL: 'https://app.reputer.co/data/',
+		WEBSITE_URL : 'https://app.reputer.co'
 	}
 }
 //Set mode to development / production
