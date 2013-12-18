@@ -23,7 +23,7 @@ def webhook(request):
                 event.display_text="Your invoice for "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['total'])+" was paid"
             elif event_json['type']=="customer.subscription.updated":
                 if "plan" in event_json['data']['previous_attributes']:
-                    event.display_text="Your plan changed from "+event_json['data']['previous_attributes']['plan']['name']+" to"+event_json['data']['object']['plan']['name']
+                    event.display_text="Your plan changed from "+event_json['data']['previous_attributes']['plan']['name']+" to "+event_json['data']['object']['plan']['name']
                 else:
                     event.display_text="Your subscription has changed"
             elif event_json['type']=="customer.card.deleted":
