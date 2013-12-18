@@ -156,15 +156,14 @@ class UserResource(ModelResource):
         }
     
     def prepend_urls(self):
-        return [
-            url(r"^(?P<resource_name>%s)/events%s$" %
+        return [            
             url(r"^(?P<resource_name>%s)/editcard%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('editcard'), name="api_editcard"),
             url(r"^(?P<resource_name>%s)/carddetails%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('carddetails'), name="api_carddetails"),
-            url(r"^(?P<resource_name>%s)/billing_history%s$" %
+            url(r"^(?P<resource_name>%s)/events%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('events'), name="api_events"),
             url(r"^(?P<resource_name>%s)/fullinvoices%s$" %
@@ -614,6 +613,7 @@ class UserResource(ModelResource):
         return self.create_response(request, { 'success': True,'data':eventlist})
     
 
+
     def carddetails(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
@@ -643,6 +643,7 @@ class UserResource(ModelResource):
         card.exp_month=exp_month
         card.save()
         return self.create_response(request, { 'success': True})
+
         
 
 class EntityResource(ModelResource):

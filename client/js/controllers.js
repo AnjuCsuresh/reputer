@@ -1450,7 +1450,7 @@ controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$coo
                 
                })
 }).
-<<<<<<< HEAD
+
 controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
         
         var userid = $.cookie('the_cookie');
@@ -1464,7 +1464,15 @@ controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies
                        
                             console.log(data)
                             $scope.events=data.data
-=======
+
+                        }
+                        else {
+                            //console.log(error)
+                        }
+                    })
+
+        })
+   }).
 controller('ChangeCardCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
         
         var userid = $.cookie('the_cookie');
@@ -1505,19 +1513,12 @@ controller('ChangeCardCtrl', function ($scope, $http, $location,$rootScope,$cook
                                     dismissQueue: true,
                                     closeWith: ['hover']
                                 });
->>>>>>> CreditCard
                             
                         }
                         else {
                             //console.log(error)
                         }
                     })
-<<<<<<< HEAD
-        })
-      
-=======
             }
 
->>>>>>> CreditCard
 })
-
