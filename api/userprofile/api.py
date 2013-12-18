@@ -643,7 +643,6 @@ class UserResource(ModelResource):
         card.exp_month=exp_month
         card.save()
         return self.create_response(request, { 'success': True})
->>>>>>> CreditCard
         
 
 class EntityResource(ModelResource):
