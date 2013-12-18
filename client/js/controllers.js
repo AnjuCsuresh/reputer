@@ -110,7 +110,7 @@ angular.module('dashApp.controllers', []).
                         {   
                             if(result){
                                 $timeout(function(){
-                                $location.path('/account/plans');
+                                $location.path('/creditcard');
                                 },0); 
                             }
                             
@@ -1348,52 +1348,7 @@ angular.module('dashApp.controllers', []).
             })
         }
 
-        $scope.savestripe=function(card){
-            
-            Stripe.card.createToken({
-            number:card.number,
-            cvc: card.cvc,
-            exp_month: card.expmonth,
-            exp_year: card.expyear
-            }, $scope.stripeResponse);
-            $scope.card={}
-        }
-        
-        $scope.stripeResponse = function(status, response) {
-            
-            if (response.error) {
-                console.log(response.error)
-                bootbox.alert("<b><center>"+response.error.message+"</center></b>",function(result){
 
-                })
-                
-            }
-            else{
-                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
-                    var data = {
-                        customer: data.objects[0].stripe_customer,
-                        token: response.id
-                    }; 
-                    console.log(data) 
-                    $http.post(API_URL + 'user/updatecard/',data, {withCredentials: true}).success(function (data, status, headers, config) {
-                        if (status == '200') {
-                            $scope.n = notyfy({
-                                    text: 'Your credit card details updated successfully',
-                                    type: 'success',
-                                    dismissQueue: true,
-                                    closeWith: ['hover']
-                                });
-                        }
-                        else {
-                            //console.log(error)
-                        }
-                    })
-                
-               })
-             
-            }
-            
-        }
 
     }).
     controller('OppsCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
@@ -1474,9 +1429,9 @@ controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies
         })
    }).
 controller('ChangeCardCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
-        
+        Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
         var userid = $.cookie('the_cookie');
-      
+        $scope.card={}
             $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
                     var data = {
                         customer: data.objects[0].stripe_customer,
@@ -1497,28 +1452,79 @@ controller('ChangeCardCtrl', function ($scope, $http, $location,$rootScope,$cook
 
             $scope.edit_card=function(card){
                 var data = {
-                        customer: card.customer,
-                        id:card.id,
-                        expmonth:card.exp_month,
-                        expyear:card.exp_year
-                     
-                    };
-                    
+                    customer: card.customer,
+                    id:card.id,
+                    expmonth:card.exp_month,
+                    expyear:card.exp_year
+
+                };
+
                 $http.post(API_URL + 'user/editcard/',data, {withCredentials: true}).success(function (data, status, headers, config) {
-                        if (status == '200') {
-                       
-                            $scope.n = notyfy({
-                                    text: 'Your credit card details updated successfully',
-                                    type: 'success',
-                                    dismissQueue: true,
-                                    closeWith: ['hover']
-                                });
-                            
-                        }
-                        else {
+                    if (status == '200') {
+
+                        $scope.n = notyfy({
+                            text: 'Your credit card details updated successfully',
+                            type: 'success',
+                            dismissQueue: true,
+                            closeWith: ['hover']
+                        });
+
+                    }
+                    else {
                             //console.log(error)
                         }
                     })
             }
 
+        $scope.savestripe=function(creditcard){
+            
+            Stripe.card.createToken({
+            number:creditcard.number,
+            cvc: creditcard.cvc,
+            exp_month: creditcard.expmonth,
+            exp_year: creditcard.expyear
+            }, $scope.stripeResponse);
+            $scope.creditcard={}
+        }
+        
+        $scope.stripeResponse = function(status, response) {
+            
+            if (response.error) {
+                console.log(response.error)
+                bootbox.alert("<b><center>"+response.error.message+"</center></b>",function(result){
+
+                })
+                
+            }
+            else{
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                    var d = {
+                        customer: data.objects[0].stripe_customer,
+                        token: response.id
+                    }; 
+                    console.log(data) 
+                    $http.post(API_URL + 'user/updatecard/',d, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                            $http.post(API_URL + 'user/carddetails/',d, {withCredentials: true}).success(function (data, status, headers, config) {
+                                if (status == '200') {
+                                    $scope.card=data.data
+                                    $scope.card.number="**** **** **** "+$scope.card.number
+                                    $scope.n = notyfy({
+                                        text: 'Successfully added new card',
+                                        type: 'success',
+                                        dismissQueue: true,
+                                        closeWith: ['hover']
+                                    });
+                                }
+
+                            })
+                        }
+                        
+                    })
+                
+               })
+             
+            }
+            
+        }
 })
