@@ -1450,6 +1450,7 @@ controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$coo
                 
                })
 }).
+<<<<<<< HEAD
 controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
         
         var userid = $.cookie('the_cookie');
@@ -1463,12 +1464,60 @@ controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies
                        
                             console.log(data)
                             $scope.events=data.data
+=======
+controller('ChangeCardCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
+        
+        var userid = $.cookie('the_cookie');
+      
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                    var data = {
+                        customer: data.objects[0].stripe_customer,
+                     
+                    }; 
+                    $http.post(API_URL + 'user/carddetails/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                            $scope.card=data.data
+                            $scope.card.number="**** **** **** "+$scope.card.number
                             
                         }
                         else {
                             //console.log(error)
                         }
                     })
+                
+               })
+
+            $scope.edit_card=function(card){
+                var data = {
+                        customer: card.customer,
+                        id:card.id,
+                        expmonth:card.exp_month,
+                        expyear:card.exp_year
+                     
+                    };
+                    
+                $http.post(API_URL + 'user/editcard/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+                        if (status == '200') {
+                       
+                            $scope.n = notyfy({
+                                    text: 'Your credit card details updated successfully',
+                                    type: 'success',
+                                    dismissQueue: true,
+                                    closeWith: ['hover']
+                                });
+>>>>>>> CreditCard
+                            
+                        }
+                        else {
+                            //console.log(error)
+                        }
+                    })
+<<<<<<< HEAD
         })
       
+=======
+            }
+
+>>>>>>> CreditCard
 })
+

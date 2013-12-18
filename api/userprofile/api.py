@@ -158,6 +158,13 @@ class UserResource(ModelResource):
     def prepend_urls(self):
         return [
             url(r"^(?P<resource_name>%s)/events%s$" %
+            url(r"^(?P<resource_name>%s)/editcard%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('editcard'), name="api_editcard"),
+            url(r"^(?P<resource_name>%s)/carddetails%s$" %
+                (self._meta.resource_name, trailing_slash()),
+                self.wrap_view('carddetails'), name="api_carddetails"),
+            url(r"^(?P<resource_name>%s)/billing_history%s$" %
                 (self._meta.resource_name, trailing_slash()),
                 self.wrap_view('events'), name="api_events"),
             url(r"^(?P<resource_name>%s)/fullinvoices%s$" %
@@ -588,6 +595,7 @@ class UserResource(ModelResource):
         
         return self.create_response(request, { 'success': True,"data":invoicelist})
 
+
     def events(self, request, **kwargs):
         self.method_check(request, allowed=['post'])
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
@@ -605,6 +613,37 @@ class UserResource(ModelResource):
             
         return self.create_response(request, { 'success': True,'data':eventlist})
     
+
+    def carddetails(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customerid = data.get('customer', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        customer = stripe.Customer.retrieve(customerid)
+        data={
+                "id":customer.cards.data[0].id,
+                "exp_month":customer.cards.data[0].exp_month,
+                "exp_year":customer.cards.data[0].exp_year,
+                "number":customer.cards.data[0].last4,
+                "customer":customerid
+        }
+        return self.create_response(request, { 'success': True,"data":data})
+
+    def editcard(self, request, **kwargs):
+        self.method_check(request, allowed=['post'])
+        data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
+        customerid = data.get('customer', '')
+        card = data.get('id', '')
+        exp_month = data.get('expmonth', '')
+        exp_year = data.get('expyear', '')
+        stripe.api_key = settings.STRIPE_API_KEY
+        customer = stripe.Customer.retrieve(customerid)
+        card = customer.cards.retrieve(card)
+        card.exp_year=exp_year
+        card.exp_month=exp_month
+        card.save()
+        return self.create_response(request, { 'success': True})
+>>>>>>> CreditCard
         
 
 class EntityResource(ModelResource):
