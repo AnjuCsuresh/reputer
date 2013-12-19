@@ -7,5 +7,6 @@ class Event(models.Model):
     type= models.CharField(max_length=200,null=True,blank=True)
     event_data = models.TextField()
     display_text=models.CharField(max_length=200,null=True,blank=True)
+    date=models.CharField(max_length=200,null=True,blank=True)
 
 # Create your models here.

@@ -604,7 +604,8 @@ class UserResource(ModelResource):
         for event in events:
             data={
                 "id":event.event_id,
-                "display_text":event.display_text
+                "display_text":event.display_text,
+                "date":event.date
             }
             eventlist.reverse()
             eventlist.append(data)

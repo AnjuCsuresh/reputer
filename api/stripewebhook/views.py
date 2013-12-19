@@ -48,6 +48,7 @@ def webhook(request):
             else:
                 event.display_text=event_json['type']
             event.event_data=event_json['data']
+            event.date=event_json['created']
             event.save()
         if event_json['data']['object']['object']=="customer":
             event.customer=event_json['data']['object']['id']
@@ -60,6 +61,7 @@ def webhook(request):
             elif event_json['type']=="customer.created":
                 event.display_text="You are a new customer"
             event.event_data=event_json['data']
+            event.date=event_json['created']
             event.save()
 
         return HttpResponse('success')

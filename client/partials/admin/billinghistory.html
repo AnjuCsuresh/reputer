@@ -13,13 +13,14 @@
 		
 	<h5 class="text-uppercase strong separator bottom margin-none">Events</h5>
 	<!-- Table -->
-	<table class="footable table table-striped table-bordered table-white table-primary">
+	<table class="footable table table-striped table-bordered table-white table-primary ">
 	
 		<!-- Table heading -->
-		<thead>
+		<thead class="center">
 			<tr>
 				<th data-class="expand">Events</th>
-				
+				<th class="center" style="width: 10%;"></th>
+				<th class="center" style="width: 20%;"></th>
 			</tr>
 		</thead>
 		<!-- // Table heading END -->
@@ -29,8 +30,9 @@
 		
 			<!-- Table row -->
 			<tr class="gradeX" ng-repeat="event in events">
-				<td>{{event.display_text}}</td>
-				
+				<td >{{event.display_text}}</td>
+				<td class="center">{{event.date}}</td>
+				<td class="center">{{event.id}}</td>
 			</tr>
 			
 			
