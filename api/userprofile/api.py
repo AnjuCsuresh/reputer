@@ -11,7 +11,7 @@ from django.forms.models import model_to_dict
 from tastypie.resources import ModelResource,ALL, ALL_WITH_RELATIONS,fields
 import stripe
 import json
-
+import datetime
 
 class MyResource(ModelResource):
     def obj_update(self, bundle, request=None, **kwargs):
@@ -546,6 +546,19 @@ class UserResource(ModelResource):
         #invoice=stripe.Invoice.retrieve("in_1036LZ21eybl4Q7DrQ2IL53h")
         invoice=stripe.Invoice.retrieve(invoice_id)
         for data in invoice.lines.data:
+            a=datetime.datetime.fromtimestamp(data["period"].start)
+            b=datetime.datetime.fromtimestamp(data["period"].end)
+            st = a.timetuple()
+            et = b.timetuple()
+            sdate=""
+            edate=""
+            for x in range(0, 3):
+                if x!=2:
+                    sdate=sdate+str(st[x])+"/"
+                    edate=edate+str(et[x])+"/"
+                else:
+                    sdate=sdate+str(st[x])
+                    edate=edate+str(et[x])
             d={
                 "totalamount":data["amount"],
                 "currency":data["currency"],
@@ -554,8 +567,8 @@ class UserResource(ModelResource):
                 "interval":data["plan"].interval,
                 "quantity":data["quantity"],
                 "type":data["type"],
-                "period_start":data["period"].start,
-                "period_end":data["period"].end
+                "period_start":sdate,
+                "period_end":edate
             }
             lines.append(d)
         invoicelist={
@@ -582,9 +595,17 @@ class UserResource(ModelResource):
         invoices=a.data
         invoicelist=[]
         for invoice in invoices:
+            a=datetime.datetime.fromtimestamp(invoice['date'])
+            t = a.timetuple()
+            date=""
+            for x in range(0, 3):
+                if x!=2:
+                    date=date+str(t[x])+"/"
+                else:
+                    date=date+str(t[x])
             d={
                 "id":invoice['id'],
-                "date":invoice['date'],
+                "date":date,
                 "currency":invoice['currency'],
                 "total":invoice['total']
                 
@@ -604,7 +625,8 @@ class UserResource(ModelResource):
         for event in events:
             data={
                 "id":event.event_id,
-                "display_text":event.display_text
+                "display_text":event.display_text,
+                "date":event.date
             }
             eventlist.reverse()
             eventlist.append(data)
