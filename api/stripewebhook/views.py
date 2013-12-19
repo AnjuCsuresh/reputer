@@ -5,6 +5,7 @@ from stripewebhook.models import *
 from userprofile.models import *
 import json
 import stripe
+import datetime
 
 def webhook(request):
     
@@ -49,6 +50,14 @@ def webhook(request):
                 event.display_text=event_json['type']
             event.event_data=event_json['data']
             event.date=event_json['created']
+            a=datetime.datetime.fromtimestamp(event_json['created'])
+            t = a.timetuple()
+            event.date=""
+            for x in range(0, 3):
+                if x!=2:
+                    event.date=event.date+str(t[x])+"/"
+                else:
+                    event.date=event.date+str(t[x])
             event.save()
         if event_json['data']['object']['object']=="customer":
             event.customer=event_json['data']['object']['id']
@@ -61,7 +70,14 @@ def webhook(request):
             elif event_json['type']=="customer.created":
                 event.display_text="You are a new customer"
             event.event_data=event_json['data']
-            event.date=event_json['created']
+            a=datetime.datetime.fromtimestamp(event_json['created'])
+            t = a.timetuple()
+            event.date=""
+            for x in range(0, 3):
+                if x!=2:
+                    event.date=event.date+str(t[x])+"/"
+                else:
+                    event.date=event.date+str(t[x])
             event.save()
 
         return HttpResponse('success')
