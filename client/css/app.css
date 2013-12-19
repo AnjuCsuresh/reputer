@@ -225,18 +225,12 @@ font-weight: 900; letter-spacing: 0px; line-height: 1; }
 .pricing_table.rounded-corners [class*="span"]:last-child .signin {-webkit-border-bottom-right-radius:5px; -moz-border-bottom-right-radius:5px; border-bottom-right-radius:5px; }
 
 
-.modal {
-z-index: 100001;
-position: absolute;
-margin-top: 42px;
-border-color: #efefef;
-background: #ffffff;
-box-shadow: none;
--moz-box-shadow: none;
--webkit-box-shadow: none;
--webkit-border-radius: 0 0 0 0;
--moz-border-radius: 0 0 0 0;
-border-radius: 0 0 0 0;
+.modal.fade {
+-webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+-moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+-o-transition: opacity 0.3s linear, top 0.3s ease-out;
+transition: opacity 0.3s linear, top 0.3s ease-out;
+top: -117%;
 }
 .modal.fade.in {
 top: 20%;
