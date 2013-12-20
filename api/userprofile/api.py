@@ -572,9 +572,17 @@ class UserResource(ModelResource):
                 "period_end":edate
             }
             lines.append(d)
+        c=datetime.datetime.fromtimestamp(invoice['date'])
+        t = c.timetuple()
+        date=""
+        for x in range(0, 3):
+                if x!=2:
+                    date=date+str(t[x])+"/"
+                else:
+                    date=date+str(t[x])
         invoicelist={
             "amount_due":invoice['amount_due'],
-            "date":invoice['date'],
+            "date":date,
             "currency":invoice['currency'].upper(),
             "paid":invoice['paid'],
             "total":invoice['total'],
@@ -597,16 +605,28 @@ class UserResource(ModelResource):
         invoicelist=[]
         for invoice in invoices:
             a=datetime.datetime.fromtimestamp(invoice['date'])
+            b=datetime.datetime.fromtimestamp(invoice['period_start'])
+            c=datetime.datetime.fromtimestamp(invoice['period_end'])
             t = a.timetuple()
+            st = b.timetuple()
+            et = c.timetuple()
             date=""
+            sdate=""
+            edate=""
             for x in range(0, 3):
                 if x!=2:
+                    sdate=sdate+str(st[x])+"/"
+                    edate=edate+str(et[x])+"/"
                     date=date+str(t[x])+"/"
                 else:
+                    sdate=sdate+str(st[x])
+                    edate=edate+str(et[x])
                     date=date+str(t[x])
             d={
                 "id":invoice['id'],
                 "date":date,
+                "sdate":sdate,
+                "edate":edate,
                 "currency":invoice['currency'].upper(),
                 "total":invoice['total']
                 
