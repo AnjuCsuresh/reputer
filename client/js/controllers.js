@@ -95,7 +95,7 @@ angular.module('dashApp.controllers', []).
         var userid = $.cookie('the_cookie');
         var id = $.cookie('entity');
         if (id > 0) {
-            $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
+            $http.get(API_URL + 'Entity/?id=' + id + '&format=json',{withCredentials: true}).success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
                     //console.log("success")
@@ -118,7 +118,7 @@ angular.module('dashApp.controllers', []).
                         });
                 }
                 else{
-                    $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                    $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
                         $scope.entities = data.objects
                             if (data.objects.length > 0) {
                                 if(data.objects[0].live==true){
@@ -439,7 +439,7 @@ angular.module('dashApp.controllers', []).
     .controller('reviewTable', function ($http, $scope, User, $filter, $timeout, $routeParams, $cookieStore, $location) {
         var id = $routeParams.id;
         if (id > 0) {
-            $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
+            $http.get(API_URL + 'Entity/?id=' + id + '&format=json',{withCredentials: true}).success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
                     //$location.path('/account/entity/oops');
@@ -448,7 +448,7 @@ angular.module('dashApp.controllers', []).
         }
         else {
             var userid = $.cookie('the_cookie');
-            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&live=true&format=json').success(function (data) {
+            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&live=true&format=json',{withCredentials: true}).success(function (data) {
                 $scope.entities = data.objects
                 if (data.objects.length > 0) {
                     $scope.entity = data.objects[0]
@@ -567,7 +567,7 @@ angular.module('dashApp.controllers', []).
     .controller('changesTable', function ($http, $scope, User, $filter, $timeout, $routeParams, $cookieStore, $location) {
         var id = $routeParams.id;
         if (id > 0) {
-            $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
+            $http.get(API_URL + 'Entity/?id=' + id + '&format=json',{withCredentials: true}).success(function (data) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == false) {
                     //$location.path('/account/entity/oops');
@@ -576,7 +576,7 @@ angular.module('dashApp.controllers', []).
         }
         else {
             var userid = $.cookie('the_cookie');
-            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&live=true&format=json').success(function (data) {
+            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&live=true&format=json',{withCredentials: true}).success(function (data) {
                 $scope.entities = data.objects
                 if (data.objects.length > 0) {
                     $scope.entity = data.objects[0]
@@ -704,7 +704,7 @@ angular.module('dashApp.controllers', []).
         $scope.fax = {};
         $scope.loctn = {};
         //fetching all data from database for edit selected entity
-        $http.get(API_URL + 'Entity/?id=' + id + '&user__id=' + userid + '&alive=true&format=json').success(function (data) {
+        $http.get(API_URL + 'Entity/?id=' + id + '&user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
             if (data.objects.length > 0) {
                 $scope.entity = data.objects[0]
                 if (data.objects[0].location.length > 0) {
@@ -866,7 +866,7 @@ angular.module('dashApp.controllers', []).
             User = response.data;
             email = response.data.email
             $scope.user = User;
-            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
                 $scope.entities = data.objects
             })
 
@@ -886,7 +886,8 @@ angular.module('dashApp.controllers', []).
             }
         })
         $scope.$on("data", function () {
-            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+            $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
+                console.log(data)
                 $scope.entities = data.objects
             })
         })
@@ -922,7 +923,8 @@ angular.module('dashApp.controllers', []).
     })
     .controller('ManageEntityCtrl', function ($scope, $location, $http, $timeout, $cookies, $window, MessageBus) {
         var userid = $.cookie('the_cookie');
-        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
+            console.log(data)
             $scope.entities = data.objects
         })
         $scope.select = function (id) {
@@ -998,7 +1000,7 @@ angular.module('dashApp.controllers', []).
                                             });
                                         }
                     
-                                        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                                        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
                                             //stripe
                                             $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
                                                 userdata.customer=data.objects[0].stripe_customer
@@ -1052,7 +1054,7 @@ angular.module('dashApp.controllers', []).
                                             });
                                         }
                     
-                                        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json').success(function (data) {
+                                        $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
                         //stripe
                                             $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
                                                 userdata.customer=data.objects[0].stripe_customer
@@ -1354,7 +1356,7 @@ angular.module('dashApp.controllers', []).
     controller('OppsCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
         
         var id = $.cookie('entity');
-        $http.get(API_URL + 'Entity/?id=' + id + '&format=json').success(function (data) {
+        $http.get(API_URL + 'Entity/?id=' + id + '&format=json',{withCredentials: true}).success(function (data) {
                 $scope.entity = data.objects[0]
         
         })

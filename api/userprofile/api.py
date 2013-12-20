@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import User
 from tastypie.resources import ModelResource,ALL,ALL_WITH_RELATIONS
 from tastypie.authorization import Authorization,DjangoAuthorization
@@ -686,7 +687,8 @@ class EntityResource(ModelResource):
             'live':ALL,
             'user':ALL_WITH_RELATIONS,
         }
-    
+    def get_object_list(self, request): 
+        return super(EntityResource, self).get_object_list(request).filter(user__id=request.user.id)
     def save_m2m(self, bundle):
         for field_name, field_object in self.fields.items():
             if not getattr(field_object, 'is_m2m', False):
