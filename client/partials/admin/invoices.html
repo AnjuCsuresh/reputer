@@ -20,7 +20,7 @@
 					<thead>
 						<tr>
 							
-							<th>Invoice</th>
+							<th>Period</th>
 							<th class="center">Date</th>
 							<th class="center">Amount</th>
 							<th class="right">Actions</th>
@@ -31,7 +31,7 @@
 						<!-- Item -->
 						<tr class="selectable" ng-repeat="invoice in invoices">
 							
-							<td class="important">{{invoice.id}}</td>
+							<td class="important"><span class="label label-inverse">{{invoice.sdate}}</span> To <span class="label label-inverse">{{invoice.edate}}</span></td>
 							<td class="center"><span class="label label-primary">{{invoice.date}}</span></td>
 							<td class="center">{{invoice.currency}} {{invoice.total}}</td>
 							<td class="right actions">
@@ -44,7 +44,7 @@
 				</table>
 				<!-- // Table END -->
 				
-				<div class="separator top"><a href="" class="glyphicons list single"><i></i> Show all</a></div>
+				
 			</div>
 		</div>
 		<!-- // Widget END -->

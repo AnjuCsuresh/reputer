@@ -1,3 +1,4 @@
+
 from django.contrib.auth.models import User
 from tastypie.resources import ModelResource,ALL,ALL_WITH_RELATIONS
 from tastypie.authorization import Authorization,DjangoAuthorization
@@ -561,7 +562,7 @@ class UserResource(ModelResource):
                     edate=edate+str(et[x])
             d={
                 "totalamount":data["amount"],
-                "currency":data["currency"],
+                "currency":data["currency"].upper(),
                 "name":data["plan"].name,
                 "planamount":data["plan"].amount,
                 "interval":data["plan"].interval,
@@ -571,10 +572,18 @@ class UserResource(ModelResource):
                 "period_end":edate
             }
             lines.append(d)
+        c=datetime.datetime.fromtimestamp(invoice['date'])
+        t = c.timetuple()
+        date=""
+        for x in range(0, 3):
+                if x!=2:
+                    date=date+str(t[x])+"/"
+                else:
+                    date=date+str(t[x])
         invoicelist={
             "amount_due":invoice['amount_due'],
-            "date":invoice['date'],
-            "currency":invoice['currency'],
+            "date":date,
+            "currency":invoice['currency'].upper(),
             "paid":invoice['paid'],
             "total":invoice['total'],
             "subtotal":invoice['subtotal'],
@@ -596,17 +605,29 @@ class UserResource(ModelResource):
         invoicelist=[]
         for invoice in invoices:
             a=datetime.datetime.fromtimestamp(invoice['date'])
+            b=datetime.datetime.fromtimestamp(invoice['period_start'])
+            c=datetime.datetime.fromtimestamp(invoice['period_end'])
             t = a.timetuple()
+            st = b.timetuple()
+            et = c.timetuple()
             date=""
+            sdate=""
+            edate=""
             for x in range(0, 3):
                 if x!=2:
+                    sdate=sdate+str(st[x])+"/"
+                    edate=edate+str(et[x])+"/"
                     date=date+str(t[x])+"/"
                 else:
+                    sdate=sdate+str(st[x])
+                    edate=edate+str(et[x])
                     date=date+str(t[x])
             d={
                 "id":invoice['id'],
                 "date":date,
-                "currency":invoice['currency'],
+                "sdate":sdate,
+                "edate":edate,
+                "currency":invoice['currency'].upper(),
                 "total":invoice['total']
                 
             }
@@ -686,7 +707,8 @@ class EntityResource(ModelResource):
             'live':ALL,
             'user':ALL_WITH_RELATIONS,
         }
-    
+    def get_object_list(self, request): 
+        return super(EntityResource, self).get_object_list(request).filter(user__id=request.user.id)
     def save_m2m(self, bundle):
         for field_name, field_object in self.fields.items():
             if not getattr(field_object, 'is_m2m', False):

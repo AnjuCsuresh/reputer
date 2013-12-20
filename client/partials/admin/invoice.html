@@ -1,12 +1,4 @@
- <ul class="breadcrumb">
-        <li>You are here</li>
-        <li><a href="index.html?lang=en&amp;layout_type=fluid&amp;menu_position=menu-left&amp;style=style-default-menus-dark&amp;sidebar_type=collapsible" class="glyphicons dashboard"><i></i> Reputer</a></li>
-        <li class="divider"><i class="icon-caret-right"></i></li>
-        <li>Pages</li>
-        <li class="divider"><i class="icon-caret-right"></i></li>
-        <li>Invoice</li>
-</ul>
-
+ 
 <div id="pdfTarget">
         <div class="innerAll shop-client-products cart invoice">
         
@@ -29,9 +21,9 @@
                                         </td>
                                         <td class="right">
                                                 <div class="innerL">
-                                                        <h4 class="separator bottom">#12345678 / 22 Jul 2013</h4>
+                                                        <h4 class="separator bottom">{{invoice.date}} </h4>
                                                         <button type="button" data-toggle="print" class="btn btn-default btn-icon glyphicons print hidden-print" onclick="printinvoice()"><i></i> Print invoice</button>
-                                                        <button type="button" data-toggle="button-loading pdf" data-target="#pdfTarget" class="btn btn-primary btn-icon glyphicons download_alt hidden-print"><i></i> Save as PDF</button>
+                                                        <button type="button" data-toggle="button-loading pdf" data-target="#pdfTarget" class="btn btn-primary btn-icon glyphicons download_alt hidden-print" onclick="printinvoice()"><i></i> Save as PDF</button>
                                                 </div>
                                         </td>
                                 </tr>
@@ -84,8 +76,8 @@
                                         
                                         <td>
                                                 <h5>{{line.type}} to {{line.name}}</h5>
-                                                period: <span class="label">{{line.period_start}} To {{line.period_end}}</span>
-                                                interval: <span class="label">{{line.interval}}</span>
+                                                period: <span class="label label-inverse">{{line.period_start}} To {{line.period_end}}</span>
+                                                interval: <span class="label label-inverse">{{line.interval}}</span>
                                         </td>
                                         <td class="center">{{line.quantity}}</td>
                                         <td class="center">{{line.currency}} {{line.planamount}}</td>
@@ -130,9 +122,9 @@
                                                         <td class="right strong" ng-show="invoice.paid==true"><i class="icon-ok"></i></td>
                                                         <td class="right strong" ng-hide="invoice.paid==true"><i class="icon-remove"></i></td>
                                                 </tr>
-                                                <tr class="hidden-print">
+                                                  <!--<tr class="hidden-print">
                                                         <td colspan="2"><button type="submit" class="btn btn-block btn-primary btn-icon glyphicons right_arrow"><i></i>Proceed to Payment</span></td>
-                                                </tr>
+                                                </tr> -->
                                         </tbody>
                                 </table>
                         </div>
