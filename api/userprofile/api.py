@@ -561,7 +561,7 @@ class UserResource(ModelResource):
                     edate=edate+str(et[x])
             d={
                 "totalamount":data["amount"],
-                "currency":data["currency"],
+                "currency":data["currency"].upper(),
                 "name":data["plan"].name,
                 "planamount":data["plan"].amount,
                 "interval":data["plan"].interval,
@@ -574,7 +574,7 @@ class UserResource(ModelResource):
         invoicelist={
             "amount_due":invoice['amount_due'],
             "date":invoice['date'],
-            "currency":invoice['currency'],
+            "currency":invoice['currency'].upper(),
             "paid":invoice['paid'],
             "total":invoice['total'],
             "subtotal":invoice['subtotal'],
@@ -606,7 +606,7 @@ class UserResource(ModelResource):
             d={
                 "id":invoice['id'],
                 "date":date,
-                "currency":invoice['currency'],
+                "currency":invoice['currency'].upper(),
                 "total":invoice['total']
                 
             }
