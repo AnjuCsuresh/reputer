@@ -63,6 +63,7 @@
 				<p class="lead margin-none">Here are the changes that happened in your rating recently across the web</p>
 			</div>
 		</div>
+		 <div  ng-controller="profileTable" ng-init="itemsPerPage = 5">
 		<h3>Profile</h3>
 		<div class="widget-search form-inline">
 			<button type="button" class="btn btn-primary pull-right">Search <i class="icon-search"></i></button>
@@ -89,6 +90,7 @@
 			<!-- Table body -->
 			<tfoot>
                 <td colspan="6">
+                	<button class="btn btn-inverse" ng-click="location.path('/reports/profile')">View More</button>
                     <div class="pagination pull-right">
                         <ul>
                             <li ng-class="{disabled: currentPage == 0}">
@@ -124,9 +126,9 @@
 			
 		</table>
 		<!-- // Table END -->
-
+	</div>
 		<!-- SECOND CONTROLLER FOR Reviews --> 
-		<div ng-controller="changesTable">
+		<div ng-controller="changesTable" ng-init="itemsPerPage = 3">
 			<h3>Changes</h3>
 		<br>
 		<table class="crawltable footable table table-striped table-bordered table-white table-primary">
@@ -149,6 +151,7 @@
 			<!-- Table body -->
 			<tfoot>
                 <td colspan="6">
+                	<button class="btn btn-inverse" ng-click="location.path('/reports/changes')">View More</button>
                     <div class="pagination pull-right">
                         <ul>
                             <li ng-class="{disabled: currentPage == 0}">
@@ -188,7 +191,7 @@
 		</table>
 		</div>
 		<!-- SECOND CONTROLLER FOR CHANGES --> 
-		<div ng-controller="reviewTable">
+		<div ng-controller="reviewTable" ng-init="itemsPerPage = 3">
 			<h3>Review Changes</h3>
 		<br>
 		<table class="crawltable footable table table-striped table-bordered table-white table-primary">
@@ -209,6 +212,7 @@
 			<!-- Table body -->
 			<tfoot>
                 <td colspan="6">
+                	<button class="btn btn-inverse" ng-click="location.path('/reports/review')">View More</button>
                     <div class="pagination pull-right">
                         <ul>
                             <li ng-class="{disabled: currentPage == 0}">
