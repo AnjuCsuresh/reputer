@@ -143,6 +143,8 @@ class ExtendedUserResource(MyResource):
             'username': ALL,
             'user': ALL_WITH_RELATIONS
         }
+    def get_object_list(self, request): 
+        return super(ExtendedUserResource, self).get_object_list(request).filter(user__id=request.user.id)
 class UserResource(ModelResource):
     #extended_re = fields.ToOneField('userprofile.api.ExtendedUserResource','extended_user',full=True,null=True)
     class Meta:

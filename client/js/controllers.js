@@ -150,7 +150,7 @@ angular.module('dashApp.controllers', []).
             });
         }
         else {
-            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                 if(!data.objects[0].active){
                     bootbox.alert("<b><center>Your card has expired<br>So please change credit card details</center></b>", function(result) 
                         {   
@@ -243,7 +243,7 @@ angular.module('dashApp.controllers', []).
         //console.log(userid)
         
        // stripe planchange
-        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
             if(data.objects[0].plan==null){
                 $location.path('/account/plans')
             }
@@ -306,7 +306,7 @@ angular.module('dashApp.controllers', []).
 
                 //stripe plan  
              
-                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                     userdata.customer=data.objects[0].stripe_customer
                     userdata.id=data.objects[0].id
                     userdata.type=data.objects[0].stripe_billing_type
@@ -345,7 +345,7 @@ angular.module('dashApp.controllers', []).
 
                //stripe plan  
                 //console.log(data.user.id)
-                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                     userdata.customer=data.objects[0].stripe_customer
                     userdata.id=data.objects[0].id
                     userdata.plan=data.objects[0].plan
@@ -1320,7 +1320,7 @@ angular.module('dashApp.controllers', []).
         $scope.delete = function (entity) {
             var userdata={}
             // stripe planchange
-            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                 userdata.plan=data.objects[0].plan
                 userdata.username=data.objects[0].user.username
                 //console.log(userdata)
@@ -1388,7 +1388,7 @@ angular.module('dashApp.controllers', []).
                     
                                         $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
                                             //stripe
-                                            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                                            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                                                 userdata.customer=data.objects[0].stripe_customer
                                                 userdata.id=data.objects[0].id
                                                 userdata.plan=data.objects[0].plan
@@ -1442,7 +1442,7 @@ angular.module('dashApp.controllers', []).
                     
                                         $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
                         //stripe
-                                            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                                            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                                                 userdata.customer=data.objects[0].stripe_customer
                                                 userdata.id=data.objects[0].id
                                                 userdata.plan=data.objects[0].plan
@@ -1485,7 +1485,7 @@ angular.module('dashApp.controllers', []).
             }
 
 
-            $http.get(API_URL + 'extended_user/?user__id=' + userid).success(function (data, status, headers, config) {
+            $http.get(API_URL + 'extended_user/?user__id=' + userid,{withCredentials: true}).success(function (data, status, headers, config) {
                 var user = data.objects[0]
                 $scope.message = $scope.levelInfo[user.notification.level]
                 if ($('.increments-slider').size() > 0) {
@@ -1551,7 +1551,7 @@ angular.module('dashApp.controllers', []).
             highlight:""
         }
         var userid = $.cookie('the_cookie');
-        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
             if(data.objects[0].plan==null){
                 $scope.change=false;
                 
@@ -1639,7 +1639,7 @@ angular.module('dashApp.controllers', []).
                 
             }
             else{
-                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                   //console.log(data.objects[0])
                   userdata.email=data.objects[0].user.email
                   userdata.id=data.objects[0].id
@@ -1708,7 +1708,7 @@ angular.module('dashApp.controllers', []).
                   userdata.plan= LGROUP_PLAN_YEARLY 
                 }
             }
-            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                 userdata.customer=data.objects[0].stripe_customer
                 userdata.id=data.objects[0].id
                 userdata.username=data.objects[0].user.username
@@ -1773,7 +1773,7 @@ controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$coo
         
         var userid = $.cookie('the_cookie');
       
-            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                     var data = {
                         customer: data.objects[0].stripe_customer,
                      
@@ -1797,7 +1797,7 @@ controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$coo
 controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
         
         var userid = $.cookie('the_cookie');
-        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+        $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
             var data = {
                         customer: data.objects[0].stripe_customer,
                      
@@ -1820,7 +1820,7 @@ controller('ChangeCardCtrl', function ($scope, $http, $location,$rootScope,$cook
         Stripe.setPublishableKey('pk_test_tK3fFd59fXpheHTemX2eVp7w');
         var userid = $.cookie('the_cookie');
         $scope.card={}
-            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+            $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                     var data = {
                         customer: data.objects[0].stripe_customer,
                      
@@ -1885,7 +1885,7 @@ controller('ChangeCardCtrl', function ($scope, $http, $location,$rootScope,$cook
                 
             }
             else{
-                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json').success(function (data) {
+                $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
                     var d = {
                         customer: data.objects[0].stripe_customer,
                         token: response.id
