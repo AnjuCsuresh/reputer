@@ -171,6 +171,7 @@ angular.module('dashApp.controllers', []).
                         //$.cookie('entity', data.objects[0].id);
                         //PRODUCTION: $http.get(DATA_API_URL+'getscoretrend/'+data.objects[0].id).success(function(data, status, headers, config){
                         $http.get(DATA_API_URL + 'getscoretrend/999', {withCredentials: true}).success(function (data, status, headers, config) {
+                            console.log(data.sentiment)
                             var dataChart = {
                                 "xScale": "time",
                                 "yScale": "linear",
@@ -187,7 +188,7 @@ angular.module('dashApp.controllers', []).
                                     return d3.time.format('%Y-%m-%d').parse(x);
                                 },
                                 "tickFormatX": function (x) {
-                                    return d3.time.format('%A')(x);
+                                    return d3.time.format('%b-%d')(x);
                                 }
                             };
                             var dataChart2 = {
@@ -206,7 +207,7 @@ angular.module('dashApp.controllers', []).
                                     return d3.time.format('%Y-%m-%d').parse(x);
                                 },
                                 "tickFormatX": function (x) {
-                                    return d3.time.format('%A')(x);
+                                    return d3.time.format('%b-%d')(x);
                                 }
                             };
 
@@ -630,7 +631,7 @@ angular.module('dashApp.controllers', []).
                 $scope.entity = data.objects[0]
                 if (data.objects[0].live == true) {
                     //PRODUCTION CODE: $http.get(DATA_API_URL+'getcrawltable/'+id).success(function(data, status, headers, config){
-                    $http.get(DATA_API_URL + 'getcrawltable/' + '999', {withCredentials: true}).success(function (data, status, headers, config) {
+                    $http.get(DATA_API_URL + 'getreviewchanges/' + '999', {withCredentials: true}).success(function (data, status, headers, config) {
                         $scope.items = data.aaData;
                         $scope.predicate = 'Rank';
                         $scope.reverse = false;
@@ -741,7 +742,7 @@ angular.module('dashApp.controllers', []).
                 if (data.objects.length > 0) {
                     $scope.entity = data.objects[0]
                     //PRODUCTION CODE: $http.get(DATA_API_URL+'getcrawltable/'+data.objects[0].id).success(function(data, status, headers, config){
-                    $http.get(DATA_API_URL + 'getcrawltable/' + '999', {withCredentials: true}).success(function (data, status, headers, config) {
+                    $http.get(DATA_API_URL + 'getreviewchanges/' + '999', {withCredentials: true}).success(function (data, status, headers, config) {
                         $scope.items = data.aaData;
                         $scope.predicate = 'Rank';
                         $scope.reverse = false;
