@@ -3,11 +3,11 @@
 #DIR = os.getcwd()
 DEBUG = True
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
-EMAIL_HOST_USER = 'root'
-EMAIL_HOST_PASSWORD = ''
-DEFAULT_FROM_EMAIL = ''
+EMAIL_HOST = 'smtp.mandrillapp.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'manu@quadloops.com'
+EMAIL_HOST_PASSWORD = 'vq3mA7WzhKMJFyfMi5vn8A'
+DEFAULT_FROM_EMAIL = 'manu@quadloops.com'
 
 TEMPLATE_DEBUG = DEBUG
 SOLO_PLAN_MONTHLY="Solomonthly"
