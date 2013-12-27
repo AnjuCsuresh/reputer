@@ -272,7 +272,7 @@ class UserResource(ModelResource):
             #save it into the database
             # send mail
             send_mail('Password reset', ' Your new password is ' +a+ '',
-               'from@example.com', [email],
+               settings.DEFAULT_FROM_EMAIL, [email],
                fail_silently=False)
             
             return self.create_response(request, { 'success': True ,'user':user})

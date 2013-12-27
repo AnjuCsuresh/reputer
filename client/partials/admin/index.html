@@ -136,21 +136,21 @@
 			<!-- Table heading -->
 			<thead>
 					<tr>
-						<th ng-click="sort_by('Rank')">Good/Bad&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('Rank')">Website&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('domain')">New Rating&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('Title')">Old Rating&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('Summary')">New Votes&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('rating')">Old Votes&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('rating')">Status&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('rating')">Movement&nbsp;<i class="icon-sort"></i></th>
+						<th>Good/Bad&nbsp;</th>
+						<th ng-click="sort_by('domain')">Website&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('new_rating')">New Rating&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('old_rating')">Old Rating&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('new_votes')">New Votes&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('old_votes')">Old Votes&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('status')">Status&nbsp;<i class="icon-sort"></i></th>
+						<th>Movement&nbsp;</th>
 					</tr>
 				</thead>	
 			<!-- // Table heading END -->
 			
 			<!-- Table body -->
 			<tfoot>
-                <td colspan="6">
+                <td colspan="8">
                 	<button class="btn btn-inverse" ng-click="location.path('/reports/changes')">View More</button>
                     <div class="pagination pull-right">
                         <ul>
@@ -199,19 +199,22 @@
 			<!-- Table heading -->
 			<thead>
 					<tr>
-						<th ng-click="sort_by('Rank')">Rank&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('domain')">Website&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('Title')">Title&nbsp;<i class="icon-sort"></i></th>
-						<th ng-click="sort_by('Summary')">Summary&nbsp;<i class="icon-sort"></i></th>
+						
+						<th ng-click="sort_by('source')">Website&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('author')">Author&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('review_date')">Date&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
-						<th>Actions</th>
+						<th ng-click="sort_by('review_title')">Title&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('review_text')">Text&nbsp;<i class="icon-sort"></i></th>
+						<th>Type&nbsp;</th>
+						
 					</tr>
 				</thead>	
 			<!-- // Table heading END -->
 			
 			<!-- Table body -->
 			<tfoot>
-                <td colspan="6">
+                <td colspan="8">
                 	<button class="btn btn-inverse" ng-click="location.path('/reports/review')">View More</button>
                     <div class="pagination pull-right">
                         <ul>
@@ -234,12 +237,14 @@
 				
 				<!-- Table row -->
 				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-					<td>{{result.Rank}}</td>
-					<td>{{result.domain}}</td>
-					<td>{{result.Title}}</td>
-					<td>{{result.Summary}}</td>
+					<td><a href="http://{{result.domain}}">{{result.source}}</td>
+					<td><a href="http://{{result.author_url}}">{{result.author}}</a></td>
+					<td>{{result.review_date}}</td>
 					<td>{{result.rating}}</td>
-					<td><button class="btn btn-inverse" ng-click="ignore(result)"> Ignore</button></td>
+					<td>{{result.review_title}}</td>
+					<td>{{result.review_text}}</td>
+					<td style="text-align:center"><i class="icon-minus-sign" style="color:red" ng-show="result.changetype=='Removed'"></i><i style="color:green" class="icon-plus-sign" ng-show="result.changetype==''"></i><i style="color:blue" class="icon-pencil" ng-show="result.changetype==''"></i></td>
+					
 				</tr>
 				<!-- // Table row END -->
 				
