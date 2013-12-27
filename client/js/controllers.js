@@ -120,7 +120,7 @@ angular.module('dashApp.controllers', []).
                             return d3.time.format('%Y-%m-%d').parse(x);
                         },
                         "tickFormatX": function (x) {
-                            return d3.time.format('%A')(x);
+                            return d3.time.format('%b-%d')(x);
                         }
                     };
                     var dataChart2 = {
@@ -139,7 +139,7 @@ angular.module('dashApp.controllers', []).
                             return d3.time.format('%Y-%m-%d').parse(x);
                         },
                         "tickFormatX": function (x) {
-                            return d3.time.format('%A')(x);
+                            return d3.time.format('%b-%d')(x);
                         }
                     };
 
@@ -1369,7 +1369,7 @@ angular.module('dashApp.controllers', []).
                         {
                            if(result){
                                 $timeout(function(){
-                                    $http.delete(API_SERVER_URL + entity.resource_uri).success(function (data) {
+                                    $http.delete(API_SERVER_URL + entity.resource_uri ,{withCredentials: true}).success(function (data) {
                                         if(entity.first_name==null){
                                             $scope.n = notyfy({
                                             text: 'Deleted entity '+entity.business_name,
