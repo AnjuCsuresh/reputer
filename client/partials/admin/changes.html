@@ -7,21 +7,21 @@
                         <!-- Table heading -->
                         <thead>
                                         <tr>
-                                                <th ng-click="sort_by('Rank')">Good/Bad&nbsp;<i class="icon-sort"></i></th>
-                                                <th ng-click="sort_by('Rank')">Website&nbsp;<i class="icon-sort"></i></th>
-                                                <th ng-click="sort_by('domain')">New Rating&nbsp;<i class="icon-sort"></i></th>
-                                                <th ng-click="sort_by('Title')">Old Rating&nbsp;<i class="icon-sort"></i></th>
-                                                <th ng-click="sort_by('Summary')">New Votes&nbsp;<i class="icon-sort"></i></th>
-                                                <th ng-click="sort_by('rating')">Old Votes&nbsp;<i class="icon-sort"></i></th>
-                                                <th ng-click="sort_by('rating')">Status&nbsp;<i class="icon-sort"></i></th>
-                                                <th ng-click="sort_by('rating')">Movement&nbsp;<i class="icon-sort"></i></th>
+                                                <th>Good/Bad&nbsp;</th>
+                                                <th ng-click="sort_by('domain')">Website&nbsp;<i class="icon-sort"></i></th>
+                                                <th ng-click="sort_by('new_rating')">New Rating&nbsp;<i class="icon-sort"></i></th>
+                                                <th ng-click="sort_by('old_rating')">Old Rating&nbsp;<i class="icon-sort"></i></th>
+                                                <th ng-click="sort_by('new_votes')">New Votes&nbsp;<i class="icon-sort"></i></th>
+                                                <th ng-click="sort_by('old_votes')">Old Votes&nbsp;<i class="icon-sort"></i></th>
+                                                <th ng-click="sort_by('status')">Status&nbsp;<i class="icon-sort"></i></th>
+                                                <th>Movement&nbsp;</th>
                                         </tr>
                                 </thead>        
                         <!-- // Table heading END -->
                         
                         <!-- Table body -->
                         <tfoot>
-                <td colspan="6">
+                <td colspan="8">
                     <div class="pagination pull-right">
                         <ul>
                             <li ng-class="{disabled: currentPage == 0}">

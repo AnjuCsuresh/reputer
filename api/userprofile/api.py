@@ -272,7 +272,7 @@ class UserResource(ModelResource):
             #save it into the database
             # send mail
             send_mail('Password reset', ' Your new password is ' +a+ '',
-               'from@example.com', [email],
+               settings.DEFAULT_FROM_EMAIL, [email],
                fail_silently=False)
             
             return self.create_response(request, { 'success': True ,'user':user})
@@ -463,14 +463,14 @@ class UserResource(ModelResource):
         username= data.get('username', '')
         plan = data.get('plan', '')
         u = User.objects.get(username=username)
-        l=len(Entity.objects.filter(user=u,alive="true"))-1
+        l=len(Entity.objects.filter(user=u,alive="true"))
         print l
         if plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
-            if l<settings.LARGEGROUP_MIN:
+            if l==settings.LARGEGROUP_MIN:
                 return self.create_response(request, { 'success': True ,'data':"Group"})
             
         elif plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
-            if l<settings.GROUP_MIN:
+            if l==settings.GROUP_MIN:
                 return self.create_response(request, { 'success': True ,'data':"Solo"})
         return self.create_response(request, { 'success': True ,'data':"nochange"})
 
@@ -490,29 +490,37 @@ class UserResource(ModelResource):
         extendeduser=ExtendedUser.objects.get(id=id)
         print cu.subscription.plan.name
         if plan==settings.GROUP_PLAN_MONTHLY or plan==settings.GROUP_PLAN_YEARLY:
-            if quantity>=settings.GROUP_MIN:
-                cu.plan=plan
-                extendeduser.plan=plan
-            else:
+            if quantity==settings.GROUP_MIN-1:
                 if type=="monthly":
                     cu.plan=settings.SOLO_PLAN_MONTHLY
                     extendeduser.plan=settings.SOLO_PLAN_MONTHLY
                 else:
                     cu.plan=settings.SOLO_PLAN_YEARLY
                     extendeduser.plan=settings.SOLO_PLAN_YEARLY
-            
-        elif plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
-            if quantity>=settings.LARGEGROUP_MIN:
+                cu.quantity=quantity
+
+            else:
                 cu.plan=plan
                 extendeduser.plan=plan
-            else:
+                cu.quantity=quantity
+
+        elif plan==settings.LGROUP_PLAN_MONTHLY or plan==settings.LGROUP_PLAN_YEARLY:
+            if quantity==settings.LARGEGROUP_MIN-1:
                 if type=="monthly":
                     cu.plan=settings.GROUP_PLAN_MONTHLY
                     extendeduser.plan=settings.GROUP_PLAN_MONTHLY
                 else:
                     cu.plan=settings.GROUP_PLAN_YEARLY
                     extendeduser.plan=settings.GROUP_PLAN_YEARLY
-        cu.quantity=quantity
+                cu.quantity=quantity
+            else:
+                cu.plan=plan
+                extendeduser.plan=plan
+                if quantity<=settings.LARGEGROUP_MIN:
+                    cu.quantity=settings.LARGEGROUP_MIN
+                else:
+                    cu.quantity=quantity
+        
         cu.save()
         extendeduser.save()
         
