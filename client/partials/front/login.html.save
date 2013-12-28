@@ -45,7 +45,7 @@
                                         </form>
                                         <!-- // Form END -->
                                         <div >
-                                        <div></span><span style="color:red" ng-show="error"><br>{{error}}</span></div>
+                                        <div cla><span>Please enter your email and password ...</span><span style="color:red" ng-show="error">{{error}}</span></div>
                                 </div>
                                 </div>
                                 

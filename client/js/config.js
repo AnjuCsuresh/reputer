@@ -4,7 +4,7 @@
 /*
 What are the links to APIs ? 
 ---------------------------
-Production API https://app.reputer.co/api/v1/
+Production API https://appdev.reputer.co:444/api/v1/
 Development API http://localhost:8000/api/v1/
 
 What does each variable below mean? 
@@ -26,14 +26,14 @@ config = {
 		WEBSITE_URL : 'http://localhost:8888/'
 	},
 	production: {
-		API_URL : 'https://app.reputer.co/api/v1/',
-		API_SERVER_URL : 'https://app.reputer.co',
-		DATA_API_URL: 'https://app.reputer.co/data/',
-		WEBSITE_URL : 'https://app.reputer.co'
+		API_URL : 'https://appdev.reputer.co:444/api/v1/',
+		API_SERVER_URL : 'https://appdev.reputer.co:444',
+		DATA_API_URL: 'https://appdev.reputer.co:444/data/',
+		WEBSITE_URL : 'https://appdev.reputer.co:444'
 	}
 }
 //Set mode to development / production
-var MODE = 'development'
+var MODE = 'production'
 
 var API_URL = config[MODE]['API_URL']
 var DATA_API_URL = config[MODE]['DATA_API_URL']
