@@ -193,7 +193,7 @@
 			<thead>
 					<tr>
 						
-						<th ng-click="sort_by('source')">Website&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('source')">Logos&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('author')">Author&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('review_date')">Date&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
@@ -230,7 +230,7 @@
 				
 				<!-- Table row -->
 				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-					<td><a href="http://{{result.domain}}">{{result.source}}</td>
+					<td><a href="http://{{result.domain}}"><img src="http://www.reputer.co/new/img/logos/{{result.source}}.png"></img></td>
 					<td><a href="http://{{result.author_url}}">{{result.author}}</a></td>
 					<td>{{result.review_date}}</td>
 					<td>{{result.rating}}</td>
