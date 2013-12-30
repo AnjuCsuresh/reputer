@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from django.contrib.auth.models import User
 from tastypie.resources import ModelResource,ALL,ALL_WITH_RELATIONS
 from tastypie.authorization import Authorization,DjangoAuthorization
@@ -552,7 +552,7 @@ class UserResource(ModelResource):
         data = self.deserialize(request, request.body, format=request.META.get('CONTENT_TYPE', 'application/json'))
         invoice_id = data.get('invoice_id', '')
         stripe.api_key = settings.STRIPE_API_KEY
-        
+        currencies = {'USD': '$', 'AUD': '$', 'EUR': '€','BWP':'Pu','CAD':'$','GBP':'£','INR':'₹','NGN':'₦','ZAR':'R','ZWD':'Z$','JPY':'￥'}
         lines=[]
         #invoice=stripe.Invoice.retrieve("in_1036LZ21eybl4Q7DrQ2IL53h")
         invoice=stripe.Invoice.retrieve(invoice_id)
@@ -572,7 +572,7 @@ class UserResource(ModelResource):
                     edate=edate+str(et[x])
             d={
                 "totalamount":data["amount"],
-                "currency":data["currency"].upper(),
+                "currency":currencies[data["currency"].upper()],
                 "name":data["plan"].name,
                 "planamount":data["plan"].amount,
                 "interval":data["plan"].interval,
@@ -593,7 +593,7 @@ class UserResource(ModelResource):
         invoicelist={
             "amount_due":invoice['amount_due'],
             "date":date,
-            "currency":invoice['currency'].upper(),
+            "currency":currencies[invoice['currency'].upper()],
             "paid":invoice['paid'],
             "total":invoice['total'],
             "subtotal":invoice['subtotal'],
@@ -611,6 +611,7 @@ class UserResource(ModelResource):
         stripe.api_key = settings.STRIPE_API_KEY
         #a=stripe.Invoice.all(customer="cus_36LYppXykW2KGf")
         a=stripe.Invoice.all(customer=customer,count=50)
+        currencies = {'USD': '$', 'AUD': '$', 'EUR': '€','BWP':'Pu','CAD':'$','GBP':'£','INR':'₹','NGN':'₦','ZAR':'R','ZWD':'Z$','JPY':'￥'}
         invoices=a.data
         invoicelist=[]
         for invoice in invoices:
@@ -637,7 +638,7 @@ class UserResource(ModelResource):
                 "date":date,
                 "sdate":sdate,
                 "edate":edate,
-                "currency":invoice['currency'].upper(),
+                "currency":currencies[invoice['currency'].upper()],
                 "total":invoice['total']
                 
             }
