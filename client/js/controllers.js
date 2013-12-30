@@ -125,7 +125,7 @@ angular.module('dashApp.controllers', []).
                             return d3.time.format('%Y-%m-%d').parse(x);
                         },
                         "tickFormatX": function (x) {
-                            return d3.time.format('%b-%d')(x);
+                            return d3.time.format('%b %d')(x);
                         }
                     };
                     var dataChart2 = {
@@ -144,7 +144,7 @@ angular.module('dashApp.controllers', []).
                             return d3.time.format('%Y-%m-%d').parse(x);
                         },
                         "tickFormatX": function (x) {
-                            return d3.time.format('%b-%d')(x);
+                            return d3.time.format('%b %d')(x);
                         }
                     };
 
@@ -193,7 +193,7 @@ angular.module('dashApp.controllers', []).
                                     return d3.time.format('%Y-%m-%d').parse(x);
                                 },
                                 "tickFormatX": function (x) {
-                                    return d3.time.format('%b-%d')(x);
+                                    return d3.time.format('%b %d')(x);
                                 }
                             };
                             var dataChart2 = {
@@ -212,7 +212,7 @@ angular.module('dashApp.controllers', []).
                                     return d3.time.format('%Y-%m-%d').parse(x);
                                 },
                                 "tickFormatX": function (x) {
-                                    return d3.time.format('%b-%d')(x);
+                                    return d3.time.format('%b %d')(x);
                                 }
                             };
 
