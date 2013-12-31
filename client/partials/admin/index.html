@@ -2,9 +2,14 @@
 <h1>&nbsp;&nbsp;{{entity.business_name}}{{entity.first_name}} {{entity.last_name}}</h1>
 <br>
 <!-- Stats Widgets -->
+<div class="widget widget-heading-simple widget-body-gray">
+			<div class="widget-body center">
+				<p class="lead margin-none" style="color:black">"RONALD S. PERLMAN MD, Your overall Search Score is 82 out of a Top score of 100 You have 22 reviews or ratings Great news!! Your Search Score has improved by 2 points since last time."</p>
+			</div>
+		</div>
 <div class="row-fluid row-merge border-top">
 
-	<div class="span3">
+	<div class="span4">
 		<div class="innerAll padding-bottom-none-phone">
 			<a href="" class="widget-stats widget-stats-default widget-stats-4">
 				<span class="txt">Ratings</span>
@@ -15,7 +20,7 @@
 			</a>
 		</div>
 	</div>
-	<div class="span3">
+	<div class="span4">
 		<div class="innerAll padding-bottom-none-phone">
 			<a href="" class="widget-stats widget-stats-primary widget-stats-4">
 				<span class="txt">Reviews</span>
@@ -26,7 +31,7 @@
 			</a>
 		</div>
 	</div>
-	<div class="span3">
+	<div class="span4">
 		<div class="innerAll padding-bottom-none-phone">
 			<a href="" class="widget-stats widget-stats-gray widget-stats-4">
 				<span class="txt">Sentiment Score</span>
@@ -37,14 +42,7 @@
 			</a>
 		</div>
 	</div>
-	<div class="span3">
-		<div class="innerAll padding-bottom-none-phone">
-			<a href="" class="widget-stats widget-stats-2">
-				<span class="count">30</span>
-				<span class="txt">Bookings</span>
-			</a>
-		</div>
-	</div>
+	
 </div>
 <div class="row-fluid">
 	<div class="span6">
@@ -200,7 +198,7 @@
 			<thead>
 					<tr>
 						
-						<th ng-click="sort_by('source')">Website&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('source')">Logos&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('author')">Author&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('review_date')">Date&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
@@ -237,13 +235,13 @@
 				
 				<!-- Table row -->
 				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-					<td><a href="http://{{result.domain}}">{{result.source}}</td>
+					<td><a href="http://{{result.domain}}"><img src="http://www.reputer.co/new/img/logos/{{result.source}}.png"></img></td>
 					<td><a href="http://{{result.author_url}}">{{result.author}}</a></td>
 					<td>{{result.review_date}}</td>
 					<td>{{result.rating}}</td>
 					<td>{{result.review_title}}</td>
 					<td>{{result.review_text}}</td>
-					<td style="text-align:center"><i class="icon-minus-sign" style="color:red" ng-show="result.changetype=='Removed'"></i><i style="color:green" class="icon-plus-sign" ng-show="result.changetype==''"></i><i style="color:blue" class="icon-pencil" ng-show="result.changetype==''"></i></td>
+					<td style="text-align:center"><span class="label label-success">{{result.changetype}}</span></td>
 					
 				</tr>
 				<!-- // Table row END -->

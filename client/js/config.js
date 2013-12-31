@@ -33,7 +33,7 @@ config = {
 	}
 }
 //Set mode to development / production
-var MODE = 'production'
+var MODE = 'development'
 
 var API_URL = config[MODE]['API_URL']
 var DATA_API_URL = config[MODE]['DATA_API_URL']
