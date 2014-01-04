@@ -1099,6 +1099,7 @@ angular.module('dashApp.controllers', []).
         $http.get(API_URL + 'Entity/?id=' + id + '&user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
             if (data.objects.length > 0) {
                 $scope.entity = data.objects[0]
+                $scope.entity.profession=data.objects[0].profession.name
                 if (data.objects[0].location.length > 0) {
                     $scope.loctn = data.objects[0].location[0]
                 }
@@ -1134,9 +1135,14 @@ angular.module('dashApp.controllers', []).
         })
         //edit basic entity details
         $scope.edit_person = function (entity) {
+            for (var x in $scope.professions){
+                if($scope.professions[x].name==entity.profession){
+                    entity.profession=$scope.professions[x]
+                }
+            }
             if (entity.profession.name != 'Other') {
                 entity.other_profession = "";
-            }
+            } 
             $http.put(API_URL + 'Entity/' + entity.id + '/', entity).success(function (data, status, headers, config) {
                 $scope.n = notyfy({
                     text: 'Changes Saved for ' + data.first_name,
@@ -1145,6 +1151,7 @@ angular.module('dashApp.controllers', []).
                     closeWith: ['hover']
                 });
                 $scope.entity = data
+                $scope.entity.profession=data.profession.name
             })
         }
 
