@@ -246,3 +246,8 @@ top: 20%;
       
     }
 }
+@media print {
+  .topnav{
+    display: none;
+  }
+}

@@ -577,7 +577,7 @@ class UserResource(ModelResource):
                 "planamount":data["plan"].amount,
                 "interval":data["plan"].interval,
                 "quantity":data["quantity"],
-                "type":data["type"],
+                "type":data["type"].capitalize(),
                 "period_start":sdate,
                 "period_end":edate
             }

@@ -8,22 +8,15 @@
                                 <tr>
                                         <td style="width: 58%;">
                                                 <div class="media">
-                                                        <img class="media-object pull-left thumb" src="http://1.s3.envato.com/files/50438174/tf-avatar.jpg" alt="Logo" />
-                                                        <div class="media-body hidden-print">
-                                                                <div class="alert alert-primary">
-                                                                        <strong>Note:</strong><br/>
-                                                                        This page is optimized for print. Try print the invoice and check out the preview.
-                                                                        For example, this note will not be visible.
-                                                                </div>
-                                                                <div class="separator bottom"></div>
-                                                        </div>
+                                                        <img class="media-object pull-left thumb" src="/img/reputer.png" alt="Logo" style="height:100px"/>
+                                                        
                                                 </div>
                                         </td>
                                         <td class="right">
                                                 <div class="innerL">
                                                         <h4 class="separator bottom">{{invoice.date}} </h4>
-                                                        <button type="button" data-toggle="print" class="btn btn-default btn-icon glyphicons print hidden-print" onclick="printinvoice()"><i></i> Print invoice</button>
-                                                        <button type="button" data-toggle="button-loading pdf" data-target="#pdfTarget" class="btn btn-primary btn-icon glyphicons download_alt hidden-print" onclick="printinvoice()"><i></i> Save as PDF</button>
+                                                        <button type="button" data-toggle="print" class="btn btn-primary btn-icon glyphicons print hidden-print" onclick="printinvoice()"><i></i> Print invoice</button>
+                                                        
                                                 </div>
                                         </td>
                                 </tr>
@@ -37,7 +30,7 @@
                                         <tr>
                                                 <td style="width: 50%;">
                                                         <p class="lead">Company information</p>
-                                                        <h2>Apple Inc.</h2>
+                                                        <h2>Reputer</h2>
                                                         <address class="margin-none">
                                                                 <strong>1 Infinite Loop</strong><br/>
                                                                 Cupertino, CA 95014<br/>
@@ -62,8 +55,8 @@
                                 <tr>
                                        
                                         <th></th>
-                                        <th style="width: 50px;">Qty</th>
-                                        <th style="width: 80px;">Price/Qty</th>
+                                        <th style="width: 117px;">Number of Entities</th>
+                                        <th style="width: 80px;">Price/Entity</th>
                                         <th style="width: 80px;">Total price</th>
                                         
                                         
@@ -76,8 +69,8 @@
                                         
                                         <td>
                                                 <h5>{{line.type}} to {{line.name}}</h5>
-                                                period: <span class="label label-inverse">{{line.period_start}} To {{line.period_end}}</span>
-                                                interval: <span class="label label-inverse">{{line.interval}}</span>
+                                                <b>Period : {{line.period_start}} to {{line.period_end}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <b>Interval : {{line.interval}}</b>
                                         </td>
                                         <td class="center">{{line.quantity}}</td>
                                         <td class="center">{{line.currency}}{{line.planamount}}</td>
