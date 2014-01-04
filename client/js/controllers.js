@@ -1576,18 +1576,21 @@ angular.module('dashApp.controllers', []).
                     oldplan="Solo"
                     $scope.solo.select="Selected"
                     $scope.solo.highlight="highlight"
+                    $( "#ct1" ).addClass( "cta-xlarge" );
                }
                else if(data.objects[0].plan==GROUP_PLAN_MONTHLY ||data.objects[0].plan==GROUP_PLAN_YEARLY){
                     $scope.plan="Group"
                     oldplan="Group"
                     $scope.group.select="Selected"
                     $scope.group.highlight="highlight"
+                    $( "#ct2" ).addClass( "cta-xlarge" );
                }
                else{
                     $scope.plan="Large Group"
                     oldplan="Large Group"
                     $scope.largegroup.select="Selected"
                     $scope.largegroup.highlight="highlight"
+                    $( "#ct3" ).addClass( "cta-xlarge" );
                }
                //console.log(data.objects[0].stripe_billing_type)
                $scope.type=data.objects[0].stripe_billing_type
@@ -1600,6 +1603,9 @@ angular.module('dashApp.controllers', []).
         $scope.select=function(data){
             quantity=data.quantity
             if(data.quantity==1){
+                $( "#ct1" ).addClass( "cta-xlarge" );
+                $( "#ct2" ).removeClass( "cta-xlarge" );
+                $( "#ct3" ).removeClass( "cta-xlarge" );
                 $scope.plan="Solo"
                 $scope.solo.select="Selected"
                 $scope.group.select="Select"
@@ -1609,6 +1615,9 @@ angular.module('dashApp.controllers', []).
                 $scope.largegroup.highlight=""
             }
             else if(data.quantity==2){
+                $( "#ct2" ).addClass( "cta-xlarge" );
+                $( "#ct1" ).removeClass( "cta-xlarge" );
+                $( "#ct3" ).removeClass( "cta-xlarge" );
                 $scope.plan="Group"
                 $scope.solo.select="Select"
                 $scope.group.select="Selected"
@@ -1618,6 +1627,9 @@ angular.module('dashApp.controllers', []).
                 $scope.largegroup.highlight=""
             }
             else{
+                $( "#ct3" ).addClass( "cta-xlarge" );
+                $( "#ct1" ).removeClass( "cta-xlarge" );
+                $( "#ct2" ).removeClass( "cta-xlarge" );
                 $scope.plan="Large Group"
                 $scope.solo.select="Select"
                 $scope.group.select="Select"
