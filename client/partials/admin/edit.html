@@ -573,7 +573,7 @@
 													<div class="control-group">
 														<label class="control-label">Profession</label>
 														<div class="controls">
-															<select ng-model="entity.profession" ng-options="p.name for p in professions" class="span5" name="" id="" width="1000" height="500">
+															<select ng-model="entity.profession" ng-options="p.name as p.name for p in professions" class="span5" width="1000" height="500">
 															</select>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Profession is mandatory"><i></i></span>
 														</div>

@@ -1801,7 +1801,7 @@ controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$coo
 }).
 
 controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
-        
+        $scope.error=false
         var userid = $.cookie('the_cookie');
         $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
             var data = {
@@ -1811,8 +1811,13 @@ controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies
             $http.post(API_URL + 'user/events/',data, {withCredentials: true}).success(function (data, status, headers, config) {
                         if (status == '200') {
                        
-                            console.log(data)
-                            $scope.events=data.data
+                            console.log(data.data.length)
+                            if(data.data.length>0){
+                                $scope.events=data.data
+                            }
+                            else{
+                                $scope.error=true
+                            }
 
                         }
                         else {

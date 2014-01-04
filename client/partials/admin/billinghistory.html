@@ -1,4 +1,4 @@
-		<!-- Top navbar END -->
+<div ng-hide="error">		<!-- Top navbar END -->
 <div class="heading-buttons">
 	<h1>Billing History<span></span></h1>
 	
@@ -11,7 +11,7 @@
 	<!-- Widget -->
 	
 		
-	<h5 class="text-uppercase strong separator bottom margin-none">Events</h5>
+	<h5 class="text-uppercase separator bottom margin-none"> This page will show all the billing related changes that happen to your account</h5>
 	<!-- Table -->
 	<table class="footable table table-striped table-bordered table-white table-primary ">
 	
@@ -19,7 +19,7 @@
 		<thead class="center">
 			<tr>
 				<th data-class="expand">Events</th>
-				<th class="center" style="width: 10%;"></th>
+				<th class="center" style="width: 10%;">Date and Time</th>
 				
 			</tr>
 		</thead>
@@ -44,13 +44,20 @@
 	
 
 	
-	<p class="separator text-center"><i class="icon-table icon-3x"></i></p>
+	
 	<div class="separator bottom"></div>
 	
 
 	
 </div>	
 	
-		
-		</div>
+</div>
+<div class="not_entity center" style="height:50%" ng-show="error">
+	<h3 class="entity_add_h1 center">&nbsp;&nbsp;
+		<i style="font-size:3em;display:block" class="icon-meh"></i>
+		<br> There are no billing history related events at this time.
+		<br><br>
+	<span class="thank" >Thank you.</span>
+</h3>
+</div>
 		<!-- // Content END -->
