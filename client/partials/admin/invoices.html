@@ -9,7 +9,7 @@
 			
 			<!-- Widget heading -->
 			<div class="widget-head">
-				<h4 class="heading glyphicons fire"><i></i> Invoices</h4>
+				<h4 class="heading glyphicons file"><i></i> Invoices</h4>
 			</div>
 			<!-- // Widget heading END -->
 
@@ -18,7 +18,7 @@
 				<!-- Table -->
 				<table class="table table-condensed table-vertical-center table-thead-simple">
 					<thead>
-						<tr>
+						<tr style="font-size:17px">
 							
 							<th>Period</th>
 							<th class="center">Date</th>
@@ -31,11 +31,11 @@
 						<!-- Item -->
 						<tr class="selectable" ng-repeat="invoice in invoices">
 							
-							<td class="important"><span class="label label-inverse">{{invoice.sdate}}</span> To <span class="label label-inverse">{{invoice.edate}}</span></td>
-							<td class="center"><span class="label label-primary">{{invoice.date}}</span></td>
-							<td class="center">{{invoice.currency}}{{invoice.total}}</td>
+							<td class="important"><span class="label label-inverse center"style="width:70px;">{{invoice.sdate}}</span> to <span class="label label-inverse center" style="width:70px;">{{invoice.edate}}</span></td>
+							<td class="center"><b><span class="label label-inverse" style="width:70px;">{{invoice.date}}</span></td>
+							<td class="center"><b>{{invoice.currency}}{{invoice.total}}<b></td>
 							<td class="right actions">
-								<a class="btn-action glyphicons eye_open btn-default" ng-click="location.path('/invoice/'+invoice.id)"><i></i></a>
+								<a class="btn btn-success" ng-click="location.path('/invoice/'+invoice.id)">View</a>
 								
 							</td>
 						</tr>
