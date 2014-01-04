@@ -556,7 +556,9 @@ class UserResource(ModelResource):
         lines=[]
         #invoice=stripe.Invoice.retrieve("in_1036LZ21eybl4Q7DrQ2IL53h")
         invoice=stripe.Invoice.retrieve(invoice_id)
+        
         for data in invoice.lines.data:
+
             a=datetime.datetime.fromtimestamp(data["period"].start)
             b=datetime.datetime.fromtimestamp(data["period"].end)
             st = a.timetuple()
@@ -582,6 +584,7 @@ class UserResource(ModelResource):
                 "period_end":edate
             }
             lines.append(d)
+            
         c=datetime.datetime.fromtimestamp(invoice['date'])
         t = c.timetuple()
         date=""
