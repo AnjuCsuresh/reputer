@@ -35,6 +35,14 @@ def webhook(request):
                 event.display_text="Updated a "+event_json['data']['object']['type']+" ending in "+event_json['data']['object']['last4']
             elif event_json['type']=="invoiceitem.updated":
                 event.display_text="Your invoice item was invoiced"
+            elif event_json['type']=="invoice.updated":
+                event.display_text="Your invoice has changed"
+            elif event_json['type']=="customer.subscription.trial_will_end":
+                event.display_text="Trial on the "+event_json['data']['object']['plan']['name']+" plan will end in 3 days"
+            elif event_json['type']=="invoiceitem.created":
+                event.display_text="A proration adjustment for "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['amount'])+" was created for you"
+            elif event_json['type']=="charge.succeeded":
+                event.display_text="You were charged "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['amount'])
             elif event_json['type']=="customer.subscription.created":
                 event.display_text="Subscribed to the "+event_json['data']['object']['plan']['name']+" plan"
             elif event_json['type']=="charge.failed":

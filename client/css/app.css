@@ -246,3 +246,12 @@ top: 20%;
       
     }
 }
+@media print {
+  .topnav{
+    display: none;
+  }
+}
+.cta-xlarge{
+  padding: 9px;
+font-size: 20px;
+}

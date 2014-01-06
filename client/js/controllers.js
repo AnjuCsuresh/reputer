@@ -1099,6 +1099,7 @@ angular.module('dashApp.controllers', []).
         $http.get(API_URL + 'Entity/?id=' + id + '&user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
             if (data.objects.length > 0) {
                 $scope.entity = data.objects[0]
+                $scope.entity.profession=data.objects[0].profession.name
                 if (data.objects[0].location.length > 0) {
                     $scope.loctn = data.objects[0].location[0]
                 }
@@ -1134,9 +1135,14 @@ angular.module('dashApp.controllers', []).
         })
         //edit basic entity details
         $scope.edit_person = function (entity) {
+            for (var x in $scope.professions){
+                if($scope.professions[x].name==entity.profession){
+                    entity.profession=$scope.professions[x]
+                }
+            }
             if (entity.profession.name != 'Other') {
                 entity.other_profession = "";
-            }
+            } 
             $http.put(API_URL + 'Entity/' + entity.id + '/', entity).success(function (data, status, headers, config) {
                 $scope.n = notyfy({
                     text: 'Changes Saved for ' + data.first_name,
@@ -1145,6 +1151,7 @@ angular.module('dashApp.controllers', []).
                     closeWith: ['hover']
                 });
                 $scope.entity = data
+                $scope.entity.profession=data.profession.name
             })
         }
 
@@ -1569,18 +1576,21 @@ angular.module('dashApp.controllers', []).
                     oldplan="Solo"
                     $scope.solo.select="Selected"
                     $scope.solo.highlight="highlight"
+                    $( "#ct1" ).addClass( "cta-xlarge" );
                }
                else if(data.objects[0].plan==GROUP_PLAN_MONTHLY ||data.objects[0].plan==GROUP_PLAN_YEARLY){
                     $scope.plan="Group"
                     oldplan="Group"
                     $scope.group.select="Selected"
                     $scope.group.highlight="highlight"
+                    $( "#ct2" ).addClass( "cta-xlarge" );
                }
                else{
                     $scope.plan="Large Group"
                     oldplan="Large Group"
                     $scope.largegroup.select="Selected"
                     $scope.largegroup.highlight="highlight"
+                    $( "#ct3" ).addClass( "cta-xlarge" );
                }
                //console.log(data.objects[0].stripe_billing_type)
                $scope.type=data.objects[0].stripe_billing_type
@@ -1593,6 +1603,9 @@ angular.module('dashApp.controllers', []).
         $scope.select=function(data){
             quantity=data.quantity
             if(data.quantity==1){
+                $( "#ct1" ).addClass( "cta-xlarge" );
+                $( "#ct2" ).removeClass( "cta-xlarge" );
+                $( "#ct3" ).removeClass( "cta-xlarge" );
                 $scope.plan="Solo"
                 $scope.solo.select="Selected"
                 $scope.group.select="Select"
@@ -1602,6 +1615,9 @@ angular.module('dashApp.controllers', []).
                 $scope.largegroup.highlight=""
             }
             else if(data.quantity==2){
+                $( "#ct2" ).addClass( "cta-xlarge" );
+                $( "#ct1" ).removeClass( "cta-xlarge" );
+                $( "#ct3" ).removeClass( "cta-xlarge" );
                 $scope.plan="Group"
                 $scope.solo.select="Select"
                 $scope.group.select="Selected"
@@ -1611,6 +1627,9 @@ angular.module('dashApp.controllers', []).
                 $scope.largegroup.highlight=""
             }
             else{
+                $( "#ct3" ).addClass( "cta-xlarge" );
+                $( "#ct1" ).removeClass( "cta-xlarge" );
+                $( "#ct2" ).removeClass( "cta-xlarge" );
                 $scope.plan="Large Group"
                 $scope.solo.select="Select"
                 $scope.group.select="Select"
@@ -1801,7 +1820,7 @@ controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$coo
 }).
 
 controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
-        
+        $scope.error=false
         var userid = $.cookie('the_cookie');
         $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
             var data = {
@@ -1811,8 +1830,13 @@ controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies
             $http.post(API_URL + 'user/events/',data, {withCredentials: true}).success(function (data, status, headers, config) {
                         if (status == '200') {
                        
-                            console.log(data)
-                            $scope.events=data.data
+                            console.log(data.data.length)
+                            if(data.data.length>0){
+                                $scope.events=data.data
+                            }
+                            else{
+                                $scope.error=true
+                            }
 
                         }
                         else {
