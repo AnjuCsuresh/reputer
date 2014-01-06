@@ -572,17 +572,28 @@ class UserResource(ModelResource):
                 else:
                     sdate=sdate+str(st[x])
                     edate=edate+str(et[x])
-            d={
-                "totalamount":data["amount"],
-                "currency":currencies[data["currency"].upper()],
-                "name":data["plan"].name,
-                "planamount":data["plan"].amount,
-                "interval":data["plan"].interval,
-                "quantity":data["quantity"],
-                "type":data["type"].capitalize(),
-                "period_start":sdate,
-                "period_end":edate
-            }
+            if data["plan"]!=None:
+                d={
+                    "totalamount":data["amount"],
+                    "currency":currencies[data["currency"].upper()],
+                    "name":data["plan"].name,
+                    "planamount":data["plan"].amount,
+                    "interval":data["plan"].interval,
+                    "quantity":data["quantity"],
+                    "type":data["type"].capitalize(),
+                    "description":"None",
+                    "period_start":sdate,
+                    "period_end":edate
+                }
+            else:
+                d={
+                    "totalamount":data["amount"],
+                    "currency":currencies[data["currency"].upper()],
+                    "description":data["description"],
+                    "period_start":sdate,
+                    "period_end":edate
+                }
+
             lines.append(d)
             
         c=datetime.datetime.fromtimestamp(invoice['date'])

@@ -45,6 +45,10 @@ def webhook(request):
                 event.display_text="You were charged "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['amount'])
             elif event_json['type']=="customer.subscription.created":
                 event.display_text="Subscribed to the "+event_json['data']['object']['plan']['name']+" plan"
+            elif event_json['type']=="customer.subscription.deleted":
+                event.display_text="Subscribed to the "+event_json['data']['object']['plan']['name']+" was cancelled"
+            elif event_json['type']=="invoice.payment_failed":
+                event.display_text="Your invoice for "+event_json['data']['object']['currency']+" "+str(event_json['data']['object']['total'])+" failed payment"
             elif event_json['type']=="charge.failed":
                 event.display_text="Your card has expired"
                 extendeduser = ExtendedUser.objects.get(stripe_customer=event_json['data']['object']['customer'])

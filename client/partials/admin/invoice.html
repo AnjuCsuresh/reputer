@@ -67,13 +67,18 @@
                                                                 <!-- Cart item -->
                                 <tr ng-repeat="line in lines">
                                         
-                                        <td>
+                                        <td ng-show="line.description=='None'">
                                                 <h5>{{line.type}} to {{line.name}}</h5>
                                                 <b>Period : {{line.period_start}} to {{line.period_end}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <b>Interval : {{line.interval}}</b>
                                         </td>
+                                        <td ng-hide="line.description=='None'">
+                                                <h5>{{line.description}}</h5>
+                                                
+                                        </td>
                                         <td class="center">{{line.quantity}}</td>
-                                        <td class="center">{{line.currency}}{{line.planamount}}</td>
+                                        <td class="center" ng-show="line.description=='None'">{{line.currency}}{{line.planamount}}</td>
+                                        <td ng-hide="line.description=='None'"></td>
                                         <td class="center">{{line.currency}}{{line.totalamount}}</td>
                                         
                                 </tr>
