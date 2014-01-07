@@ -7,14 +7,12 @@
                         <!-- Table heading -->
                         <thead>
                                         <tr>
-                                            <th ng-click="sort_by('source')">Logos&nbsp;<i class="icon-sort"></i></th>
+                                            <th ng-click="sort_by('source')" width="8%">Logos&nbsp;<i class="icon-sort"></i></th>
+                                            <th ng-click="sort_by('review_text')">Review&nbsp;<i class="icon-sort"></i></th>
+                                            <th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
                                             <th ng-click="sort_by('author')">Author&nbsp;<i class="icon-sort"></i></th>
                                             <th ng-click="sort_by('review_date')">Date&nbsp;<i class="icon-sort"></i></th>
-                                            <th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
                                             <th ng-click="sort_by('review_title')">Title&nbsp;<i class="icon-sort"></i></th>
-                                            <th ng-click="sort_by('review_text')">Text&nbsp;<i class="icon-sort"></i></th>
-                                            <th>Type&nbsp;</th>
-                                            
                                         </tr>
                                 </thead>        
                         <!-- // Table heading END -->
@@ -43,14 +41,12 @@
                                 
                                 <!-- Table row -->
                                 <tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-                                        <td><a href="http://{{result.domain}}"><img src="http://www.reputer.co/new/img/logos/{{result.source}}.png"></img></td>
+                                        <td><span class="label label-success pull-right">{{result.changetype}}</span><a href="{{result.URL}}"><img src="http://www.reputer.co/new/img/logos/{{result.source}}.png"style="height: 50px;width: 100px;"></img></td>
+                                        <td>{{result.review_text}}</td>
+                                        <td>{{result.rating}}</td>
                                         <td><a href="http://{{result.author_url}}">{{result.author}}</a></td>
                                         <td>{{result.review_date}}</td>
-                                        <td>{{result.rating}}</td>
                                         <td>{{result.review_title}}</td>
-                                        <td>{{result.review_text}}</td>
-                                        <td style="text-align:center"><span class="label label-success">{{result.changetype}}</span></td>
-                                        
                                 </tr>
                                 <!-- // Table row END -->
                                 
