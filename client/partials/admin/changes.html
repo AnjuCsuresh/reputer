@@ -1,6 +1,12 @@
 <div class="innerLR innerT">
 <div ng-init="itemsPerPage = 15">
-                        <h3>Changes</h3>
+                        <h3>Online Profile Changes</h3>
+                        <div class="widget-search form-inline">
+            <button type="button" class="btn btn-primary pull-right">Search <i class="icon-search"></i></button>
+            <div class="overflow-hidden">
+                <input type="text" ng-model="query" ng-change="search()" class="input-large search-query" placeholder="Search">
+            </div>
+        </div>
                 <br>
                 <table class="crawltable footable table table-striped table-bordered table-white table-primary">
                         
