@@ -65,7 +65,13 @@ def webhook(request):
                 if x!=2:
                     event.date=event.date+str(t[x])+"/"
                 else:
+                    event.date=event.date+str(t[x])+" "
+            for x in range(3, 6):
+                if x!=5:
+                    event.date=event.date+str(t[x])+":"
+                else:
                     event.date=event.date+str(t[x])
+
             event.save()
         if event_json['data']['object']['object']=="customer":
             event.customer=event_json['data']['object']['id']
@@ -85,7 +91,13 @@ def webhook(request):
                 if x!=2:
                     event.date=event.date+str(t[x])+"/"
                 else:
+                    event.date=event.date+str(t[x])+" "
+            for x in range(3, 6):
+                if x!=5:
+                    event.date=event.date+str(t[x])+":"
+                else:
                     event.date=event.date+str(t[x])
+
             event.save()
 
         return HttpResponse('success')
