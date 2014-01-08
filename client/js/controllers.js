@@ -1570,6 +1570,9 @@ angular.module('dashApp.controllers', []).
                 
             }
             else{
+                $http.get(API_URL + 'Entity/?user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
+                    $('#msg').append('<div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button><center>You are currently monitoring '+data.objects.length+' entities </center></div>')
+                })
                $scope.change=true; 
                if(data.objects[0].plan==SOLO_PLAN_MONTHLY ||data.objects[0].plan==SOLO_PLAN_YEARLY){
                     $scope.plan="Solo"
