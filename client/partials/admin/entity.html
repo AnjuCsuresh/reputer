@@ -1,22 +1,30 @@
-<div class="add_entity">
-	<h1 class="entity_add_h1">&nbsp;&nbsp;Whose reputation would you like to monitor ?</h1>
-	<div class="innerLR">
-
-		<!-- Widget -->
-		<div class="widget widget-tabs widget-tabs-double-2">
+<div class="new_entity"	>
+<h1 class="addentitynew">&nbsp;&nbsp;Whose reputation would you like to monitor ?</h1>	<div class="innerLR">
+<div class="separator bottom"></div>
+<div class="separator bottom"></div>
+		<!-- Widget1 -->
+		<div class="widget widget-tabs widget-tabs-gray widget-tabs-double-2 border-bottom-none"  >
 			
 			<!-- Widget heading -->
-			<div class="widget-head">
-				<ul style="margin-left:39%">
-					<li href="#edit-account" data-toggle="tab"><h3 style="float:left">Person</h3><a style="float:right" class="glyphicons user_add" data-toggle="tab"><i></i></a></li>
-					<li href="#projects" data-toggle="tab" style="border-right:none"><a style="float:left" class="glyphicons luggage"><i></i></a><h3 style="float:right">Business</h3></li>
+			<div class="widget-head showphone" style="text-align:center;background: white;">
+				<ul class="color">
+					<li><a class="glyphicons user_add" href="#edit-account"data-toggle="tab"><i></i><h3>Person<h3></a></li>
+					<li style="border-right:none"><a class="glyphicons luggage" href="#projects" data-toggle="tab"><i ></i><h3>Business<h3></a></li>
+					
+				</ul>
+			</div>
+			<div class="widget-head hidephone" style="text-align:center;background: white;">
+				<ul class="color" style="margin-top:10px">
+					<li ><a class="glyphicons user_add" href="#edit-account"data-toggle="tab"><i style="float:right"></i><h3 style="float:left ;margin-top: 20px;">Person<h3></a></li>
+					<li style="border-right:none"><a class="glyphicons luggage" href="#projects" data-toggle="tab"><i style="float:left "></i><h3 style="float:right; margin-top: 20px;">Business<h3></a></li>
+					
 				</ul>
 			</div>
 			<!-- // Widget heading END -->
 			
 			<div class="widget-body">
 				
-				<form class="form-horizontal">
+				
 					<div class="tab-content">
 						
 						<div class="tab-pane widget-body-regular" id="edit-account">
@@ -35,42 +43,54 @@
 												
 												<!-- Column -->
 												<div class="span12">
-													
+													<div class="span12">
+													</div>
 													<!-- Group -->
-													<div class="control-group">
+													<div class="control-group span12">
+														<div class="span3">
 														<label class="control-label">First name</label>
-														<div class="controls">
+													</div>
+													
+														<div class="controls span9">
 															<input type="text" ng-model="entity.first_name" class="span5" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="First name is mandatory"><i></i></span>
 														</div>
 													</div>
 													<!-- // Group END -->
-													<div class="control-group">
+													<div class="control-group span12">
+														<div class="span3">
 														<label class="control-label">Middle name</label>
-														<div class="controls">
+													</div>
+														<div class="controls span9">
 															<input type="text" ng-model="entity.middle_name" class="span5" />
 															
 														</div>
 													</div>
 													<!-- Group -->
-													<div class="control-group">
+													<div class="control-group span12">
+														<div class="span3">
 														<label class="control-label">Last name</label>
-														<div class="controls">
+													</div>
+														<div class="controls span9">
 															<input type="text" ng-model="entity.last_name" class="span5" required/>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
 														</div>
 													</div>
-													<div class="control-group">
-														<label class="control-label">Profession</label>
-														<div class="controls">
-															<select ng-model="entity.profession" ng-options="p.name for p in professions" class="span5" name="" id="" width="1000" height="500">
+													<div class="control-group span12">
+														<div class="span3">
+														<label class="control-label ">Profession</label>
+													</div>
+														<div class="controls span9">
+															<select ng-model="entity.profession" ng-options="p.name for p in professions" class="span5" name="" >
 															</select>
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Profession is mandatory"><i></i></span>
 														</div>
 													</div>
-													<div class="control-group" ng-show="entity.profession.name=='Other'">
+													<div class="control-group span12" ng-show="entity.profession.name=='Other'">
+														<div class="span3">
 														<label class="control-label">Other Profession</label>
-														<div class="controls">
+													</div>
+														<div class="controls span9">
 															<input type="text" ng-model="entity.other_profession"  class="span5" />
 															<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Last name is mandatory"><i></i></span>
 														</div>
@@ -98,13 +118,14 @@
 
 														<!-- Form actions -->
 														<div class="form-actions" style="margin: 0;">
-														<button type="submit" ng-disabled="!(entity.first_name!=null&&entity.last_name!=null&&entity.profession!=null)" ng-click="save_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+														<button type="submit" ng-disabled="!(entity.first_name!=null&&entity.last_name!=null&&entity.profession!=null)" ng-click="save_person(entity)" class="btn btn-icon btn-primary glyphicons circle_ok offset3"><i></i>Save changes</button>
 														</div>
 														<!-- // Form actions END -->
 
 													</div>
 												</div>	
 											</div>
+										
 										</div>	
 									</div>
 									<!-- // Tab content END -->
@@ -128,9 +149,11 @@
 															<div class="span12">
 
 																<!-- Group -->
-																<div class="control-group">
+																<div class="control-group span12">
+																	<div class="span3">
 																	<label class="control-label">Name of Business</label>
-																	<div class="controls">
+																</div>
+																	<div class="controls span9">
 																		<input type="text"ng-model="entity.business_name"  class="span11" required />
 																		<span style="margin: 0;" class="btn-action single glyphicons circle_question_mark" data-toggle="tooltip" data-placement="top" data-original-title="Name of Business is mandatory"><i></i></span>
 																	</div>
@@ -151,7 +174,7 @@
 
 														<!-- Form actions -->
 														<div class="form-actions" style="margin: 0;left:38%">
-															<button ng-click="save_business(entity)" type="submit" ng-disabled="entity.business_name==null"class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button>
+															<center><button ng-click="save_business(entity)" type="submit" ng-disabled="entity.business_name==null"class="btn btn-icon btn-primary glyphicons circle_ok"><i></i>Save changes</button></center>
 														</div>
 														<!-- // Form actions END -->
 
@@ -162,8 +185,9 @@
 									</div>
 									<!-- // Tab content END -->
 								</div>
-							</form>
-						</div>
-					</div>
+							</div>
+			</div>
+		</div>
+		<!-- // Widget END -->
 </div>
 </div>

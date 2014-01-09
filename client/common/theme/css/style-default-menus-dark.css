@@ -4493,7 +4493,7 @@ div.glyphicons.glyphicon-primary i:before {
 }
 .widget.widget-tabs-gray > .widget-head ul li,
 .widget.widget-tabs-gray > .widget-head ul li i:before {
-  color: #7c7c7c !important;
+  color: #7c7c7c ;
   text-shadow: none;
 }
 .widget.widget-tabs-gray > .widget-head ul li.active {

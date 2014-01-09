@@ -31,8 +31,8 @@
 						<!-- Item -->
 						<tr class="selectable" ng-repeat="invoice in invoices">
 							
-							<td class="important"><span class="label label-inverse center"style="width:70px;">{{invoice.sdate}}</span> to <span class="label label-inverse center" style="width:70px;">{{invoice.edate}}</span></td>
-							<td class="center"><b><span class="label label-inverse" style="width:70px;">{{invoice.date}}</span></td>
+							<td class="important"><span class="label label-inverse center tdwidth">{{invoice.sdate}}</span> to <span class="label label-inverse center tdwidth">{{invoice.edate}}</span></td>
+							<td class="center"><b><span class="label label-inverse tdwidth">{{invoice.date}}</span></td>
 							<td class="center"><b>{{invoice.currency}}{{invoice.total}}<b></td>
 							<td class="right actions">
 								<a class="btn btn-success" ng-click="location.path('/invoice/'+invoice.id)">View</a>
