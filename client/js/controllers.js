@@ -1099,12 +1099,12 @@ angular.module('dashApp.controllers', []).
         $http.get(API_URL + 'Entity/?id=' + id + '&user__id=' + userid + '&alive=true&format=json',{withCredentials: true}).success(function (data) {
             if (data.objects.length > 0) {
                 $scope.entity = data.objects[0]
-                $scope.entity.profession=data.objects[0].profession.name
                 if (data.objects[0].location.length > 0) {
                     $scope.loctn = data.objects[0].location[0]
                 }
-                if (data.objects[0].business_name == null) {
+                if (data.objects[0].business_name == null || data.objects[0].business_name =="") {
                     $scope.business = false;
+                    $scope.entity.profession=data.objects[0].profession.name
                 }
                 else {
                     $scope.business = true;
@@ -1157,6 +1157,11 @@ angular.module('dashApp.controllers', []).
 
         //save location details
         $scope.save_location = function (entity, phone, fax, loctn) {
+            for (var x in $scope.professions){
+                if($scope.professions[x].name==entity.profession){
+                    entity.profession=$scope.professions[x]
+                }
+            }
             $http.post(API_URL + 'Location/', loctn).success(function (data, status, headers, config) {
                 entity.location[0] = data
                 phone.location = data
@@ -1167,8 +1172,11 @@ angular.module('dashApp.controllers', []).
                 $http.post(API_URL + 'Fax/', fax).success(function (data, status, headers, config) {
                     $scope.fax = data
                 })
-
                 $http.post(API_URL + 'Entity/', entity).success(function (data, status, headers, config) {
+                    
+
+
+
                     $scope.n = notyfy({
                         text: 'Changes Saved for ' + data.first_name,
                         type: 'success',
@@ -1183,6 +1191,11 @@ angular.module('dashApp.controllers', []).
         }
         //save name and url
         $scope.save_name = function (name, url) {
+            for (var x in $scope.professions){
+                if($scope.professions[x].name==$scope.entity.profession){
+                    $scope.entity.profession=$scope.professions[x]
+                }
+            }
             url.entity = $scope.entity;
             name.entity = $scope.entity;
             $http.post(API_URL + 'Url/', url).success(function (data, status, headers, config) {
@@ -1193,9 +1206,19 @@ angular.module('dashApp.controllers', []).
                     closeWith: ['hover']
                 });
                 $scope.url = data
+               for (var x in $scope.professions){
+                    if($scope.professions[x]==$scope.entity.profession){
+                        $scope.entity.profession=$scope.professions[x].name
+                    }
+                }
             })
             $http.post(API_URL + 'Name/', name).success(function (data, status, headers, config) {
                 $scope.name = data
+                for (var x in $scope.professions){
+                    if($scope.professions[x]==$scope.entity.profession){
+                        $scope.entity.profession=$scope.professions[x].name
+                    }
+                }
             })
         }
         //edit basic business details
