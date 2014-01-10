@@ -300,7 +300,7 @@ font-size: 20px;
      }
      .widget.widget-tabs-double-2 > .widget-head ul li.active {
         height: 90px !important;
-        background: #f4f4f4;
+        background:white !important;
       }
       .widget.widget-tabs-double-2 > .widget-head ul li {
           height: 80px;
@@ -316,6 +316,7 @@ font-size: 20px;
     .showphone{
       display: none;
     }
+    
 }
 .addentitynew{
   text-align: center;
