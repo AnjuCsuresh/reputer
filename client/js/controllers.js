@@ -1821,26 +1821,28 @@ angular.module('dashApp.controllers', []).
                
 }).
 controller('FullinvoiceCtrl', function ($scope, $http, $location,$rootScope,$cookies) {
-        
+        $scope.error=false
         var userid = $.cookie('the_cookie');
       
             $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
-                    var data = {
-                        customer: data.objects[0].stripe_customer,
+                    if(data.objects[0].stripe_customer==null){
+                        $scope.error=true
+                    }
+                    else{
+                        var data = {
+                            customer: data.objects[0].stripe_customer,
                      
-                    }; 
-                    console.log(data) 
-                    $http.post(API_URL + 'user/fullinvoices/',data, {withCredentials: true}).success(function (data, status, headers, config) {
-                        if (status == '200') {
-                       
+                        }; 
+
+                        $http.post(API_URL + 'user/fullinvoices/',data, {withCredentials: true}).success(function (data, status, headers, config) {
+                            if (status == '200') {
                             console.log(data)
                             $scope.invoices=data.data
                             
-                        }
-                        else {
-                            //console.log(error)
-                        }
-                    })
+                            }
+                       
+                        })
+                    }
                 
                })
 }).
@@ -1855,8 +1857,6 @@ controller('BillingCtrl', function ($scope, $http, $location,$rootScope,$cookies
                     }; 
             $http.post(API_URL + 'user/events/',data, {withCredentials: true}).success(function (data, status, headers, config) {
                         if (status == '200') {
-                       
-                            console.log(data.data.length)
                             if(data.data.length>0){
                                 $scope.events=data.data
                             }
@@ -1877,10 +1877,15 @@ controller('ChangeCardCtrl', function ($scope, $http, $location,$rootScope,$cook
         var userid = $.cookie('the_cookie');
         $scope.card={}
             $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
+                    console.log(data.objects[0])
+                    if(data.objects[0].stripe_customer==null){
+                       $location.path('/account/plans') 
+                    }
                     var data = {
                         customer: data.objects[0].stripe_customer,
                      
                     }; 
+
                     $http.post(API_URL + 'user/carddetails/',data, {withCredentials: true}).success(function (data, status, headers, config) {
                         if (status == '200') {
                             $scope.card=data.data
