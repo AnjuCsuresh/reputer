@@ -207,7 +207,7 @@ class Entity(SoftDeletionModel):
 class Profession(SoftDeletionModel):
     name = models.CharField(max_length=200)
     websites = models.ManyToManyField('ReviewWebsite',blank=True,null=True)
-    metadata=models.TextField()
+    
     objects = SoftDeletionManager()
     all_objects = SoftDeletionManager(live_only=False)
 
@@ -229,7 +229,7 @@ class ReviewWebsite(SoftDeletionModel):
 class NotificationLevel(SoftDeletionModel):
     level = models.IntegerField()
     description = models.CharField(max_length=200)
-    metadata=models.TextField()
+    
     objects = SoftDeletionManager()
     all_objects = SoftDeletionManager(live_only=False)
 

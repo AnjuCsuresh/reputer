@@ -1,3 +1,4 @@
+<div ng-hide="error">	
 <div class="heading-buttons">
 	<h1>Invoices <span></span></h1>
 	
@@ -49,3 +50,13 @@
 		</div>
 		<!-- // Widget END -->
 	</div>
+</div>
+<div class="not_entity center" style="height:50%" ng-show="error">
+	<h3 class="entity_add_h1 center">&nbsp;&nbsp;
+		<i style="font-size:3em;display:block" class="icon-meh"></i>
+		<br> There are no Invoices listed.
+		<br><br>
+	<span class="thank" >Thank you.</span>
+</h3>
+</div>
+		
