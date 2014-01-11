@@ -28,7 +28,7 @@ angular.module('myApp.controllers', []).
                 else {
                     $scope.error = "We were unable to sign you in - please check the email and password that you entered. "
                 }
-                $scope.user.password = ""
+                $scope.user.password = null
             })
 
         }
@@ -55,7 +55,7 @@ angular.module('myApp.controllers', []).
                 }  
             else{
                 $scope.error = "Someone with that email address has already registered with us. If you have just forgotten your password, please click here to have it sent to you."
-                $scope.user.password=""
+                $scope.user.password=null
             }    
             })
         }
