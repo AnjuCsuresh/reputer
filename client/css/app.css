@@ -255,3 +255,24 @@ top: 20%;
   padding: 9px;
 font-size: 20px;
 }
+@media screen and (min-width: 1024px){
+    .crawlth{
+      width: 15%;
+    }
+    .crawimg{
+     
+      width: 100px;
+    }
+    .type2{
+    display: none;
+  }
+}
+@media screen and (max-width: 1024px){
+      .crawimg{
+      width: 100px;
+     
+    }
+    .type1{
+    display: none;
+  }
+}

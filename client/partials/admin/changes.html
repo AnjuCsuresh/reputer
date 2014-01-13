@@ -8,7 +8,7 @@
             </div>
         </div>
                 <br>
-                <table class="crawltable footable table table-striped table-bordered table-white table-primary">
+                <table class="crawltable table table-striped table-bordered table-white table-responsive swipe-horizontal table-primary">
                         
                         <!-- Table heading -->
                         <thead>
@@ -26,25 +26,7 @@
                         <!-- // Table heading END -->
                         
                         <!-- Table body -->
-                        <tfoot>
-                <td colspan="8">
-                    <div class="pagination pull-right">
-                        <ul>
-                            <li ng-class="{disabled: currentPage == 0}">
-                                <a href ng-click="prevPage()">« Prev</a>
-                            </li>
-                            <li ng-repeat="n in range(pagedItems.length)"
-                                ng-class="{active: n == currentPage}"
-                            ng-click="setPage()">
-                                <a href ng-bind="n + 1">1</a>
-                            </li>
-                            <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
-                                <a href ng-click="nextPage()">Next »</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tfoot>
+                       
                         <tbody>
                                 
                                 <!-- Table row -->
@@ -65,5 +47,20 @@
                         <!-- // Table body END -->
                         
                 </table>
+                <div class="pagination pull-right">
+                        <ul>
+                            <li ng-class="{disabled: currentPage == 0}">
+                                <a href ng-click="prevPage()">« Prev</a>
+                            </li>
+                            <li ng-repeat="n in range(pagedItems.length)"
+                                ng-class="{active: n == currentPage}"
+                            ng-click="setPage()">
+                                <a href ng-bind="n + 1">1</a>
+                            </li>
+                            <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                                <a href ng-click="nextPage()">Next »</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 </div>
