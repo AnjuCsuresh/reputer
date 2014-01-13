@@ -574,10 +574,10 @@ class UserResource(ModelResource):
                     edate=edate+str(et[x])
             if data["plan"]!=None:
                 d={
-                    "totalamount":data["amount"],
+                    "totalamount":float(data["amount"])/100,
                     "currency":currencies[data["currency"].upper()],
                     "name":data["plan"].name,
-                    "planamount":data["plan"].amount,
+                    "planamount":float(data["plan"].amount)/100,
                     "interval":data["plan"].interval,
                     "quantity":data["quantity"],
                     "type":data["type"].capitalize(),
@@ -587,7 +587,7 @@ class UserResource(ModelResource):
                 }
             else:
                 d={
-                    "totalamount":data["amount"],
+                    "totalamount":float(data["amount"])/100,
                     "currency":currencies[data["currency"].upper()],
                     "description":data["description"],
                     "period_start":sdate,
@@ -605,12 +605,13 @@ class UserResource(ModelResource):
                 else:
                     date=date+str(t[x])
         invoicelist={
-            "amount_due":invoice['amount_due'],
+            "amount_due":float(invoice['amount_due'])/100,
             "date":date,
             "currency":currencies[invoice['currency'].upper()],
             "paid":invoice['paid'],
-            "total":invoice['total'],
-            "subtotal":invoice['subtotal'],
+            "total":float(invoice['total'])/100,
+            "subtotal":float(invoice['subtotal'])/100,
+            "starting_balance":float(invoice['starting_balance'])/100,
             "period_start":invoice['period_start'],
             "period_end":invoice['period_end'],
             "lines":lines 
@@ -653,7 +654,7 @@ class UserResource(ModelResource):
                 "sdate":sdate,
                 "edate":edate,
                 "currency":currencies[invoice['currency'].upper()],
-                "total":invoice['total']
+                "total":float(invoice['total'])/100
                 
             }
             invoicelist.append(d)
