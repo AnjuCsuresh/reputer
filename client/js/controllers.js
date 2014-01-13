@@ -44,7 +44,10 @@ angular.module('myApp.controllers', []).
                     username: data.data.email,
                     password: user.password
                 };
-            
+                // Integration 
+                $http.get(DATA_API_URL + 'newsignup/'+data.data.email, {withCredentials: true}).success(function (data) {
+
+                })
                 $http.post(API_URL + 'user/login/',u, {withCredentials: true}).success(function (data, status, headers, config) {
                     if (status == '200') {
                         $.cookie('the_cookie', data.user.id, { expires: 7 });
@@ -239,9 +242,7 @@ angular.module('dashApp.controllers', []).
             })
 
         }
-
-        
-        //PRODUCTION CODE: $http.get(DATA_API_URL+'getcrawltable/'+id).success(function(data, status, headers, config){
+       
     })
     .controller('EntityCtrl', function ($http, $scope, User, $window, $location, $timeout, $routeParams, MessageBus) {
         var userdata={}
