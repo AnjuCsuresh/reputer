@@ -29,7 +29,7 @@
                                 
                                 <!-- Table row -->
                                 <tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-                                        <td><span class="label label-success pull-right type1">{{result.changetype}}</span><a href="{{result.URL}}"><img class="crawimg" src="http://www.reputer.co/new/img/logos/{{result.source}}.png"></img>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-success type2">{{result.changetype}}</span></td>
+                                        <td><span class="label label-success pull-right type1">{{result.changetype}}</span><a href="{{result.URL}}" ><img class="crawimg" ng-src="http://www.reputer.co/new/img/logos/{{result.source}}.png"></img>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-success type2">{{result.changetype}}</span></td>
                                         <td>{{result.review_text}}</td>
                                         <td>{{result.rating}}</td>
                                         <td><a href="http://{{result.author_url}}">{{result.author}}</a></td>
