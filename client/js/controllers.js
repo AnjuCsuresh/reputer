@@ -309,7 +309,10 @@ angular.module('dashApp.controllers', []).
                     dismissQueue: true,
                     closeWith: ['hover']
                 });
+                // Integration 
+                $http.get(DATA_API_URL + 'processnewentities', {withCredentials: true}).success(function (data) {
 
+                })
                 //stripe plan  
              
                 $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
@@ -349,6 +352,10 @@ angular.module('dashApp.controllers', []).
                     closeWith: ['hover']
                 });
 
+                // Integration 
+                $http.get(DATA_API_URL + 'processnewentities', {withCredentials: true}).success(function (data) {
+
+                })
                //stripe plan  
                 //console.log(data.user.id)
                 $http.get(API_URL + 'extended_user/?user__id=' + userid + '&format=json',{withCredentials: true}).success(function (data) {
