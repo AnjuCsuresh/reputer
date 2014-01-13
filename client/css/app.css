@@ -68,7 +68,7 @@ span.thank {
   text-align: center; 
 }
 .add_entity .choices a i:before{
-  font-size: 4em;
+  
 }
 .add_entity .choices a i{
   display: block;
@@ -276,3 +276,71 @@ font-size: 20px;
     display: none;
   }
 }
+@media screen and (max-width: 768px){
+    .table-primary thead th {
+      border-color: #e5412d;
+      background-color: #e5412d;
+      color: #fff;
+
+    }
+    .new_entity .widget.widget-tabs-double-2 > .widget-head ul li a.glyphicons i:before{
+      color: #e5412d;
+     }
+    .hidephone{
+      display: none;
+    }
+}
+@media screen and (min-width: 768px){
+    .tdwidth{
+      width:70px;
+    }
+    .tdfont{
+      font-size:15px;
+    }
+    .new_entity label{
+      margin-top: 10px;
+      font-size:20px !important;
+    }
+    .new_entity input{
+      height:40px !important;
+    }
+    .new_entity select{
+      height:40px !important;
+    }
+    .addentitynew{
+      text-align: center;
+      margin-top: 103px;
+    }
+    .new_entity .widget.widget-tabs-double-2 > .widget-head ul li a.glyphicons i:before{
+      color: #e5412d;
+      font-size: 45px;
+      margin-bottom: 15px;
+     }
+     .new_entity .widget.widget-tabs-double-2 > .widget-head ul li a.glyphicons i{
+      margin-bottom: 15px;
+     }
+     .widget.widget-tabs-double-2 > .widget-head ul li.active {
+        height: 90px !important;
+        background:white !important;
+      }
+      .widget.widget-tabs-double-2 > .widget-head ul li {
+          height: 80px;
+      }
+    .new_entity .widget.widget-tabs-double-2 > .widget-head {
+
+      height: 95px !important;
+    }
+    .new_entity .widget.widget-tabs-double-2 > .widget-head a{
+
+      height: 95px !important;
+    }
+    .showphone{
+      display: none;
+    }
+    
+}
+.addentitynew{
+  text-align: center;
+
+}
+

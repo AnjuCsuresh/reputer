@@ -1,7 +1,7 @@
 import BaseHTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 
-addr = ("", 8888)
+addr = ("0.0.0.0", 8888)
 
 serv = BaseHTTPServer.HTTPServer(addr, SimpleHTTPRequestHandler)
 
