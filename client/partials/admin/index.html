@@ -70,7 +70,7 @@
 			</div>
 		</div>
 		<br>
-		<table class="crawltable footable table table-striped table-bordered table-white table-primary">
+		<table class="crawltable table table-striped table-bordered table-white table-responsive swipe-horizontal table-primary">
 			
 			<!-- Table heading -->
 			<thead>
@@ -88,10 +88,30 @@
 			<!-- // Table heading END -->
 			
 			<!-- Table body -->
-			<tfoot>
-                <td colspan="8">
-                	<button class="btn btn-inverse" ng-click="location.path('/reports/changes')">View More</button>
-                    <div class="pagination pull-right">
+			
+			<tbody>
+				
+				<!-- Table row -->
+				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
+					<td><center><i class="icon-thumbs-up crawlup" ng-show="result.outcome=='G'"></i><i  class="icon-thumbs-down crawldown" ng-show="result.outcome=='B'"></i></center></td>
+					<td><a href="{{result.URL}}">{{result.domain}}</td>
+					<td>{{result.new_rating}}</td>
+					<td>{{result.old_rating}}</td>
+					<td>{{result.new_votes}}</td>
+					<td>{{result.old_votes}}</td>
+					<td>{{result.status}}</td>
+					<td><center><i class="icon-circle-arrow-up crawlup" ng-show="result.movement=='U'"></i><i class="icon-circle-arrow-down crawldown" ng-show="result.movement=='D'"></i></center></td>
+					
+				</tr>
+				<!-- // Table row END -->
+				
+			</tbody>
+			<!-- // Table body END -->
+			
+		</table>
+		<div class="pagination"> 
+					<button class="btn btn-inverse" ng-click="location.path('/reports/changes')">View More</button>
+                    <div class="pull-right">
                         <ul>
                             <li ng-class="{disabled: currentPage == 0}">
                                 <a href ng-click="prevPage()">« Prev</a>
@@ -106,29 +126,9 @@
                             </li>
                         </ul>
                     </div>
-                </td>
-            </tfoot>
-			<tbody>
-				
-				<!-- Table row -->
-				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-					<td style="text-align:center"><i class="icon-thumbs-up" style="font-size: 22px;color:green" ng-show="result.outcome=='G'"></i><i style="font-size: 22px;color:red" class="icon-thumbs-down" ng-show="result.outcome=='B'"></i></td>
-					<td><a href="{{result.URL}}">{{result.domain}}</td>
-					<td>{{result.new_rating}}</td>
-					<td>{{result.old_rating}}</td>
-					<td>{{result.new_votes}}</td>
-					<td>{{result.old_votes}}</td>
-					<td>{{result.status}}</td>
-					<td style="text-align:center"><i class="icon-circle-arrow-up" style="font-size: 22px;color:green" ng-show="result.movement=='U'"></i><i style="font-size: 22px;color:red" class="icon-circle-arrow-down" ng-show="result.movement=='D'"></i></td>
-					
-				</tr>
-				<!-- // Table row END -->
-				
-			</tbody>
-			<!-- // Table body END -->
-			
-		</table>
+              </div>
 		</div>
+		<div class="separator bottom hidden-print"></div>
 		<!-- SECOND CONTROLLER FOR CHANGES --> 
 		<div ng-controller="reviewTable" ng-init="itemsPerPage = 3">
 			<h3>Review Changes</h3>
@@ -140,13 +140,13 @@
 		</div>
 
 		<br>
-		<table class="crawltable footable table table-striped table-bordered table-white table-primary">
+		<table class="crawltable table table-striped table-bordered table-white table-responsive swipe-horizontal table-primary">
 			
 			<!-- Table heading -->
 			<thead>
 					<tr>
 						
-						<th ng-click="sort_by('source')" width="8%">Site&nbsp;<i class="icon-sort"></i></th>
+						<th ng-click="sort_by('source')" class="crawlth">Site&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('review_text')">Review&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
 						<th ng-click="sort_by('author')">Author&nbsp;<i class="icon-sort"></i></th>
@@ -157,31 +157,12 @@
 			<!-- // Table heading END -->
 			
 			<!-- Table body -->
-			<tfoot>
-                <td colspan="8">
-                	<button class="btn btn-inverse" ng-click="location.path('/reports/review')">View More</button>
-                    <div class="pagination pull-right">
-                        <ul>
-                            <li ng-class="{disabled: currentPage == 0}">
-                                <a href ng-click="prevPage()">« Prev</a>
-                            </li>
-                            <li ng-repeat="n in range(pagedItems.length)"
-                                ng-class="{active: n == currentPage}"
-                            ng-click="setPage()">
-                                <a href ng-bind="n + 1">1</a>
-                            </li>
-                            <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
-                                <a href ng-click="nextPage()">Next »</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tfoot>
+			
 			<tbody>
 				
 				<!-- Table row -->
 				<tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-					<td><span class="label label-success pull-right">{{result.changetype}}</span><br><a href="{{result.URL}}"><img src="http://www.reputer.co/new/img/logos/{{result.source}}.png" style="height: 50px;width: 100px;"></img></td>
+					<td><span class="label label-success pull-right">{{result.changetype}}</span><br><a href="{{result.URL}}"><img class="crawimg" ng-src="http://www.reputer.co/new/img/logos/{{result.source}}.png"></img></td>
 					<td>{{result.review_text}}</td>
 					<td>{{result.rating}}</td>
 					<td><a href="http://{{result.author_url}}">{{result.author}}</a></td>
@@ -194,8 +175,27 @@
 			<!-- // Table body END -->
 			
 		</table>
+		<div class="pagination">
+		
+			<button class="btn btn-inverse" ng-click="location.path('/reports/review')">View More</button>
+                    <div class="pull-right">
+                        <ul>
+                            <li ng-class="{disabled: currentPage == 0}">
+                                <a href ng-click="prevPage()">« Prev</a>
+                            </li>
+                            <li ng-repeat="n in range(pagedItems.length)"
+                                ng-class="{active: n == currentPage}"
+                            ng-click="setPage()">
+                                <a href ng-bind="n + 1">1</a>
+                            </li>
+                            <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                                <a href ng-click="nextPage()">Next »</a>
+                            </li>
+                        </ul>
+                    </div>
+                   </div>
 		</div>
-
+		<div class="separator bottom hidden-print"></div>
 		 <div  ng-controller="profileTable" ng-init="itemsPerPage = 5">
 		<h3>Entity's Online Profile</h3>
 		<div class="widget-search form-inline">
@@ -205,7 +205,7 @@
 			</div>
 		</div>
 		<br>
-		<table class="crawltable footable table table-striped table-bordered table-white table-primary">
+		<table class="crawltable table table-striped table-bordered table-white table-responsive swipe-horizontal table-primary">
 			
 			<!-- Table heading -->
 			<thead>
@@ -221,26 +221,7 @@
 			<!-- // Table heading END -->
 			
 			<!-- Table body -->
-			<tfoot>
-                <td colspan="6">
-                	<button class="btn btn-inverse" ng-click="location.path('/reports/profile')">View More</button>
-                    <div class="pagination pull-right">
-                        <ul>
-                            <li ng-class="{disabled: currentPage == 0}">
-                                <a href ng-click="prevPage()">« Prev</a>
-                            </li>
-                            <li ng-repeat="n in range(pagedItems.length)"
-                                ng-class="{active: n == currentPage}"
-                            ng-click="setPage()">
-                                <a href ng-bind="n + 1">1</a>
-                            </li>
-                            <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
-                                <a href ng-click="nextPage()">Next »</a>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-            </tfoot>
+			
 			<tbody>
 				
 				<!-- Table row -->
@@ -258,6 +239,24 @@
 			<!-- // Table body END -->
 			
 		</table>
+		<div class="pagination">
+			<button class="btn btn-inverse" ng-click="location.path('/reports/profile')">View More</button>
+                    <div class="pull-right">
+                        <ul>
+                            <li ng-class="{disabled: currentPage == 0}">
+                                <a href ng-click="prevPage()">« Prev</a>
+                            </li>
+                            <li ng-repeat="n in range(pagedItems.length)"
+                                ng-class="{active: n == currentPage}"
+                            ng-click="setPage()">
+                                <a href ng-bind="n + 1">1</a>
+                            </li>
+                            <li ng-class="{disabled: currentPage == pagedItems.length - 1}">
+                                <a href ng-click="nextPage()">Next »</a>
+                            </li>
+                        </ul>
+                    </div>
+		</div>
 		<!-- // Table END -->
 	</div>
 		

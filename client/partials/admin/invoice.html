@@ -56,7 +56,7 @@
                                        
                                         <th></th>
                                         <th style="width: 117px;">Number of Entities</th>
-                                        <th style="width: 80px;">Price/Entity</th>
+                                        <th style="width: 82px;">Price / Entity</th>
                                         <th style="width: 80px;">Total price</th>
                                         
                                         
@@ -66,9 +66,8 @@
                         
                                                                 <!-- Cart item -->
                                 <tr ng-repeat="line in lines">
-                                        
                                         <td ng-show="line.description=='None'">
-                                                <h5>{{line.type}} to {{line.name}}</h5>
+                                                <b><span class="tdfont">{{line.type}} to {{line.name}}</span><b><br>
                                                 <b>Period : {{line.period_start}} to {{line.period_end}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
                                                 <b>Interval : {{line.interval}}</b>
                                         </td>
@@ -110,6 +109,10 @@
                                                 <tr>
                                                         <td class="right">Total:</td>
                                                         <td class="right strong">{{invoice.currency}}{{invoice.total}}</td>
+                                                </tr>
+                                                <tr>
+                                                        <td class="right">Starting customer balance:</td>
+                                                        <td class="right strong">{{invoice.currency}}{{invoice.starting_balance}}</td>
                                                 </tr>
                                                 <tr>
                                                         <td class="right">Amount due:</td>

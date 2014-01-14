@@ -8,12 +8,12 @@
             </div>
         </div>
                 <br>
-                <table class="crawltable footable table table-striped table-bordered table-white table-primary">
+                <table class="crawltable table table-striped table-bordered table-white table-responsive swipe-horizontal table-primary">
                         
                         <!-- Table heading -->
                         <thead>
                                         <tr>
-                                            <th ng-click="sort_by('source')" width="8%">Site&nbsp;<i class="icon-sort"></i></th>
+                                            <th ng-click="sort_by('source')" class="crawlth">Site&nbsp;<i class="icon-sort"></i></th>
                                             <th ng-click="sort_by('review_text')">Review&nbsp;<i class="icon-sort"></i></th>
                                             <th ng-click="sort_by('rating')">Rating&nbsp;<i class="icon-sort"></i></th>
                                             <th ng-click="sort_by('author')">Author&nbsp;<i class="icon-sort"></i></th>
@@ -24,9 +24,25 @@
                         <!-- // Table heading END -->
                         
                         <!-- Table body -->
-                        <tfoot>
-                <td colspan="8">
-                    <div class="pagination pull-right">
+                        
+                        <tbody>
+                                
+                                <!-- Table row -->
+                                <tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
+                                        <td><span class="label label-success pull-right type1">{{result.changetype}}</span><a href="{{result.URL}}" ><img class="crawimg" ng-src="http://www.reputer.co/new/img/logos/{{result.source}}.png"></img>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="label label-success type2">{{result.changetype}}</span></td>
+                                        <td>{{result.review_text}}</td>
+                                        <td>{{result.rating}}</td>
+                                        <td><a href="http://{{result.author_url}}">{{result.author}}</a></td>
+                                        <td>{{result.review_date}}</td>
+                                        <td>{{result.review_title}}</td>
+                                </tr>
+                                <!-- // Table row END -->
+                                
+                        </tbody>
+                        <!-- // Table body END -->
+                        
+                </table>
+                 <div class="pagination pull-right">
                         <ul>
                             <li ng-class="{disabled: currentPage == 0}">
                                 <a href ng-click="prevPage()">« Prev</a>
@@ -41,25 +57,5 @@
                             </li>
                         </ul>
                     </div>
-                </td>
-            </tfoot>
-                        <tbody>
-                                
-                                <!-- Table row -->
-                                <tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-                                        <td><span class="label label-success pull-right">{{result.changetype}}</span><a href="{{result.URL}}"><img src="http://www.reputer.co/new/img/logos/{{result.source}}.png"style="height: 50px;width: 100px;"></img></td>
-                                        <td>{{result.review_text}}</td>
-                                        <td>{{result.rating}}</td>
-                                        <td><a href="http://{{result.author_url}}">{{result.author}}</a></td>
-                                        <td>{{result.review_date}}</td>
-                                        <td>{{result.review_title}}</td>
-                                </tr>
-                                <!-- // Table row END -->
-                                
-                        </tbody>
-                        <!-- // Table body END -->
-                        
-                </table>
-
                 </div>
 </div>
