@@ -31,14 +31,14 @@
                                 
                                 <!-- Table row -->
                                 <tr ng-repeat="result in pagedItems[currentPage] | orderBy:sortingOrder:reverse" ng-hide="result.hide">
-                                        <td style="text-align:center"><i class="icon-thumbs-up" style="font-size: 22px;color:green" ng-show="result.outcome=='G'"></i><i style="font-size: 22px;color:red" class="icon-thumbs-down" ng-show="result.outcome=='B'"></i></td>
-                                        <td><a href="{{result.URL}}">{{result.domain}}</td>
+                                        <td><center><i class="icon-thumbs-up crawlup" ng-show="result.outcome=='G'"></i><i class="icon-thumbs-down crawldown" ng-show="result.outcome=='B'"></i></td>
+                                        <td><a href="{{result.URL}}">{{result.domain}}</center></td>
                                         <td>{{result.new_rating}}</td>
                                         <td>{{result.old_rating}}</td>
                                         <td>{{result.new_votes}}</td>
                                         <td>{{result.old_votes}}</td>
                                         <td>{{result.status}}</td>
-                                        <td style="text-align:center"><i class="icon-circle-arrow-up" style="font-size: 22px;color:green" ng-show="result.movement=='U'"></i><i style="font-size: 22px;color:red" class="icon-circle-arrow-down" ng-show="result.movement=='D'"></i></td>
+                                        <td><center><i class="icon-circle-arrow-up crawlup" ng-show="result.movement=='U'"></i><i class="icon-circle-arrow-down crawldown" ng-show="result.movement=='D'"></i></center></td>
                                         
                                 </tr>
                                 <!-- // Table row END -->

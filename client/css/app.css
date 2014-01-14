@@ -260,8 +260,7 @@ font-size: 20px;
       width: 15%;
     }
     .crawimg{
-     
-      width: 100px;
+      max-width: 100px;
     }
     .type2{
     display: none;
@@ -269,7 +268,7 @@ font-size: 20px;
 }
 @media screen and (max-width: 1024px){
       .crawimg{
-      width: 100px;
+      max-width: 100px;
      
     }
     .type1{
@@ -343,4 +342,11 @@ font-size: 20px;
   text-align: center;
 
 }
-
+.crawlup{
+  font-size: 22px;
+  color:green
+}
+.crawldown{
+  font-size: 22px;
+  color:red
+}
